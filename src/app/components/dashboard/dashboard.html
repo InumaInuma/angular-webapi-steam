@@ -1,0 +1,5 @@
+<div class="dashboard-container">
+    <h1>¡Bienvenido, usuario de Steam!</h1>
+    <p *ngIf="steamId">Tu Steam ID es: <strong>{{ steamId }}</strong></p>
+    <button (click)="logout()">Cerrar sesión</button>
+</div>
