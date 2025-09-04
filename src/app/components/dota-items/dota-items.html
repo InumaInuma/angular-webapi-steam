@@ -1,0 +1,18 @@
+<div *ngIf="items.length > 0; else noItems">
+    <div class="items-grid">
+        <div *ngFor="let item of pagedItems" class="item-card">
+            <img [src]="item.imageUrl" [alt]="item.name" />
+            <p>{{ item.name }}</p>
+        </div>
+    </div>
+
+    <div class="pagination">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+    </div>
+</div>
+
+<ng-template #noItems>
+    <p>No se encontraron ítems o el usuario no está autenticado.</p>
+</ng-template>

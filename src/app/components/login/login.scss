@@ -1,0 +1,104 @@
+/* Fondo principal */
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Tarjeta principal */
+.login-card {
+  display: flex;
+  width: 900px;
+  height: 500px;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Lado izquierdo con imagen */
+.login-left {
+  flex: 1;
+  background: url('https://img.freepik.com/free-vector/night-mountain-landscape_23-2148570890.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: #fff;
+}
+
+.overlay-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Lado derecho (formulario) */
+.login-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #1a2a6c;
+}
+
+.subtitle {
+  font-size: 1rem;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+/* Botón Steam */
+.steam-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #171a21;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 100%;
+}
+
+.steam-btn img {
+  height: 24px;
+}
+
+.steam-btn:hover {
+  background: #2a475e;
+}
+
+/* Footer */
+.footer-text {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.footer-text a {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}

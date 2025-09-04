@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '../../service/auth';
 import { Router } from '@angular/router';
+import { DotaItems } from '../dota-items/dota-items';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true, // 🚨 Agrega standalone
-  imports: [CommonModule],
+  imports: [CommonModule,DotaItems],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })

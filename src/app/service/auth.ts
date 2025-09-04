@@ -52,29 +52,41 @@ export class Auth {
      * Redirige el navegador a tu endpoint de login de la API.
      * Tu API manejará la redirección a la página de login de Steam.
      */
-    login() {
+   
+// src/app/service/auth.ts
+
+// ... (resto del código del servicio)
+
+/**
+ * Inicia el flujo de autenticación de Steam.
+ * Redirige el navegador a tu endpoint de login de la API.
+ */
+// login() {
         /* window.location.href = `${this.apiBaseUrl}/Account/login`; */
          // En lugar de una redirección simple, usa una llamada fetch
   // para verificar si el endpoint de login de la API está accesible.
-  fetch(`${this.apiBaseUrl}/Account/login`, { method: 'GET' })
-    .then(response => {
+//  fetch(`${this.apiBaseUrl}/Account/login`, { method: 'GET' })
+//    .then(response => {
       // Si la respuesta es exitosa (por ejemplo, 200 OK), redirige
       // al navegador para que inicie la autenticación de Steam.
-      if (response.ok) {
-        window.location.href = `${this.apiBaseUrl}/Account/login`;
-      } else {
+    //  if (response.ok) {
+//        window.location.href = `${this.apiBaseUrl}/Account/login`;
+   //   } else {
         // Si la API responde con un error, redirige a tu página de error.
-        window.location.href = 'http://localhost:4200/error';
-      }
-    })
-    .catch(error => {
+     //   window.location.href = 'http://localhost:4200/error';
+   //   }
+  //  })
+  //  .catch(error => {
       // Si la llamada fetch falla completamente (ej. no se puede conectar),
       // redirige a la página de error.
-      console.error('Error de conexión con la API de autenticación:', error);
-      window.location.href = 'http://localhost:4200/error';
-    });
-    }
+   //   console.error('Error de conexión con la API de autenticación:', error);
+    //  window.location.href = 'http://localhost:4200/error';
+  //  });
+////    }
 
+login() {
+    window.location.href = `${this.apiBaseUrl}/Account/login`;
+}
     /**
      * Cierra la sesión del usuario.
      * Redirige el navegador a tu endpoint de logout de la API para limpiar la cookie de sesión.

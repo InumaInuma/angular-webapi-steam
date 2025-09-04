@@ -1,4 +1,23 @@
-<div>
-    <h1>Inicia sesión con Steam</h1>
-    <button (click)="login()">Login con Steam</button>
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-left">
+            <div class="overlay">
+                <h2 class="overlay-title">Inicia sesión con Steam</h2>
+            </div>
+        </div>
+        <div class="login-right">
+            <h1 class="title">¡Hola!</h1>
+            <p class="subtitle">Accede con tu cuenta de Steam para continuar</p>
+
+            <button class="steam-btn" (click)="login()">
+                <img src="https://store.cloudflare.steamstatic.com/public/shared/images/header/logo_steam.svg"
+                    alt="Steam Logo">
+                Login con Steam
+            </button>
+
+            <p class="footer-text">
+                ¿No tienes cuenta? <a href="#">Crea una aquí</a>
+            </p>
+        </div>
+    </div>
 </div>
