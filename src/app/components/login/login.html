@@ -1,23 +1,80 @@
 <div class="login-container">
     <div class="login-card">
+        <!-- Lado izquierdo -->
         <div class="login-left">
             <div class="overlay">
-                <h2 class="overlay-title">Inicia sesión con Steam</h2>
+                <h2 class="overlay-title">
+                    {{ isRegisterMode ? 'Crea tu cuenta' : 'Inicia sesión con Steam' }}
+                </h2>
             </div>
         </div>
+
+        <!-- Lado derecho -->
         <div class="login-right">
-            <h1 class="title">¡Hola!</h1>
-            <p class="subtitle">Accede con tu cuenta de Steam para continuar</p>
-
-            <button class="steam-btn" (click)="login()">
-                <img src="https://store.cloudflare.steamstatic.com/public/shared/images/header/logo_steam.svg"
-                    alt="Steam Logo">
-                Login con Steam
-            </button>
-
-            <p class="footer-text">
-                ¿No tienes cuenta? <a href="#">Crea una aquí</a>
+            <h1 class="title">{{ isRegisterMode ? 'Registro' : '¡Hola!' }}</h1>
+            <p class="subtitle">
+                {{ isRegisterMode ? 'Completa los campos para registrarte' : 'Accede con tu cuenta para continuar' }}
             </p>
+
+            <!-- 🔹 LOGIN -->
+            <div *ngIf="!isRegisterMode; else registerForm">
+
+
+                <!-- Login normal -->
+                <form class="form" #loginForm="ngForm" (ngSubmit)="loginWithCredentials(email.value, password.value)">
+                    <input type="email" #email="ngModel" name="email" ngModel required email
+                        placeholder="Correo electrónico" />
+                    <div *ngIf="email.invalid && email.touched" class="error">
+                        📌 Ingresa un correo válido.
+                    </div>
+                    <input type="password" #password="ngModel" name="password" ngModel required minlength="6"
+                        placeholder="Contraseña" />
+                    <div *ngIf="password.invalid && password.touched" class="error">
+                        📌 La contraseña debe tener mínimo 6 caracteres.
+                    </div>
+                    <!-- Botón bloqueado si el formulario es inválido -->
+                    <button type="submit" class="btn-primary" [disabled]="loginForm.invalid">
+                        Iniciar sesión
+                    </button>
+                </form>
+
+                <p class="footer-text">
+                    ¿No tienes cuenta?
+                    <a href="#" (click)="toggleMode(); $event.preventDefault()">Crea una aquí</a>
+                </p>
+            </div>
+
+            <!-- 🔹 REGISTRO -->
+            <ng-template #registerForm>
+                <form class="form" #registerForm="ngForm"
+                    (ngSubmit)="register(displayName.value, email.value, password.value); $event.preventDefault()">
+                    <input type="text" #displayName="ngModel" name="displayName" ngModel required minlength="3"
+                        placeholder="Nombre de usuario" />
+                    <div *ngIf="displayName.invalid && displayName.touched" class="error">
+                        📌 El nombre debe tener al menos 3 caracteres.
+                    </div>
+                    <input type="email" #email="ngModel" name="email" ngModel required email
+                        placeholder="Correo electrónico" />
+                    <div *ngIf="email.invalid && email.touched" class="error">
+                        📌 Ingresa un correo válido.
+                    </div>
+                    <input type="password" #password="ngModel" name="password" ngModel required minlength="6"
+                        placeholder="Contraseña" />
+                    <div *ngIf="password.invalid && password.touched" class="error">
+                        📌 La contraseña debe tener mínimo 6 caracteres.
+                    </div>
+
+                    <!-- Botón bloqueado si el form es inválido o las contraseñas no coinciden -->
+                    <button type="submit" class="btn-primary" [disabled]="registerForm.invalid ">
+                        Registrarse
+                    </button>
+                </form>
+
+                <p class="footer-text">
+                    ¿Ya tienes cuenta?
+                    <a href="#" (click)="toggleMode(); $event.preventDefault()">Inicia sesión aquí</a>
+                </p>
+            </ng-template>
         </div>
     </div>
 </div>

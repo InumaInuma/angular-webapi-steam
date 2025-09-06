@@ -1,32 +1,41 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Dota, DotaItemDto } from '../../service/dota';
+import { Auth } from '../../service/auth';
 
 @Component({
   selector: 'app-dota-items',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dota-items.html',
-  styleUrl: './dota-items.scss'
+  styleUrl: './dota-items.scss',
 })
 export class DotaItems implements OnInit {
-
- /*  items: any[] = []; */
- items: DotaItemDto[] = [];
+  /*  items: any[] = []; */
+  items: DotaItemDto[] = [];
   pagedItems: DotaItemDto[] = [];
-
+  loading = true;
   currentPage = 1;
-  pageSize = 20; // 👈 cantidad de ítems por página
+  pageSize = 10; // 👈 cantidad de ítems por página
 
-  constructor(private dotaService: Dota) { }
+  constructor(
+    private dotaService: Dota,
+    private cdr: ChangeDetectorRef,
+    private authService: Auth
+  ) {}
 
   ngOnInit(): void {
-  
-
-    this.dotaService.getUserDotaItems().subscribe(items => {
+    this.dotaService.getUserDotaItems().subscribe((items) => {
       this.items = items;
-       this.updatePagedItems();
+      this.updatePagedItems();
+      this.loading = false; // 👈 cuando termina, quitamos el spinner
+      // 👇 Forzamos a Angular a detectar los cambios
+      this.cdr.detectChanges();
     });
+  }
+
+  loginWithSteam() {
+    this.authService.login();
   }
   // 👇 Getter que evita usar Math directamente en el template
   get totalPages(): number {
@@ -52,7 +61,4 @@ export class DotaItems implements OnInit {
       this.updatePagedItems();
     }
   }
-
-
-
 }

@@ -1,31 +1,160 @@
-.catalogo {
+.items-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 16px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
 }
 
-.card {
-  border: 1px solid #ccc;
-  padding: 10px;
+.item-card {
+  background: #fff;
   border-radius: 12px;
-  text-align: center;
-  background: #f8f8f8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 }
 
-.item-img {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
+.card-image {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #f8f8f8;
+  }
+
+  .badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #6200ea;
+    color: white;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+}
+
+.card-body {
+  padding: 1rem;
+
+  .item-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem;
+  }
+
+  .item-desc {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+  }
 }
 
 .pagination {
-  margin-top: 20px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+
+  button {
+    background: #6200ea;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background: #4500b5;
+    }
+  }
+
+  span {
+    font-weight: bold;
+    font-size: 0.95rem;
+  }
 }
 
-.pagination button {
-  margin: 0 10px;
-  padding: 5px 10px;
+.no-items {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+//Opción 3: Pro + Gamer (Loader animado con ícono de Dota 🎮)
+
+.loading-gamer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; // 👈 ocupa toda la pantalla
+  text-align: center;
+  color: #eee;
+  font-size: 18px;
+  font-weight: 500;
+  background: #0f172a; // un fondo gamer oscuro elegante
+}
+
+.pulse-logo {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 15px;
+  animation: pulse 1.2s infinite alternate;
+  border-radius: 10%; // 👈 esto lo hace completamente circular
+  border: 3px solid #ebe8e9; // 👈 borde estilo gamer (rojo intenso)
+  box-shadow: 0 0 15px rgba(241, 241, 241, 0.7); // 👈 glow alrededor
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* Botón Steam */
+.steam-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #171a21;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 14px 20px;
+  font-size: 1rem;
   cursor: pointer;
+  transition: 0.3s ease;
+  width: 100%;
+}
+
+.steam-btn img {
+  height: 24px;
+  border-radius: 2px;
+}
+
+.steam-btn:hover {
+  background: #2a475e;
 }

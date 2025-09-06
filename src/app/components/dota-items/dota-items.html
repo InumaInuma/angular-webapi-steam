@@ -1,18 +1,40 @@
-<div *ngIf="items.length > 0; else noItems">
+<!-- Login con Steam -->
+<button class="steam-btn" (click)="loginWithSteam()">
+    <img src="dotados.png" alt="Steam Logo" />
+    Vinculate con steam para mostrar tus ITEMS
+</button>
+
+<div *ngIf="loading; else itemsTemplate" class="loading-gamer">
+    <img src="dotados.png" alt="Dota 2" class="pulse-logo" />
+    <p>Cargando tu inventario...</p>
+</div>
+
+<ng-template #itemsTemplate>
+    <!-- Aquí tu grid real -->
+
+    <!-- Aquí va tu grid con paginación -->
     <div class="items-grid">
         <div *ngFor="let item of pagedItems" class="item-card">
-            <img [src]="item.imageUrl" [alt]="item.name" />
-            <p>{{ item.name }}</p>
+            <div class="card-image">
+                <img [src]="item.imageUrl" [alt]="item.name" />
+                <span class="badge">Avatar</span>
+            </div>
+            <div class="card-body">
+                <h3 class="item-name">{{ item.name }}</h3>
+                <p class="item-desc">Ítem de Dota 2</p>
+            </div>
         </div>
     </div>
 
+    <!-- Paginación -->
     <div class="pagination">
-        <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+        <button (click)="prevPage()" [disabled]="currentPage === 1">⬅ Anterior</button>
         <span>Página {{ currentPage }} de {{ totalPages }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente ➡</button>
     </div>
-</div>
+</ng-template>
+
 
 <ng-template #noItems>
-    <p>No se encontraron ítems o el usuario no está autenticado.</p>
+    <p class="no-items">⚠ No se encontraron ítems o el usuario no está autenticado.</p>
 </ng-template>
