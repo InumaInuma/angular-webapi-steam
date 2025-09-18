@@ -1,0 +1,38 @@
+<header class="app-header">
+    <div class="logo">
+        <a routerLink="/pagina-principal">⚡ Dota2 Marketplace</a>
+    </div>
+
+    <nav class="nav-links">
+        <!-- Si NO está logeado -->
+        <ng-container *ngIf="!isLoggedIn; else loggedMenu">
+            <button class="btn login-btn" routerLink="/login">Iniciar sesión</button>
+            <button class="btn register-btn" [routerLink]="['/login']" [queryParams]="{ register: true }">
+                Registrarse
+            </button>
+        </ng-container>
+
+        <!-- Si está logeado -->
+        <ng-template #loggedMenu>
+            <ul class="menu">
+                <!-- Visible solo para Customers -->
+                <li *ngIf="roles.includes('Customer')">
+                    <a routerLink="/profile">👤 Perfil</a>
+                </li>
+                <li *ngIf="roles.includes('Customer')">
+                    <a routerLink="/dota-items">🎮 Avatars</a>
+                </li>
+
+                <!-- Visible solo para Admins -->
+                <li *ngIf="roles.includes('Admin')">
+                    <a routerLink="/dashboard">📊 Dashboard</a>
+                </li>
+
+                <!-- Siempre visible si está logeado -->
+                <li>
+                    <a (click)="logout()">🚪 Logout</a>
+                </li>
+            </ul>
+        </ng-template>
+    </nav>
+</header>

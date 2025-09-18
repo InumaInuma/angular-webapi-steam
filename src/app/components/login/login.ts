@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Auth } from '../../service/auth';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true, // Si es un componente standalone
   imports: [
     CommonModule, // 👈 para usar *ngIf, ng-template
-    FormsModule, // 👈 opcional, si luego usas ngModel
+    FormsModule,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
@@ -26,10 +27,7 @@ export class Login {
   loginWithCredentials(email: string, password: string) {
     this.authService.loginWithCredentials(email, password).subscribe({
       next: (res) => {
-        if (res.success) {
-          console.log('✅ Login correcto', res.userId);
-          window.location.href = '/dashboard'; // Redirige al dashboard
-        } else {
+        if (!res.success) {
           alert(res.message);
         }
       },
@@ -39,13 +37,11 @@ export class Login {
       },
     });
   }
-
   register(displayName: string, email: string, password: string) {
-    // TODO: llamar a tu API de registro
     this.authService.register(displayName, email, password).subscribe((res) => {
       if (res && res.userId) {
         alert('🎉 Registro exitoso. Ahora puedes iniciar sesión.');
-        this.isRegisterMode = false; // cambia al modo login
+        this.isRegisterMode = false;
       } else {
         alert('❌ No se pudo registrar el usuario.');
       }

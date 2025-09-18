@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 
 @Injectable({
@@ -10,7 +11,7 @@ export class Auth {
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   /**
    * Obtiene la información del usuario logueado desde la API.
@@ -87,11 +88,33 @@ export class Auth {
     });
   }
 
-  loginWithCredentials(email: string, password: string) {
+  /*  loginWithCredentials(email: string, password: string) {
     return this.http.post<any>(`${this.apiBaseUrl}/Account/login-credentials`, {
       email,
       password,
     });
+  } */
+  loginWithCredentials(email: string, password: string) {
+    return this.http
+      .post<any>(`${this.apiBaseUrl}/Account/login-credentials`, {
+        email,
+        password,
+      })
+      .pipe(
+        tap((res) => {
+          if (res.success) {
+            localStorage.setItem('jwt', res.token);
+            localStorage.setItem('roles', JSON.stringify(res.roles));
+
+            // 🔹 Redirigir según rol
+            if (res.roles.includes('Admin')) {
+              this.router.navigate(['/dashboard']);
+            } else {
+              this.router.navigate(['/pagina-principal']);
+            }
+          }
+        })
+      );
   }
 
   register(
@@ -102,15 +125,12 @@ export class Auth {
     const payload = {
       DisplayName: displayName,
       Email: email,
-      Password: password, // en texto plano, el hash lo hace backend
+      Password: password,
     };
-
     return this.http
       .post<any>(`${this.apiBaseUrl}/Account/register`, payload)
       .pipe(
-        tap((res) => {
-          console.log('✅ Usuario registrado:', res);
-        }),
+        tap((res) => console.log('✅ Usuario registrado:', res)),
         catchError((error) => {
           console.error('❌ Error al registrar usuario:', error);
           return of(null);
@@ -129,6 +149,8 @@ export class Auth {
    * // Simplificado para que el componente maneje la navegación
    */
   logout() {
-    window.location.href = `${this.apiBaseUrl}/Account/logout`;
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('roles');
+    this.router.navigate(['/login']); // 👈 ya no redirige con window.location.href
   }
 }

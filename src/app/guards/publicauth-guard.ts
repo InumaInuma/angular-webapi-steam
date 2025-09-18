@@ -4,7 +4,6 @@ import { Auth } from '../service/auth';
 import { map } from 'rxjs';
 
 export const publicauthGuard: CanActivateFn = (route, state) => {
-
   const authService = inject(Auth);
   const router = inject(Router);
 
@@ -18,13 +17,13 @@ export const publicauthGuard: CanActivateFn = (route, state) => {
       }
     })
   ); */
-   // No hagas la llamada a la API. En su lugar, usa el estado del servicio.
+  // No hagas la llamada a la API. En su lugar, usa el estado del servicio.
   return authService.isLoggedIn$.pipe(
-    map(isLoggedIn => {
+    map((isLoggedIn) => {
       if (!isLoggedIn) {
         return true; // Si NO está logeado, permite el acceso
       } else {
-        router.navigate(['/dashboard']); // Si YA está logeado, redirige
+        router.navigate(['/pagina-principal']); // Si YA está logeado, redirige
         return false;
       }
     })

@@ -3,18 +3,19 @@ import { Component, OnInit } from '@angular/core';
 import { Auth } from '../../service/auth';
 import { Router, RouterModule } from '@angular/router';
 import { DotaItems } from '../dota-items/dota-items';
+import { Header } from '../header/header';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true, // 🚨 Agrega standalone
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, Header],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
 export class Dashboard implements OnInit {
   steamId: string | null = null;
 
-  constructor(private authService: Auth, private router: Router) {} // 🚨 Inyecta el Router
+  constructor(public authService: Auth, private router: Router) {} // 🚨 Inyecta el Router
 
   ngOnInit(): void {
     // Al iniciar el componente, obtiene la información del usuario
