@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -16,7 +16,7 @@ export class Header {
   // 👉 Lista de roles que tiene el usuario logeado (ej: ["Customer"], ["Admin"])
   roles: string[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {
     // 👉 Al crear el componente, leemos los roles guardados en localStorage
     // Si no hay roles guardados, dejamos el array vacío
     const storedRoles = localStorage.getItem('roles');
@@ -33,5 +33,6 @@ export class Header {
     this.isLoggedIn = false; // 🔹 Actualiza la bandera en frontend
     this.roles = []; // 🔹 Limpia los roles
     this.router.navigate(['/pagina-principal']); // 👈 Ahora redirige al principal
+    this.cdr.detectChanges();
   }
 }

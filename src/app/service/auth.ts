@@ -58,9 +58,6 @@ export class Auth {
    * Redirige el navegador a tu endpoint de login de la API.
    */
 
-  /*  login() {
-    window.location.href = `${this.apiBaseUrl}/Account/login`;
-  } */
   login() {
     const width = 700;
     const height = 700;
@@ -88,12 +85,16 @@ export class Auth {
     });
   }
 
-  /*  loginWithCredentials(email: string, password: string) {
-    return this.http.post<any>(`${this.apiBaseUrl}/Account/login-credentials`, {
-      email,
-      password,
-    });
-  } */
+  getProfile(): Observable<any> {
+    return this.http.get<any>(`${this.apiBaseUrl}/Account/profile`).pipe(
+      tap((res) => console.log('📌 Perfil cargado:', res)),
+      catchError((error) => {
+        console.error('❌ Error al cargar perfil:', error);
+        return of(null);
+      })
+    );
+  }
+
   loginWithCredentials(email: string, password: string) {
     return this.http
       .post<any>(`${this.apiBaseUrl}/Account/login-credentials`, {

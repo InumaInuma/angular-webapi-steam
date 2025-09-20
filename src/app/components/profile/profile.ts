@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Auth } from '../../service/auth';
 import { CommonModule } from '@angular/common';
 
@@ -11,12 +11,13 @@ import { CommonModule } from '@angular/common';
 })
 export class Profile implements OnInit {
   user: any = null;
-  loading = true;
-  error: string | null = null;
 
-  constructor(private authService: Auth) {}
+  constructor(private authService: Auth, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.authService.getProfile().subscribe((profile) => {
+      this.user = profile;
+      this.cdr.detectChanges();
+    });
   }
 }
