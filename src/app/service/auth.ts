@@ -20,17 +20,22 @@ export class Auth {
    * @returns Observable<any> - Emite la información del usuario o un error.
    */
   getUserInfo(): Observable<any> {
-    return this.http
-      .get<any>(`${this.apiBaseUrl}/Account/user-info`, {
-        withCredentials: true,
+    return this.http.get<any>(`${this.apiBaseUrl}/Account/user-info`).pipe(
+      tap((user) => {
+        if (user?.userId) {
+          localStorage.setItem('userId', user.userId);
+        }
+        if (user?.steamId) {
+          localStorage.setItem('steamId', user.steamId);
+        }
+        this.isLoggedInSubject.next(true);
+      }),
+      catchError((error) => {
+        console.error('Error al obtener la información del usuario:', error);
+        this.isLoggedInSubject.next(false);
+        return of(null);
       })
-      .pipe(
-        catchError((error) => {
-          console.error('Error al obtener la información del usuario:', error);
-          // Retornar un observable con un valor predeterminado en caso de error
-          return of({ steamId: null });
-        })
-      );
+    );
   }
 
   /**
@@ -58,7 +63,7 @@ export class Auth {
    * Redirige el navegador a tu endpoint de login de la API.
    */
 
-  login() {
+  /*  login() {
     const width = 700;
     const height = 700;
     const left = (window.innerWidth - width) / 2;
@@ -83,6 +88,98 @@ export class Auth {
         });
       }
     });
+  } */
+  /*   loginWithSteam(): void {
+    const popup = window.open(
+      `${this.apiBaseUrl}/Account/login`,
+      'SteamLogin',
+      'width=700,height=700,top=100,left=200,resizable,scrollbars=yes,status=1'
+    );
+
+    const timer = setInterval(() => {
+      if (popup?.closed) {
+        clearInterval(timer);
+
+        // 🚀 Después de que el popup cierre, obtenemos el JWT del callback
+        this.http
+          .get<any>(`${this.apiBaseUrl}/Account/login-steam-callback`)
+          .subscribe({
+            next: (res) => {
+              if (res.success) {
+                // Guardar JWT y roles
+                localStorage.setItem('jwt', res.token);
+                localStorage.setItem('roles', JSON.stringify(res.roles));
+                localStorage.setItem('steamId', res.steamId);
+
+                this.isLoggedInSubject.next(true);
+
+                // Redirigir según rol
+                if (res.roles.includes('Admin')) {
+                  this.router.navigate(['/dashboard']);
+                } else {
+                  this.router.navigate(['/pagina-principal']);
+                }
+              }
+            },
+            error: (err) => {
+              console.error('❌ Error al obtener callback de Steam:', err);
+            },
+          });
+      }
+    }, 500);
+  } */
+
+  /*  loginWithSteam(): Observable<any> {
+    const userId = localStorage.getItem('userId');
+
+    return new Observable((observer) => {
+      const popup = window.open(
+        `${this.apiBaseUrl}/Account/login?userId=${userId}`,
+        'SteamLogin',
+        'width=700,height=700,top=100,left=200,resizable,scrollbars=yes,status=1'
+      );
+
+      const timer = setInterval(() => {
+        if (popup?.closed) {
+          clearInterval(timer);
+
+          this.http
+            .get<any>(`${this.apiBaseUrl}/Account/login-steam-callback`)
+            .subscribe({
+              next: (res) => {
+                if (res.success) {
+                  // Guardar JWT y roles
+                  localStorage.setItem('jwt', res.token);
+                  localStorage.setItem('roles', JSON.stringify(res.roles));
+                  localStorage.setItem('steamId', res.steamId);
+
+                  this.isLoggedInSubject.next(true);
+                  // Redirigir según rol
+                  if (res.roles.includes('Admin')) {
+                    this.router.navigate(['/dashboard']);
+                  } else {
+                    this.router.navigate(['/pagina-principal']);
+                  }
+                }
+                observer.next(res);
+                observer.complete();
+              },
+              error: (err) => {
+                console.error('❌ Error al obtener callback de Steam:', err);
+                observer.error(err);
+              },
+            });
+        }
+      }, 500);
+    });
+  } */
+  loginWithSteam(): void {
+    const userId = localStorage.getItem('userId');
+    window.open(
+      `${this.apiBaseUrl}/Account/login?userId=${userId}`,
+      'SteamLogin',
+      'width=700,height=700,top=100,left=200,resizable,scrollbars=yes,status=1'
+    );
   }
 
   getProfile(): Observable<any> {
@@ -106,7 +203,8 @@ export class Auth {
           if (res.success) {
             localStorage.setItem('jwt', res.token);
             localStorage.setItem('roles', JSON.stringify(res.roles));
-
+            localStorage.setItem('userId', res.userId.toString()); // 👈 guarda también el userId
+            this.isLoggedInSubject.next(true);
             // 🔹 Redirigir según rol
             if (res.roles.includes('Admin')) {
               this.router.navigate(['/dashboard']);

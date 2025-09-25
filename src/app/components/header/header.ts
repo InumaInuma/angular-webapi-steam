@@ -28,8 +28,7 @@ export class Header {
   logout() {
     localStorage.removeItem('jwt');
     localStorage.removeItem('roles');
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('roles');
+
     this.isLoggedIn = false; // 🔹 Actualiza la bandera en frontend
     this.roles = []; // 🔹 Limpia los roles
     this.router.navigate(['/pagina-principal']); // 👈 Ahora redirige al principal

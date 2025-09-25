@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Auth } from '../../service/auth';
 import { Router, RouterModule } from '@angular/router';
 import { DotaItems } from '../dota-items/dota-items';
@@ -13,9 +13,15 @@ import { Header } from '../header/header';
   styleUrl: './dashboard.scss',
 })
 export class Dashboard implements OnInit {
+  isLoggedIn = !!localStorage.getItem('jwt');
+  roles: string[] = [];
   steamId: string | null = null;
 
-  constructor(public authService: Auth, private router: Router) {} // 🚨 Inyecta el Router
+  constructor(
+    public authService: Auth,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {} // 🚨 Inyecta el Router
 
   ngOnInit(): void {
     // Al iniciar el componente, obtiene la información del usuario
@@ -49,7 +55,15 @@ export class Dashboard implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']); // 🚨 Redirige al login después del logout
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('roles');
+
+    this.isLoggedIn = false; // 🔹 Actualiza la bandera en frontend
+    this.roles = []; // 🔹 Limpia los roles
+    this.router.navigate(['/pagina-principal']);
+    this.cdr.detectChanges();
+    /* this.authService.logout();
+    this.router.navigate(['/login']);  */
+    // 🚨 Redirige al login después del logout
   }
 }

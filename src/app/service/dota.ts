@@ -22,7 +22,7 @@ export class Dota {
    * @returns Observable<any[]> - Emite una lista de ítems o un array vacío en caso de error.
    */
 
-  getUserDotaItems(): Observable<DotaItemDto[]> {
+  /*   getUserDotaItems(): Observable<DotaItemDto[]> {
     return this.http
       .get<DotaItemDto[]>(`${this.apiUrl}/items-schema`, {
         withCredentials: true,
@@ -36,5 +36,14 @@ export class Dota {
           return of([]); // Devuelve array vacío para que no truene
         })
       );
+  } */
+  getUserDotaItems(): Observable<DotaItemDto[]> {
+    return this.http.get<DotaItemDto[]>(`${this.apiUrl}/items`).pipe(
+      tap((data) => console.log('✅ Ítems de Dota recibidos:', data)),
+      catchError((error) => {
+        console.error('❌ Error al obtener ítems de Dota:', error);
+        return of([]);
+      })
+    );
   }
 }

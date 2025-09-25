@@ -1,7 +1,12 @@
 <!-- Login con Steam -->
-<button class="steam-btn" (click)="loginWithSteam()">
+<!-- <button class="steam-btn" (click)="loginWithSteam()">
     <img src="dotados.png" alt="Steam Logo" />
     Vinculate con steam para mostrar tus ITEMS
+</button> -->
+<!-- Login con Steam -->
+<button class="steam-btn" (click)="loginWithSteam()" *ngIf="items.length === 0">
+    <img src="dotados.png" alt="Steam Logo" />
+    Vinculate con Steam para mostrar tus ITEMS
 </button>
 
 <div *ngIf="loading; else itemsTemplate" class="loading-gamer">
