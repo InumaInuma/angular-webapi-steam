@@ -1,10 +1,5 @@
 <!-- Login con Steam -->
-<!-- <button class="steam-btn" (click)="loginWithSteam()">
-    <img src="dotados.png" alt="Steam Logo" />
-    Vinculate con steam para mostrar tus ITEMS
-</button> -->
-<!-- Login con Steam -->
-<button class="steam-btn" (click)="loginWithSteam()" *ngIf="items.length === 0">
+<button class="steam-btn" (click)="loadItems()" *ngIf="items.length === 0">
     <img src="dotados.png" alt="Steam Logo" />
     Vinculate con Steam para mostrar tus ITEMS
 </button>
@@ -19,7 +14,7 @@
 
     <!-- Aquí va tu grid con paginación -->
     <div class="items-grid">
-        <div *ngFor="let item of pagedItems" class="item-card">
+        <div *ngFor="let item of pagedItems" class="item-card" (click)="openModal(item)" role="button" tabindex="0">
             <div class="card-image">
                 <img [src]="item.imageUrl" [alt]="item.name" />
                 <span class="badge">Avatar</span>
@@ -43,3 +38,28 @@
 <ng-template #noItems>
     <p class="no-items">⚠ No se encontraron ítems o el usuario no está autenticado.</p>
 </ng-template>
+
+<!-- 🔵 MODAL -->
+<div class="modal-overlay" *ngIf="modalOpen" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <button class="modal-close" (click)="closeModal()">✕</button>
+
+        <div class="modal-header">
+            <h2>Agregar Ítem</h2>
+        </div>
+
+        <div class="modal-body" *ngIf="selectedItem">
+            <img class="modal-image" [src]="selectedItem.imageUrl" [alt]="selectedItem.name" />
+            <h3 class="modal-name">{{ selectedItem.name }}</h3>
+
+            <label class="price-label" for="price">Precio</label>
+            <input id="price" type="number" min="0" step="0.01" [(ngModel)]="price" placeholder="0.00"
+                class="price-input" />
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn btn-primary" (click)="confirmAdd()" [disabled]="!price || price <= 0">Agregar</button>
+            <button class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+        </div>
+    </div>
+</div>

@@ -158,3 +158,117 @@
 .steam-btn:hover {
   background: #2a475e;
 }
+
+
+/* ---------- Modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65); // overlay oscuro
+  display: grid;
+  place-items: center;
+  z-index: 999; // encima de todo
+}
+
+.modal {
+  position: relative;
+  width: min(520px, 92vw);
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  padding: 1.2rem 1.2rem 1rem;
+  animation: pop 120ms ease-out;
+}
+
+@keyframes pop {
+  from { transform: translateY(8px) scale(0.98); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: 0;
+  background: transparent;
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.7;
+  &:hover { opacity: 1; }
+}
+
+.modal-header {
+  margin-bottom: 0.8rem;
+  h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+}
+
+.modal-body {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 0.6rem;
+
+  .modal-image {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    background: #f8f8f8;
+    border-radius: 12px;
+    border: 1px solid #eee;
+  }
+
+  .modal-name {
+    margin: 0.2rem 0 0.6rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  .price-label {
+    align-self: start;
+    font-size: 0.9rem;
+    color: #444;
+  }
+
+  .price-input {
+    width: 100%;
+    max-width: 260px;
+    padding: 0.55rem 0.7rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    &:focus { border-color: #6200ea; box-shadow: 0 0 0 3px rgba(98,0,234,0.12); }
+  }
+}
+
+.modal-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+
+  .btn {
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease;
+  }
+
+  .btn-primary {
+    background: #6200ea;
+    color: #fff;
+    &:hover { background: #4a00c7; }
+    &:disabled { background: #b9a7f5; cursor: not-allowed; }
+  }
+
+  .btn-secondary {
+    background: #e6e6e6;
+    &:hover { background: #d7d7d7; }
+  }
+}
+

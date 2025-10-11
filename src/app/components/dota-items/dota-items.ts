@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Dota, DotaItemDto } from '../../service/dota';
 import { Auth } from '../../service/auth';
 import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dota-items',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './dota-items.html',
   styleUrl: './dota-items.scss',
 })
@@ -19,6 +20,12 @@ export class DotaItems implements OnInit {
   currentPage = 1;
   pageSize = 10; // 👈 cantidad de ítems por página
   steamId: string | null = null;
+
+  // 👇 Modal state
+  modalOpen = false;
+  selectedItem: DotaItemDto | null = null;
+  price: number | null = null;
+
   constructor(
     private dotaService: Dota,
     private cdr: ChangeDetectorRef,
@@ -52,28 +59,45 @@ export class DotaItems implements OnInit {
     });
   }
 
-  /*  loginWithSteam() {
-    this.authService.loginWithSteam().subscribe({
-      next: (res) => {
-        if (res.success) {
-          // Guarda el nuevo token
-          localStorage.setItem('jwt', res.token);
-          localStorage.setItem('steamId', res.steamId);
-
-          this.dotaService.getUserDotaItems().subscribe((items) => {
-            this.items = items;
-            this.updatePagedItems();
-          });
-        }
-      },
-      error: (err) => console.error('❌ Error en login con Steam:', err),
-    });
-  } */
+ 
 
   loginWithSteam(): void {
     this.authService.loginWithSteam();
   }
 
+ // 🔵 Modal handlers
+  openModal(item: DotaItemDto) {
+    this.selectedItem = item;
+    this.price = null;
+    this.modalOpen = true;
+    document.body.style.overflow = 'hidden'; // evita scroll de fondo
+  }
+
+   closeModal() {
+    this.modalOpen = false;
+    this.selectedItem = null;
+    document.body.style.overflow = ''; // restaura scroll
+  }
+
+  confirmAdd() {
+    if (!this.selectedItem || !this.price || this.price <= 0) return;
+    // Aquí haz lo que necesites (emitir evento, llamar API, etc.)
+    console.log('Agregar al marketplace:', {
+      assetId: this.selectedItem.assetId,
+      name: this.selectedItem.name,
+      price: this.price,
+      imageUrl: this.selectedItem.imageUrl,
+    });
+    this.closeModal();
+  }
+
+  // Cerrar con tecla ESC
+  @HostListener('document:keydown.escape')
+  onEsc() {
+    if (this.modalOpen) this.closeModal();
+  }
+
+  
   // 👇 Getter que evita usar Math directamente en el template
   get totalPages(): number {
     return Math.ceil(this.items.length / this.pageSize);
