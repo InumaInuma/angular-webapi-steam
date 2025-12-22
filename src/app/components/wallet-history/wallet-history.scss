@@ -1,0 +1,74 @@
+h2 {
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #1f2937; // gray-800
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+thead {
+  background: #f9fafb;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  font-weight: 600;
+  color: #374151; // gray-700
+}
+
+tbody tr {
+  border-top: 1px solid #e5e7eb;
+}
+
+tbody tr:hover {
+  background: #f3f4f6;
+}
+
+td {
+  color: #4b5563; // gray-600
+}
+
+/* Estados */
+span {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Loading / empty */
+.loading,
+.empty {
+  padding: 20px;
+  text-align: center;
+  color: #6b7280;
+}

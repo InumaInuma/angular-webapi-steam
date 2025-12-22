@@ -1,0 +1,98 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 70px); // resta header
+  overflow: hidden;
+  background: #000;
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; // 🔥 tipo carrusel
+  filter: brightness(0.55);
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 24px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  color: #fff;
+}
+
+.hero-overlay h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.hero-overlay p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin-bottom: 24px;
+  color: #e5e7eb;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+}
+
+/* Botones */
+.btn {
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.btn.primary {
+  background: #22c55e;
+  color: #052e16;
+}
+
+.btn.primary:hover {
+  background: #16a34a;
+}
+
+.btn.outline {
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+.btn.outline:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    height: 80vh;
+  }
+
+  .hero-overlay {
+    text-align: center;
+    align-items: center;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}

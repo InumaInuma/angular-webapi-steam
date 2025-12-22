@@ -1,0 +1,30 @@
+<h2>📜 Historial de recargas</h2>
+
+<div *ngIf="loading">Cargando...</div>
+
+<table *ngIf="!loading && requests.length">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Monto</th>
+            <th>Método</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let r of requests">
+            <td>{{ r.createdAtUtc | date:'short' }}</td>
+            <td>S/ {{ r.amount }}</td>
+            <td>{{ r.paymentMethod }}</td>
+            <td>
+                <span [ngClass]="r.status.toLowerCase()">
+                    {{ r.status }}
+                </span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p *ngIf="!loading && !requests.length">
+    No tienes solicitudes aún.
+</p>

@@ -16,12 +16,20 @@
         <ng-template #loggedMenu>
             <ul class="menu">
                 <!-- Visible solo para Customers -->
+
+                <li *ngIf="roles.includes('Customer')">
+                    <a routerLink="/wallet-history">📜 Historial recargas</a>
+                </li>
+
                 <li *ngIf="roles.includes('Customer')">
                     <a routerLink="/profile">👤 Perfil</a>
                 </li>
+
                 <li *ngIf="roles.includes('Customer')">
                     <a routerLink="/dota-items">🎮 Avatars</a>
                 </li>
+
+
 
                 <!-- Visible solo para Admins -->
                 <li *ngIf="roles.includes('Admin')">
@@ -32,6 +40,19 @@
                 <li>
                     <a (click)="logout()">🚪 Logout</a>
                 </li>
+                <!-- <li *ngIf="roles.includes('Customer')" class="wallet-balance">
+                    💰 <strong>S/ {{ balance | number:'1.2-2' }}</strong>
+                </li> -->
+                <li *ngIf="roles.includes('Customer')" class="wallet-info">
+                    <span class="balance">
+                        💰 {{ balance | number:'1.2-2' }}
+                    </span>
+
+                    <button class="btn-topup" routerLink="/topup">
+                        ➕ Recargar
+                    </button>
+                </li>
+
             </ul>
         </ng-template>
     </nav>

@@ -1,0 +1,33 @@
+<h2>💳 Recargar saldo</h2>
+
+<form (ngSubmit)="submit()">
+
+    <label for="amount">Monto</label>
+    <input type="number" [(ngModel)]="model.amount" name="amount" id="amount" required />
+
+    <label for="paymentMethod">Método de pago</label>
+    <input type="text" [(ngModel)]="model.paymentMethod" name="paymentMethod" id="paymentMethod"
+        placeholder="Yape / Plin / Stripe" required />
+
+    <label for="evidenceUrl">URL de comprobante (opcional)</label>
+    <input type="url" [(ngModel)]="model.evidenceUrl" name="evidenceUrl" id="evidenceUrl" placeholder="https://..." />
+
+    <label for="fileInput">O subir imagen del comprobante</label>
+    <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" />
+
+    <label for="notes">Notas</label>
+    <textarea [(ngModel)]="model.notes" name="notes" id="notes"></textarea>
+
+    <button type="submit" [disabled]="loading">
+        Enviar solicitud
+    </button>
+
+    <p *ngIf="success" class="success">
+        ✅ Solicitud enviada, pendiente de aprobación
+    </p>
+
+    <p *ngIf="error" class="error">
+        ❌ {{ error }}
+    </p>
+
+</form>

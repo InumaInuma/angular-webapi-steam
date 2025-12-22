@@ -1,0 +1,53 @@
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.amount {
+  margin-left: 10px;
+  font-weight: bold;
+  color: #2ecc71;
+}
+
+.actions button {
+  margin-left: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.approve {
+  background: #2ecc71;
+  color: #fff;
+}
+
+.reject {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.toggle {
+  background: #eee;
+}
+
+.details {
+  margin-top: 12px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+.empty {
+  text-align: center;
+  color: #777;
+  margin-top: 20px;
+}

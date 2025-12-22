@@ -9,6 +9,9 @@ import { DotaItems } from './components/dota-items/dota-items';
 import { roleGuard } from './guards/role-guard-guard';
 import { PaginaPrincipal } from './components/pagina-principal/pagina-principal';
 import { Profile } from './components/profile/profile';
+import { Topup } from './components/topup/topup';
+import { AdminTopup } from './components/admin-topup/admin-topup';
+import { WalletHistory } from './components/wallet-history/wallet-history';
 
 export const routes: Routes = [
   { path: 'login', component: Login, canActivate: [publicauthGuard] },
@@ -29,6 +32,18 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { role: 'Customer' },
   },
+  {
+    path: 'topup',
+    component: Topup,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'Customer' },
+  },
+  {
+    path: 'wallet-history',
+    component: WalletHistory,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'Customer' },
+  },
 
   // Dashboard  → Admins
   {
@@ -36,6 +51,12 @@ export const routes: Routes = [
     component: Dashboard,
     canActivate: [authGuard, roleGuard],
     data: { role: 'Admin' },
+    children: [
+      {
+        path: 'recargas',
+        component: AdminTopup,
+      },
+    ],
   },
 
   { path: 'error', component: Error },

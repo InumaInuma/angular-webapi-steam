@@ -7,16 +7,6 @@ export const publicauthGuard: CanActivateFn = (route, state) => {
   const authService = inject(Auth);
   const router = inject(Router);
 
-  /*  return authService.checkLoginStatus().pipe(
-    map(isLoggedIn => {
-      if (!isLoggedIn) {
-        return true;
-      } else {
-        router.navigate(['/dashboard']); // Redirige al dashboard si ya está logeado
-        return false;
-      }
-    })
-  ); */
   // No hagas la llamada a la API. En su lugar, usa el estado del servicio.
   return authService.isLoggedIn$.pipe(
     map((isLoggedIn) => {
