@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { Dota, DotaItemDto } from '../../service/dota';
 import { Auth } from '../../service/auth';
 import { ActivatedRoute } from '@angular/router';
@@ -8,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-dota-items',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dota-items.html',
   styleUrl: './dota-items.scss',
 })
@@ -34,20 +39,11 @@ export class DotaItems implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      const token = params['token'];
-      const steamId = params['steamId'];
-
-      if (token) {
-        localStorage.setItem('jwt', token);
-        if (steamId) {
-          localStorage.setItem('steamId', steamId);
-        }
-
-        // 🚀 Apenas recibo el token, cargo los ítems
-        this.loadItems();
-      }
-    });
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      // 🚀 Apenas recibo el token, cargo los ítems
+      this.loadItems();
+    }
   }
   // ✅ Ahora solo los cargo después de vincular Steam
   loadItems(): void {
@@ -58,14 +54,64 @@ export class DotaItems implements OnInit {
       this.cdr.detectChanges();
     });
   }
-
- 
-
   loginWithSteam(): void {
     this.authService.loginWithSteam();
   }
 
- // 🔵 Modal handlers
+  //   confirmSell() {
+  //   if (!confirm('¿Estás seguro que deseas vender este item?')) {
+  //     return;
+  //   }
+  //   this.dotaService.sellItem({
+  //     assetId: this.selectedItem.assetId,
+  //     title: this.selectedItem.name,
+  //     price: this.price
+  //   }).subscribe({
+  //     next: () => {
+  //       alert('✅ Item publicado correctamente');
+  //       this.closeModal();
+  //       this.removeItemFromList(this.selectedItem.assetId);
+  //     },
+  //     error: (err) => {
+  //       alert(err.error?.message ?? 'Error al publicar');
+  //     }
+  //   });
+  // }
+
+  // ✅ CONFIRMAR VENTA (BACKEND REAL)
+  confirmSell() {
+    if (!this.selectedItem || !this.price || this.price <= 0) return;
+
+    const ok = confirm(
+      `¿Estás seguro que deseas vender "${this.selectedItem.name}" por S/ ${this.price}?`
+    );
+    if (!ok) return;
+
+    this.dotaService
+      .sellItem({
+        assetId: this.selectedItem.assetId,
+        title: this.selectedItem.name,
+        price: this.price,
+      })
+      .subscribe({
+        next: () => {
+          alert('✅ Ítem publicado correctamente');
+          this.removeItemFromList(this.selectedItem!.assetId);
+          this.closeModal();
+        },
+        error: (err) => {
+          alert(err.error?.message ?? '❌ Error al publicar el ítem');
+        },
+      });
+  }
+
+  // 🧹 Quitar ítem del listado local
+  removeItemFromList(assetId: string) {
+    this.items = this.items.filter((i) => i.assetId !== assetId);
+    this.updatePagedItems();
+  }
+
+  // 🔵 Modal handlers
   openModal(item: DotaItemDto) {
     this.selectedItem = item;
     this.price = null;
@@ -73,23 +119,23 @@ export class DotaItems implements OnInit {
     document.body.style.overflow = 'hidden'; // evita scroll de fondo
   }
 
-   closeModal() {
+  closeModal() {
     this.modalOpen = false;
     this.selectedItem = null;
     document.body.style.overflow = ''; // restaura scroll
   }
-
-  confirmAdd() {
-    if (!this.selectedItem || !this.price || this.price <= 0) return;
-    // Aquí haz lo que necesites (emitir evento, llamar API, etc.)
-    console.log('Agregar al marketplace:', {
-      assetId: this.selectedItem.assetId,
-      name: this.selectedItem.name,
-      price: this.price,
-      imageUrl: this.selectedItem.imageUrl,
-    });
-    this.closeModal();
-  }
+  // AQUI ES EL MODAL PARA ENVIARLE LOS DATOS PARA VENDER MIS ITEMS
+  // confirmAdd() {
+  //   if (!this.selectedItem || !this.price || this.price <= 0) return;
+  //   // Aquí haz lo que necesites (emitir evento, llamar API, etc.)
+  //   console.log('Agregar al marketplace:', {
+  //     assetId: this.selectedItem.assetId,
+  //     name: this.selectedItem.name,
+  //     price: this.price,
+  //     imageUrl: this.selectedItem.imageUrl,
+  //   });
+  //   this.closeModal();
+  // }
 
   // Cerrar con tecla ESC
   @HostListener('document:keydown.escape')
@@ -97,7 +143,6 @@ export class DotaItems implements OnInit {
     if (this.modalOpen) this.closeModal();
   }
 
-  
   // 👇 Getter que evita usar Math directamente en el template
   get totalPages(): number {
     return Math.ceil(this.items.length / this.pageSize);

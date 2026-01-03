@@ -58,7 +58,10 @@
         </div>
 
         <div class="modal-actions">
-            <button class="btn btn-primary" (click)="confirmAdd()" [disabled]="!price || price <= 0">Agregar</button>
+            <!-- <button class="btn btn-primary" (click)="confirmAdd()" [disabled]="!price || price <= 0">Agregar</button> -->
+            <button class="btn btn-primary" (click)="confirmSell()" [disabled]="!price || price <= 0">
+                Agregar
+            </button>
             <button class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
         </div>
     </div>

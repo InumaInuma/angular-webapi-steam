@@ -38,15 +38,16 @@ export class Dota {
       );
   } */
   getUserDotaItems(): Observable<DotaItemDto[]> {
-    return this.http.get<DotaItemDto[]>(`${this.apiUrl}/items-schema`)
-    .pipe(
-      tap((data) => 
-      console.log('✅ Ítems de Dota recibidos:', data)
-    ),
-    catchError((error) => {
-      console.error('❌ Error al obtener ítems de Dota:', error);
-      return of([]);
+    return this.http.get<DotaItemDto[]>(`${this.apiUrl}/items-schema`).pipe(
+      tap((data) => console.log('✅ Ítems de Dota recibidos:', data)),
+      catchError((error) => {
+        console.error('❌ Error al obtener ítems de Dota:', error);
+        return of([]);
       })
     );
+  }
+
+  sellItem(payload: { assetId: string; title: string; price: number }) {
+    return this.http.post<any>(`${this.apiUrl}/sell`, payload);
   }
 }
