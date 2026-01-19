@@ -55,7 +55,6 @@ export class Auth {
     );
   }
 
-
   loginWithSteam(): void {
     const userId = localStorage.getItem('userId');
     window.open(
@@ -72,6 +71,15 @@ export class Auth {
         console.error('❌ Error al cargar perfil:', error);
         return of(null);
       })
+    );
+  }
+
+  updateTradeUrl(url: string): Observable<any> {
+    // Enviamos la URL en un objeto para que el body sea fácil de leer en .NET
+    return this.http.put(
+      `${this.apiBaseUrl}/Account/trade-offer-url`,
+      { tradeOfferUrl: url },
+      { withCredentials: true }
     );
   }
 

@@ -21,3 +21,30 @@
         </div>
     </div>
 </section>
+<section class="marketplace">
+    <h2 class="marketplace-title">🛒 Ítems en venta</h2>
+
+    <div class="marketplace-grid">
+        <div class="market-card" *ngFor="let item of items">
+            <div class="market-image">
+                <img [src]="item.iconUrl" [alt]="item.itemName" />
+            </div>
+
+            <div class="market-body">
+                <h3 class="item-name">{{ item.itemName }}</h3>
+
+                <p class="price">
+                    {{ item.currencyCode }} {{ item.price | number:'1.2-2' }}
+                </p>
+
+                <p class="seller">
+                    👤 {{ item.seller }}
+                </p>
+
+                <button class="btn-buy">
+                    Comprar
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

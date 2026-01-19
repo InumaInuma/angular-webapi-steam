@@ -1,7 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Header } from '../header/header';
 import { RouterModule } from '@angular/router';
+import { Dota, MarketplaceItem } from '../../service/dota';
 
 @Component({
   selector: 'app-pagina-principal',
@@ -11,6 +19,15 @@ import { RouterModule } from '@angular/router';
   styleUrl: './pagina-principal.scss',
 })
 export class PaginaPrincipal implements AfterViewInit {
+  items: MarketplaceItem[] = [];
+  constructor(private dotaService: Dota, private cdr: ChangeDetectorRef) {}
+  ngOnInit() {
+    this.dotaService.getMarketplaceItems().subscribe((res) => {
+      this.items = res ?? [];
+      this.cdr.detectChanges();
+    });
+  }
+
   @ViewChild('videoRef') video!: ElementRef<HTMLVideoElement>;
 
   ngAfterViewInit() {

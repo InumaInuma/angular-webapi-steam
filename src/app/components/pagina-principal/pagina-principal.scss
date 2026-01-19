@@ -96,3 +96,97 @@
     text-align: center;
   }
 }
+
+/* Marketplace Section */
+.marketplace {
+  padding: 4rem 2rem;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+.marketplace-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2.5rem;
+  font-weight: 700;
+}
+
+/* Grid */
+.marketplace-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.8rem;
+  max-width: 1300px;
+  margin: auto;
+}
+
+/* Card */
+.market-card {
+  background: #111827;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.market-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Image */
+.market-image {
+  height: 180px;
+  background: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.market-image img {
+  max-height: 90%;
+  max-width: 90%;
+  object-fit: contain;
+}
+
+/* Body */
+.market-body {
+  padding: 1rem;
+  text-align: center;
+}
+
+.item-name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #22c55e;
+  margin-bottom: 0.3rem;
+}
+
+.seller {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-bottom: 1rem;
+}
+
+/* Buy button */
+.btn-buy {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-buy:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+}

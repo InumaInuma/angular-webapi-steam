@@ -5,6 +5,19 @@
         <h2 class="name">{{ user.displayName }}</h2>
         <p class="email">{{ user.email }}</p>
 
+
+        <div class="trade-url-container">
+            <label for="tradeUrl">URL de Intercambio (Trade Offer URL)</label>
+            <input type="text" id="tradeUrl" [(ngModel)]="newTradeUrl"
+                placeholder="https://steamcommunity.com/tradeoffer/new/..." class="trade-input" />
+            <button (click)="saveTradeUrl()" [disabled]="isSaving" class="btn-save">
+                {{ isSaving ? 'Guardando...' : 'Insertar URL' }}
+            </button>
+            <p class="trade-display" *ngIf="user.tradeOfferUrl">
+                <strong>Actual:</strong> {{ user.tradeOfferUrl }}
+            </p>
+        </div>
+
         <div class="status" [class.banned]="user.isBanned">
             <span *ngIf="!user.isBanned">✅ Activo</span>
             <span *ngIf="user.isBanned">⛔ Suspendido</span>

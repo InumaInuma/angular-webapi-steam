@@ -8,12 +8,24 @@ export interface DotaItemDto {
   imageUrl: string;
 }
 
+export interface MarketplaceItem {
+  listingId: number;
+  title: string;
+  price: number;
+  currencyCode: string;
+  name: string;
+  iconUrl: string;
+  itemName: string;
+  sellerUserId: number;
+  seller: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class Dota {
   private apiUrl = 'http://localhost:5005/Dota'; // URL de tu DotaController
-
+  private apiBaseUrl = 'http://localhost:5005/Account';
   constructor(private http: HttpClient) {}
 
   /**
@@ -47,7 +59,16 @@ export class Dota {
     );
   }
 
-  sellItem(payload: { assetId: string; title: string; price: number }) {
+  sellItem(payload: {
+    assetId: string;
+    title: string;
+    iconUrl: string;
+    price: number;
+  }) {
     return this.http.post<any>(`${this.apiUrl}/sell`, payload);
+  }
+
+  getMarketplaceItems() {
+    return this.http.get<MarketplaceItem[]>(`${this.apiBaseUrl}/marketplace`);
   }
 }

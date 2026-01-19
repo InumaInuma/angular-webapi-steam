@@ -91,6 +91,7 @@ export class DotaItems implements OnInit {
       .sellItem({
         assetId: this.selectedItem.assetId,
         title: this.selectedItem.name,
+        iconUrl: this.selectedItem.imageUrl,
         price: this.price,
       })
       .subscribe({
@@ -109,6 +110,7 @@ export class DotaItems implements OnInit {
   removeItemFromList(assetId: string) {
     this.items = this.items.filter((i) => i.assetId !== assetId);
     this.updatePagedItems();
+    this.cdr.detectChanges();
   }
 
   // 🔵 Modal handlers
@@ -123,7 +125,9 @@ export class DotaItems implements OnInit {
     this.modalOpen = false;
     this.selectedItem = null;
     document.body.style.overflow = ''; // restaura scroll
+    this.cdr.detectChanges();
   }
+
   // AQUI ES EL MODAL PARA ENVIARLE LOS DATOS PARA VENDER MIS ITEMS
   // confirmAdd() {
   //   if (!this.selectedItem || !this.price || this.price <= 0) return;
@@ -158,6 +162,7 @@ export class DotaItems implements OnInit {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.updatePagedItems();
+      this.cdr.detectChanges();
     }
   }
 
@@ -165,6 +170,7 @@ export class DotaItems implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.updatePagedItems();
+      this.cdr.detectChanges();
     }
   }
 }
