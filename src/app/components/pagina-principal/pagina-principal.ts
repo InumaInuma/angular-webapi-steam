@@ -28,6 +28,24 @@ export class PaginaPrincipal implements AfterViewInit {
     });
   }
 
+  buy(item: MarketplaceItem) {
+    if (!confirm(`¿Estás seguro de comprar ${item.itemName} por ${item.currencyCode} ${item.price}?`)) {
+      return;
+    }
+
+    this.dotaService.buyItem(item.listingId).subscribe({
+      next: (res) => {
+        alert('✅ ¡Compra exitosa! Revisa tus pedidos pendientes.');
+        // Recargar items para quitar el comprado
+        this.ngOnInit();
+      },
+      error: (err) => {
+        console.error(err);
+        alert('❌ Error al comprar: ' + (err.error?.message || err.message));
+      }
+    });
+  }
+
   @ViewChild('videoRef') video!: ElementRef<HTMLVideoElement>;
 
   ngAfterViewInit() {

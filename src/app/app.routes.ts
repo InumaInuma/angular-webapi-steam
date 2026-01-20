@@ -12,8 +12,10 @@ import { Profile } from './components/profile/profile';
 import { Topup } from './components/topup/topup';
 import { AdminTopup } from './components/admin-topup/admin-topup';
 import { WalletHistory } from './components/wallet-history/wallet-history';
+import { PendingSales } from './components/pending-sales/pending-sales';
 
 export const routes: Routes = [
+
   { path: 'login', component: Login, canActivate: [publicauthGuard] },
 
   // Página Principal → pública
@@ -44,8 +46,15 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { role: 'Customer' },
   },
+  {
+    path: 'pending-sales',
+    component: PendingSales,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'Customer' },
+  },
 
   // Dashboard  → Admins
+
   {
     path: 'dashboard',
     component: Dashboard,

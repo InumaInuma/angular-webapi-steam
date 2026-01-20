@@ -20,7 +20,20 @@ export interface MarketplaceItem {
   seller: string;
 }
 
+export interface PendingSaleDto {
+  orderId: number;
+  listingId: number;
+  price: number;
+  currencyCode: string;
+  createdAtUtc: string;
+  itemName: string;
+  iconUrl: string;
+  buyerName: string;
+  buyerTradeUrl: string;
+}
+
 @Injectable({
+
   providedIn: 'root',
 })
 export class Dota {
@@ -71,4 +84,18 @@ export class Dota {
   getMarketplaceItems() {
     return this.http.get<MarketplaceItem[]>(`${this.apiBaseUrl}/marketplace`);
   }
+
+  buyItem(listingId: number) {
+    return this.http.post<any>(`${this.apiBaseUrl}/buy`, { listingId }, {
+      withCredentials: true
+    });
+  }
+
+  getPendingSales() {
+    return this.http.get<PendingSaleDto[]>(`${this.apiBaseUrl}/sales/pending`, {
+      withCredentials: true
+    });
+  }
 }
+
+

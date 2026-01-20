@@ -1,0 +1,35 @@
+<div class="pending-sales-container">
+    <h2>📦 Ventas Pendientes de Entrega</h2>
+    <p class="subtitle">Debes enviar estos ítems a los compradores confirmados.</p>
+
+    <div *ngIf="loading" class="loading">Cargando...</div>
+
+    <div *ngIf="!loading && sales.length === 0" class="empty-state">
+        <p>No tienes ventas pendientes.</p>
+    </div>
+
+    <div class="sales-grid" *ngIf="!loading && sales.length > 0">
+        <div class="sale-card" *ngFor="let sale of sales">
+            <div class="item-info">
+                <img [src]="sale.iconUrl" alt="Item Icon" class="item-icon" />
+                <div class="details">
+                    <h3>{{ sale.itemName }}</h3>
+                    <p class="price">{{ sale.currencyCode }} {{ sale.price | number:'1.2-2' }}</p>
+                    <p class="date">📅 {{ sale.createdAtUtc | date:'short' }}</p>
+                </div>
+            </div>
+
+            <div class="buyer-info">
+                <h4>Comprador</h4>
+                <p>👤 {{ sale.buyerName }}</p>
+            </div>
+
+            <div class="actions">
+                <button class="btn-trade" (click)="openTradeUrl(sale.buyerTradeUrl)">
+                    ↗ Enviar Oferta de Intercambio
+                </button>
+                <p class="note" *ngIf="!sale.buyerTradeUrl">⚠️ Sin URL de Trade</p>
+            </div>
+        </div>
+    </div>
+</div>
