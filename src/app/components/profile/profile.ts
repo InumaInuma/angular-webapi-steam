@@ -13,7 +13,10 @@ import { FormsModule } from '@angular/forms';
 export class Profile implements OnInit {
   user: any = null;
   newTradeUrl: string = ''; // Variable para el input
+  newApiKey: string = ''; // Input para API Key
   isSaving: boolean = false;
+  isSavingKey: boolean = false;
+
 
   constructor(private authService: Auth, private cdr: ChangeDetectorRef) {}
 
@@ -45,4 +48,28 @@ export class Profile implements OnInit {
       });
     }
   }
+
+  saveApiKey() {
+    if (!this.newApiKey) return;
+
+    if (confirm('¿Seguro quieres guardar esta API Key? Se usará para automatizar tus intercambios.')) {
+      this.isSavingKey = true;
+      this.authService.updateApiKey(this.newApiKey).subscribe({
+        next: (res) => {
+          this.isSavingKey = false;
+          this.newApiKey = ''; 
+          alert('✅ API Key guardada correctamente');
+          this.cdr.detectChanges(); // Forzar actualización de vista
+        },
+        error: (err) => {
+          console.error(err);
+          this.isSavingKey = false;
+          alert('❌ Error al guardar API Key');
+          this.cdr.detectChanges();
+        }
+      });
+    }
+  }
 }
+
+

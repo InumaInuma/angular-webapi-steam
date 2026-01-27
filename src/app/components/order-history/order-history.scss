@@ -1,0 +1,89 @@
+.history-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #e0e0e0;
+
+    h2 {
+        text-align: center;
+        color: #66c0f4;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #8b9bb4;
+        margin-bottom: 2rem;
+    }
+
+    .table-responsive {
+        background: #1b2838;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        
+        th {
+            text-align: left;
+            padding: 1rem;
+            color: #66c0f4;
+            border-bottom: 1px solid #2a475e;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #2a3f5a;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background: rgba(102, 192, 244, 0.05);
+        }
+    }
+
+    .item-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .item-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+        }
+    }
+
+    .price {
+        font-weight: bold;
+        color: #a4d007;
+    }
+
+    .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: bold;
+
+        &-buy {
+            background: #4caf50;
+            color: white;
+        }
+
+        &-sell {
+            background: #ff9800;
+            color: black;
+        }
+    }
+
+    .status-badge {
+        font-weight: bold;
+        
+        &.status-completed { color: #66c0f4; }
+        &.status-canceled { color: #ff5252; }
+        &.status-refunded { color: #bcaaa4; }
+    }
+}

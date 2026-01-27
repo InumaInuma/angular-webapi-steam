@@ -29,6 +29,12 @@
                     <a routerLink="/pending-sales">📦 Ventas Pendientes</a>
                 </li>
 
+                <li *ngIf="roles.includes('Customer')">
+                    <a routerLink="/order-history">📜 Historial Compras/Ventas</a>
+                </li>
+
+
+
 
                 <li *ngIf="roles.includes('Customer')">
                     <a routerLink="/dota-items">🎮 Avatars</a>

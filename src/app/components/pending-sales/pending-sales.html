@@ -25,10 +25,43 @@
             </div>
 
             <div class="actions">
-                <button class="btn-trade" (click)="openTradeUrl(sale.buyerTradeUrl)">
-                    ↗ Enviar Oferta de Intercambio
+                <button class="btn-trade" (click)="openModal(sale)">
+                    🎁 Enviar Ítem
                 </button>
-                <p class="note" *ngIf="!sale.buyerTradeUrl">⚠️ Sin URL de Trade</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal Centrado -->
+    <div class="modal-overlay" *ngIf="selectedSale">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmar Envío</h3>
+                <button class="close-btn" (click)="closeModal()" [disabled]="isSending">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="item-preview">
+                    <img [src]="selectedSale.iconUrl" alt="item">
+                    <div class="info">
+                        <span class="name">{{ selectedSale.itemName }}</span>
+                        <span class="price">Precio Venta: {{ selectedSale.currencyCode }} {{ selectedSale.price
+                            }}</span>
+                    </div>
+                </div>
+
+                <div class="buyer-details">
+                    <p>Se enviará a: <strong>{{ selectedSale.buyerName }}</strong></p>
+                    <p class="small">Asegúrate de tener el ítem en tu inventario de Steam.</p>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+                <button class="btn-confirm" (click)="confirmSend()">
+                    ↗ Abrir Steam y Enviar
+                </button>
             </div>
         </div>
     </div>

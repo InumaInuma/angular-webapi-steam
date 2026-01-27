@@ -68,25 +68,129 @@
         align-items: flex-end;
   
         .btn-trade {
-          background: linear-gradient(90deg, #47bfff 0%, #1a9fff 100%);
           color: white;
+          background: #66c0f4;
           border: none;
-          padding: 0.8rem 1.2rem;
+          padding: 0.8rem 1.5rem;
           border-radius: 4px;
           cursor: pointer;
           font-weight: bold;
           transition: filter 0.2s;
+          width: 100%;
+          text-align: center;
   
-          &:hover {
-            filter: brightness(1.1);
-          }
-        }
-  
-        .note {
-          color: #ff4949;
-          font-size: 0.8rem;
-          margin-top: 0.5rem;
+          &:hover { filter: brightness(1.1); }
+          &:disabled { opacity: 0.7; cursor: wait; }
         }
       }
     }
-  }
+}
+
+// Modal Styles
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: #1b2838;
+    border: 1px solid #2a475e;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: slideUp 0.3s ease-out;
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #2a475e;
+        padding-bottom: 1rem;
+
+        h3 { margin: 0; color: #66c0f4; }
+        .close-btn {
+            background: none;
+            border: none;
+            color: #8f98a0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            &:hover { color: #fff; }
+        }
+    }
+
+    .modal-body {
+        .item-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #101822;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+
+            img {
+                width: 60px;
+                height: 60px;
+                border-radius: 4px;
+            }
+
+            .info {
+                display: flex;
+                flex-direction: column;
+                .name { color: #fff; font-weight: bold; }
+                .price { color: #a4d007; font-size: 0.9rem; }
+            }
+        }
+
+        .buyer-details {
+            color: #c4cbd3;
+            margin-bottom: 1.5rem;
+            .small { font-size: 0.85rem; color: #8f98a0; margin-top: 0.5rem; }
+        }
+    }
+
+    .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+
+        button {
+            padding: 0.7rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+
+            &.btn-cancel {
+                background: #3d4450;
+                color: #fff;
+                &:hover { background: #4b5260; }
+            }
+
+            &.btn-confirm {
+                background: linear-gradient(90deg, #66c0f4 0%, #1b2838 100%);
+                border: 1px solid #66c0f4;
+                color: #fff;
+                &:hover { filter: brightness(1.2); }
+                &:disabled { opacity: 0.7; cursor: wait; }
+            }
+        }
+    }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

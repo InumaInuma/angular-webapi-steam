@@ -30,6 +30,9 @@ export interface PendingSaleDto {
   iconUrl: string;
   buyerName: string;
   buyerTradeUrl: string;
+  itemAssetId?: string;
+  appId?: number;
+  contextId?: number;
 }
 
 @Injectable({
@@ -96,6 +99,19 @@ export class Dota {
       withCredentials: true
     });
   }
+
+  sendTradeOffer(orderId: number) {
+    return this.http.post<any>(`${this.apiBaseUrl}/trade/send`, { orderId }, {
+      withCredentials: true
+    });
+  }
+
+  getOrderHistory(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiBaseUrl}/history`, {
+      withCredentials: true
+    });
+  }
 }
+
 
 

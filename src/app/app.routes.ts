@@ -13,6 +13,7 @@ import { Topup } from './components/topup/topup';
 import { AdminTopup } from './components/admin-topup/admin-topup';
 import { WalletHistory } from './components/wallet-history/wallet-history';
 import { PendingSales } from './components/pending-sales/pending-sales';
+import { OrderHistory } from './components/order-history/order-history';
 
 export const routes: Routes = [
 
@@ -49,6 +50,14 @@ export const routes: Routes = [
   {
     path: 'pending-sales',
     component: PendingSales,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'Customer' },
+  },
+
+
+  {
+    path: 'order-history',
+    component: OrderHistory,
     canActivate: [authGuard, roleGuard],
     data: { role: 'Customer' },
   },

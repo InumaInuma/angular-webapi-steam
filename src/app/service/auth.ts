@@ -83,6 +83,15 @@ export class Auth {
     );
   }
 
+  updateApiKey(apiKey: string): Observable<any> {
+    return this.http.put(
+      `${this.apiBaseUrl}/Account/steam-api-key`,
+      { apiKey: apiKey },
+      { withCredentials: true }
+    );
+  }
+
+
   loginWithCredentials(email: string, password: string) {
     return this.http
       .post<any>(`${this.apiBaseUrl}/Account/login-credentials`, {

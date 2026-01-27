@@ -1,0 +1,51 @@
+<div class="history-container">
+    <h2>📜 Historial de Transacciones</h2>
+    <p class="subtitle">Tus compras y ventas completadas.</p>
+
+    <div *ngIf="loading" class="loading">Cargando historial...</div>
+
+    <div *ngIf="!loading && history.length === 0" class="empty-state">
+        <p>No tienes transacciones registradas.</p>
+    </div>
+
+    <div class="table-responsive" *ngIf="!loading && history.length > 0">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Ítem</th>
+                    <th>Estado</th>
+                    <th>Contraparte</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of history" [class.buy-row]="item.transactionType === 'Buy'">
+                    <td>{{ item.createdAtUtc | date:'medium' }}</td>
+                    <td>
+                        <span class="badge" [class.badge-buy]="item.transactionType === 'Buy'"
+                            [class.badge-sell]="item.transactionType === 'Sell'">
+                            {{ item.transactionType === 'Buy' ? 'COMPRA' : 'VENTA' }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="item-cell">
+                            <img [src]="item.iconUrl" alt="icon" class="item-icon">
+                            {{ item.itemName }}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge" [ngClass]="getStatusClass(item.orderStatus)">
+                            {{ item.orderStatus }}
+                        </span>
+                    </td>
+                    <td>{{ item.otherPartyName }}</td>
+                    <td class="price">
+                        {{ item.currencyCode }} {{ item.price | number:'1.2-2' }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -18,6 +18,17 @@
             </p>
         </div>
 
+        <div class="trade-url-container api-key-section">
+            <label for="apiKey">Steam Web API Key (Para automatización)</label>
+            <p class="hint">Obtenla en <a href="https://steamcommunity.com/dev/apikey" target="_blank">steamcommunity.com/dev/apikey</a></p>
+            <input type="password" id="apiKey" [(ngModel)]="newApiKey"
+                placeholder="Pegar tu API Key aquí..." class="trade-input" />
+            <button (click)="saveApiKey()" [disabled]="isSavingKey" class="btn-save btn-key">
+                {{ isSavingKey ? 'Guardando...' : 'Guardar API Key' }}
+            </button>
+        </div>
+
+
         <div class="status" [class.banned]="user.isBanned">
             <span *ngIf="!user.isBanned">✅ Activo</span>
             <span *ngIf="user.isBanned">⛔ Suspendido</span>
