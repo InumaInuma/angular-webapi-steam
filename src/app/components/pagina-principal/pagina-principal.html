@@ -1,6 +1,3 @@
-<app-header></app-header>
-
-
 <section class="hero">
     <!-- <video class="hero-video" autoplay muted loop playsinline preload="metadata">
         <source src="assets/videos/hero.mp4" type="video/mp4" />
@@ -16,12 +13,17 @@
         <p>Compra, vende e intercambia tus ítems de Dota 2 de forma segura.</p>
 
         <div class="hero-actions">
-            <a routerLink="/login" class="btn primary">Empezar</a>
-            <a routerLink="/pagina-principal" class="btn outline">Explorar</a>
+            <ng-container *ngIf="isLoggedIn$ | async; else loginBtn">
+                <a routerLink="/dota-items" class="btn primary">Ir al Inventario</a>
+            </ng-container>
+            <ng-template #loginBtn>
+                <a routerLink="/login" class="btn primary">Empezar</a>
+            </ng-template>
+            <a routerLink="/pagina-principal" fragment="marketplace" class="btn outline">Explorar</a>
         </div>
     </div>
 </section>
-<section class="marketplace">
+<section class="marketplace" id="marketplace">
     <h2 class="marketplace-title">🛒 Ítems en venta</h2>
 
     <div class="marketplace-grid">

@@ -14,6 +14,7 @@
                 <img [src]="sale.iconUrl" alt="Item Icon" class="item-icon" />
                 <div class="details">
                     <h3>{{ sale.itemName }}</h3>
+                    <p class="asset-id">ID: {{ sale.itemAssetId }}</p>
                     <p class="price">{{ sale.currencyCode }} {{ sale.price | number:'1.2-2' }}</p>
                     <p class="date">📅 {{ sale.createdAtUtc | date:'short' }}</p>
                 </div>
@@ -27,6 +28,9 @@
             <div class="actions">
                 <button class="btn-trade" (click)="openModal(sale)">
                     🎁 Enviar Ítem
+                </button>
+                <button class="btn-cancel-sale" (click)="cancel(sale)">
+                    ✖ Cancelar Venta
                 </button>
             </div>
 
@@ -53,7 +57,13 @@
 
                 <div class="buyer-details">
                     <p>Se enviará a: <strong>{{ selectedSale.buyerName }}</strong></p>
-                    <p class="small">Asegúrate de tener el ítem en tu inventario de Steam.</p>
+                    <p class="asset-warning">
+                        ID del ítem: <strong>{{ selectedSale.itemAssetId }}</strong>
+                        <button class="btn-copy" *ngIf="selectedSale.itemAssetId"
+                            (click)="copyAssetId(selectedSale.itemAssetId)">📋 Copiar ID</button>
+                    </p>
+                    <p class="small">Steam <strong>resaltará con un borde verde</strong> el ítem correcto en tu
+                        inventario. Solo hazle doble clic.</p>
                 </div>
             </div>
 

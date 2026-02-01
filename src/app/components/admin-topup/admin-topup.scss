@@ -1,53 +1,291 @@
+$bg-card: #1e293b;
+$bg-input: #334155;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+$accent-color: #3b82f6;
+$success-color: #22c55e;
+$error-color: #ef4444;
+
+h2 {
+  color: $text-primary;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  background: $bg-card;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  strong {
+    color: $text-primary;
+    font-size: 1.05rem;
+  }
 }
 
 .amount {
-  margin-left: 10px;
-  font-weight: bold;
-  color: #2ecc71;
+  margin-left: 12px;
+  font-weight: 700;
+  color: $success-color;
+  background: rgba($success-color, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
 }
 
-.actions button {
-  margin-left: 6px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
+.op-number {
+  font-family: 'Consolas', monospace;
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+
+  button {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.9rem;
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
 }
 
 .approve {
-  background: #2ecc71;
-  color: #fff;
+  background: $success-color;
+  color: white;
+
+  &:hover {
+    background: #16a34a;
+  }
 }
 
 .reject {
-  background: #e74c3c;
-  color: #fff;
+  background: $error-color;
+  color: white;
+
+  &:hover {
+    background: #dc2626;
+  }
 }
 
 .toggle {
-  background: #eee;
+  background: $bg-input !important;
+  color: $text-primary !important;
+
+  &:hover {
+    background: #475569 !important;
+  }
 }
 
 .details {
-  margin-top: 12px;
-  border-top: 1px solid #eee;
-  padding-top: 10px;
+  margin-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 1rem;
+  color: $text-secondary;
+  font-size: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+
+  p {
+    margin: 0;
+
+    b {
+      color: $text-primary;
+    }
+  }
+
+  a.view-link {
+    color: $accent-color;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .empty {
   text-align: center;
-  color: #777;
-  margin-top: 20px;
+  color: $text-secondary;
+  padding: 3rem;
+  background: $bg-card;
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+/* =========================================
+   RECEIPT MODAL STYLES
+   ========================================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content.receipt-modal {
+  background: transparent;
+  padding: 0;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: none;
+
+  .btn-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+  }
+}
+
+.receipt-container {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.4s ease;
+
+  .receipt-header {
+    background: #f8fafc;
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+
+    h3 {
+      margin: 0;
+      color: #0f172a;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 5px 0 0;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+  }
+
+  .receipt-body {
+    padding: 20px;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .image-wrapper {
+      width: 100%;
+      max-height: 60vh;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      padding: 5px;
+
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .receipt-footer {
+    padding: 15px 20px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+
+    p {
+      margin: 0 0 15px;
+      font-size: 0.85rem;
+      color: #d97706;
+      /* Amber color for warning */
+      font-weight: 600;
+    }
+
+    .actions {
+      .btn-close-modal {
+        background-color: #334155;
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+          background-color: #475569;
+        }
+      }
+    }
+  }
 }

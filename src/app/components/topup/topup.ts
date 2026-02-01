@@ -35,7 +35,7 @@ export class Topup {
   success = false;
   error?: string;
 
-  constructor(private wallet: Walletservice, private router: Router) {}
+  constructor(private wallet: Walletservice, private router: Router) { }
 
   // submit() {
   //   if (this.amount <= 0) return;
@@ -61,8 +61,21 @@ export class Topup {
   // }
 
   submit() {
-    if (this.model.amount <= 0 || !this.model.paymentMethod) {
-      this.error = 'El monto y el método de pago son requeridos.';
+    // Validaciones
+    if (this.model.amount <= 0) {
+      this.error = 'El monto debe ser mayor a 0.';
+      return;
+    }
+    if (!this.model.paymentMethod) {
+      this.error = 'Selecciona un método de pago.';
+      return;
+    }
+    if (!this.model.evidenceUrl || this.model.evidenceUrl.length !== 7) {
+      this.error = 'El número de operación debe tener 7 dígitos.';
+      return;
+    }
+    if (!this.model.evidenceBase64) {
+      this.error = 'Debes subir una captura del comprobante.';
       return;
     }
 
@@ -106,5 +119,14 @@ export class Topup {
       this.model.evidenceUrl = null; // prioridad base64
     };
     reader.readAsDataURL(file);
+  }
+
+  // Helper para solo permitir números en el input
+  onlyNumbers(event: KeyboardEvent) {
+    const pattern = /[0-9]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

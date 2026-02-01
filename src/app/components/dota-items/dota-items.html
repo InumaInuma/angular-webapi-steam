@@ -1,8 +1,34 @@
-<!-- Login con Steam -->
-<button class="steam-btn" (click)="loginWithSteam()" *ngIf="items.length === 0">
-    <img src="dotados.png" alt="Steam Logo" />
-    Vinculate con Steam para mostrar tus ITEMS
-</button>
+<!-- Mensaje de Éxito Flotante -->
+<div class="success-toast" *ngIf="showSuccessMessage">
+    <span class="icon">✅</span>
+    ¡SteamID guardado exitosamente!
+</div>
+
+<!-- Instrucciones y Login (Solo si no está vinculado y no está cargando nada) -->
+<div class="welcome-container" *ngIf="!hasSteamLinked && items.length === 0 && !loading">
+    <div class="instruction-card">
+        <img src="dotados.png" alt="Dota 2 Logo" class="main-logo" />
+        <h1>Bienvenido a la Tienda P2P</h1>
+        <p>Para mostrar tus ítems y comenzar a vender, sigue estos pasos:</p>
+
+        <ul class="steps-list">
+            <li>
+                <span class="step-num">1</span>
+                <span>Asegúrate de que tu <strong>Inventario de Steam</strong> esté en <span
+                        class="highlight">Público</span>.</span>
+            </li>
+            <li>
+                <span class="step-num">2</span>
+                <span>Inicia sesión con Steam para vincular tu <strong>SteamID</strong> automáticamente.</span>
+            </li>
+        </ul>
+
+        <button class="steam-btn" (click)="loginWithSteam()">
+            <img src="dotados.png" alt="Steam Logo" />
+            Vincular mi cuenta de Steam
+        </button>
+    </div>
+</div>
 
 <div *ngIf="loading; else itemsTemplate" class="loading-gamer">
     <img src="dotados.png" alt="Dota 2" class="pulse-logo" />
@@ -10,9 +36,14 @@
 </div>
 
 <ng-template #itemsTemplate>
-    <!-- Aquí tu grid real -->
+    <!-- Botón discreto para actualizar Steam -->
+    <div class="inventory-header" *ngIf="hasSteamLinked">
+        <button class="relink-btn" (click)="loginWithSteam()">
+            <span class="icon">🔄</span> Sincronizar / Cambiar Steam
+        </button>
+    </div>
 
-    <!-- Aquí va tu grid con paginación -->
+    <!-- Grid con paginación -->
     <div class="items-grid">
         <div *ngFor="let item of pagedItems" class="item-card" (click)="openModal(item)" role="button" tabindex="0">
             <div class="card-image">

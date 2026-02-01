@@ -1,17 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
+
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
-  private apiBaseUrl = 'http://localhost:5005'; // Tu URL base de la API
+  private apiBaseUrl = `${environment.apiUrl}`; // Tu URL base de la API
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
+  private balanceSubject = new BehaviorSubject<number>(0);
+  public balance$ = this.balanceSubject.asObservable();
+  private steamIdSubject = new BehaviorSubject<string | null>(localStorage.getItem('steamId'));
+  public steamId$ = this.steamIdSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  // 🆕 Nuevo Subject para info completa del usuario (email, rol, etc)
+  private userSubject = new BehaviorSubject<any>(null);
+  public user$ = this.userSubject.asObservable();
+
+  constructor(private http: HttpClient, private router: Router) { }
 
   /**
    * Obtiene la información del usuario logueado desde la API.
@@ -27,8 +37,12 @@ export class Auth {
         }
         if (user?.steamId) {
           localStorage.setItem('steamId', user.steamId);
+          this.steamIdSubject.next(user.steamId);
+        } else {
+          this.steamIdSubject.next(null);
         }
         this.isLoggedInSubject.next(true);
+        this.userSubject.next(user); // 👈 Emitir datos del usuario
       }),
       catchError((error) => {
         console.error('Error al obtener la información del usuario:', error);
@@ -45,12 +59,11 @@ export class Auth {
    * @returns Observable<boolean> - Emite 'true' si el usuario está logeado, 'false' en caso contrario.
    */
   checkLoginStatus(): Observable<boolean> {
-    // Usa el nuevo método para verificar el estado
     return this.getUserInfo().pipe(
-      tap((userInfo) => this.isLoggedInSubject.next(!!userInfo.steamId)),
+      map((userInfo) => !!userInfo?.userId), // 👈 Cambiado: Cualquier usuario con ID está logueado
       catchError(() => {
         this.isLoggedInSubject.next(false);
-        return [false];
+        return of(false);
       })
     );
   }
@@ -103,8 +116,15 @@ export class Auth {
           if (res.success) {
             localStorage.setItem('jwt', res.token);
             localStorage.setItem('roles', JSON.stringify(res.roles));
-            localStorage.setItem('userId', res.userId.toString()); // 👈 guarda también el userId
+            localStorage.setItem('userId', res.userId.toString());
+            if (res.steamId) {
+              localStorage.setItem('steamId', res.steamId);
+              this.steamIdSubject.next(res.steamId);
+            }
             this.isLoggedInSubject.next(true);
+            // 🚨 Como loginWithCredentials no devuelve el email en 'res' a veces, 
+            // idealmente el backend debería devolverlo. Por ahora, usamos lo que tenemos.
+            this.userSubject.next({ email: email, ...res });
             // 🔹 Redirigir según rol
             if (res.roles.includes('Admin')) {
               this.router.navigate(['/dashboard']);
@@ -150,6 +170,35 @@ export class Auth {
   logout() {
     localStorage.removeItem('jwt');
     localStorage.removeItem('roles');
-    this.router.navigate(['/login']); // 👈 ya no redirige con window.location.href
+    localStorage.removeItem('userId');
+    localStorage.removeItem('steamId');
+    this.isLoggedInSubject.next(false);
+    this.balanceSubject.next(0); // 👈 Balance a 0 al cerrar sesión
+    this.router.navigate(['/login']);
+  }
+
+  setBalance(amount: number) {
+    this.balanceSubject.next(amount);
+  }
+
+  updateProfileDetails(data: any): Observable<any> {
+    return this.http.put(
+      `${this.apiBaseUrl}/Account/profile/details`,
+      data,
+      { withCredentials: true }
+    );
+  }
+
+  // 🛡️ Admin Methods
+  getPendingVerifications(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiBaseUrl}/Account/admin/verifications`, { withCredentials: true });
+  }
+
+  verifyUser(userId: number, authorize: boolean): Observable<any> {
+    return this.http.put(
+      `${this.apiBaseUrl}/Account/admin/verify/${userId}`,
+      { authorize },
+      { withCredentials: true }
+    );
   }
 }

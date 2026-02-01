@@ -7,20 +7,31 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Header } from '../header/header';
+import { Observable } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { Dota, MarketplaceItem } from '../../service/dota';
+
+import { Auth } from '../../service/auth';
 
 @Component({
   selector: 'app-pagina-principal',
   standalone: true,
-  imports: [CommonModule, RouterModule, Header],
+  imports: [CommonModule, RouterModule],
   templateUrl: './pagina-principal.html',
   styleUrl: './pagina-principal.scss',
 })
 export class PaginaPrincipal implements AfterViewInit {
   items: MarketplaceItem[] = [];
-  constructor(private dotaService: Dota, private cdr: ChangeDetectorRef) {}
+  isLoggedIn$: Observable<boolean>; // 👈 Declarar tipo
+
+  constructor(
+    private dotaService: Dota,
+    private cdr: ChangeDetectorRef,
+    private authService: Auth // 👈 Inyectar Auth
+  ) {
+    this.isLoggedIn$ = this.authService.isLoggedIn$; // 👈 Inicializar en constructor
+  }
+
   ngOnInit() {
     this.dotaService.getMarketplaceItems().subscribe((res) => {
       this.items = res ?? [];
@@ -54,14 +65,19 @@ export class PaginaPrincipal implements AfterViewInit {
         if (!this.video) return;
 
         if (entry.isIntersecting) {
-          this.video.nativeElement.play();
+          this.video.nativeElement.muted = false; // 👈 Forzar mute para políticas de navegador
+          this.video.nativeElement.play().catch(err => console.warn('Error autoplay:', err));
+          this.cdr.detectChanges(); // 👈 Solicitado por usuario
         } else {
-          this.video.nativeElement.pause();
+          try {
+            this.video.nativeElement.pause();
+          } catch (e) { } // Ignorar errores de pausa si no estaba reproduciendo
         }
       },
       { threshold: 0.4 }
     );
 
     observer.observe(this.video.nativeElement);
+    this.cdr.detectChanges(); // 👈 Forzar chequeo inicial
   }
 }

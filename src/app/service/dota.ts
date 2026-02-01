@@ -6,6 +6,7 @@ export interface DotaItemDto {
   assetId: string;
   name: string;
   imageUrl: string;
+  isTradable: boolean;
 }
 
 export interface MarketplaceItem {
@@ -35,14 +36,16 @@ export interface PendingSaleDto {
   contextId?: number;
 }
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
 
   providedIn: 'root',
 })
 export class Dota {
-  private apiUrl = 'http://localhost:5005/Dota'; // URL de tu DotaController
-  private apiBaseUrl = 'http://localhost:5005/Account';
-  constructor(private http: HttpClient) {}
+  private apiUrl = `${environment.apiUrl}/Dota`; // URL de tu DotaController
+  private apiBaseUrl = `${environment.apiUrl}/Account`;
+  constructor(private http: HttpClient) { }
 
   /**
    * Obtiene la lista de ítems de Dota del usuario autenticado.
@@ -108,6 +111,12 @@ export class Dota {
 
   getOrderHistory(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiBaseUrl}/history`, {
+      withCredentials: true
+    });
+  }
+
+  cancelSale(orderId: number) {
+    return this.http.post<any>(`${this.apiBaseUrl}/sales/cancel/${orderId}`, {}, {
       withCredentials: true
     });
   }

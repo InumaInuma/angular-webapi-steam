@@ -11,13 +11,15 @@ export interface CreateTopUpRequestDto {
   notes?: string | null;
 }
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
 export class Walletservice {
-  private api = 'http://localhost:5005/wallet';
+  private api = `${environment.apiUrl}/wallet`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getBalance(): Observable<{ balance: number }> {
     return this.http.get<{ balance: number }>(`${this.api}/balance`);

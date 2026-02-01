@@ -5,6 +5,7 @@ import {
   HostListener,
   OnInit,
 } from '@angular/core';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { Dota, DotaItemDto } from '../../service/dota';
 import { Auth } from '../../service/auth';
 import { ActivatedRoute } from '@angular/router';
@@ -30,30 +31,86 @@ export class DotaItems implements OnInit {
   modalOpen = false;
   selectedItem: DotaItemDto | null = null;
   price: number | null = null;
+  showSuccessMessage = false;
+  hasSteamLinked = false;
 
   constructor(
     private dotaService: Dota,
-    private cdr: ChangeDetectorRef,
     private authService: Auth,
-    private route: ActivatedRoute // 👈 aquí
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      // 🚀 Apenas recibo el token, cargo los ítems
-      this.loadItems();
+    const savedSteamId = localStorage.getItem('steamId');
+    const hasToken = !!localStorage.getItem('jwt');
+
+    // 1. Sincronización inmediata para evitar parpadeos
+    if (savedSteamId) {
+      this.hasSteamLinked = true;
+      this.steamId = savedSteamId;
     }
+
+    // 2. Escuchar cambios reactivos y forzar detección
+    this.authService.steamId$
+      .pipe(distinctUntilChanged()) // 👈 Evitar duplicados si el ID es el mismo
+      .subscribe(steamId => {
+        if (steamId) {
+          this.hasSteamLinked = true;
+          this.steamId = steamId;
+          this.loadItems();
+        } else {
+          this.hasSteamLinked = false;
+          // Solo dejamos de cargar si estamos seguros de que no hay Steam (o no hay sesión)
+          if (!hasToken) {
+            this.loading = false;
+          }
+        }
+        this.cdr.detectChanges(); // 👈 Forzar para que el HTML reaccione al instante
+      });
+
+    // 3. Si hay token pero no SteamID, forzar una recarga de info del servidor
+    if (hasToken && !savedSteamId) {
+      this.loading = true; // Aseguramos que el loader esté activo mientras esperamos al server
+      this.authService.getUserInfo().subscribe({
+        next: (user) => {
+          if (!user?.steamId) {
+            this.loading = false; // Ahora sí, confirmamos que no tiene Steam vinculado
+            this.cdr.detectChanges();
+          }
+        },
+        error: () => {
+          this.loading = false;
+          this.cdr.detectChanges();
+        }
+      });
+    }
+
+    // 4. Procesar retorno de Steam (Query Params)
+    this.route.queryParams.subscribe(params => {
+      const token = params['token'];
+      const steamIdFromUrl = params['steamId'];
+
+      if (token && steamIdFromUrl) {
+        localStorage.setItem('jwt', token);
+        localStorage.setItem('steamId', steamIdFromUrl);
+        this.authService.getUserInfo().subscribe(); // Refrescar estado global
+        this.showSuccessMessage = true;
+        setTimeout(() => { this.showSuccessMessage = false; this.cdr.detectChanges(); }, 5000);
+      }
+    });
   }
   // ✅ Ahora solo los cargo después de vincular Steam
   loadItems(): void {
+    this.loading = true; // 👈 Asegurar que el loader se vea al empezar
     this.dotaService.getUserDotaItems().subscribe((items) => {
-      this.items = items;
+      this.items = items.filter((i) => i.isTradable);
       this.updatePagedItems();
       this.loading = false;
       this.cdr.detectChanges();
     });
   }
+
   loginWithSteam(): void {
     this.authService.loginWithSteam();
   }

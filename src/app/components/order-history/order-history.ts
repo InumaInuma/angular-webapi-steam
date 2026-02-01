@@ -14,13 +14,15 @@ export class OrderHistory implements OnInit {
   history: any[] = [];
   loading = true;
 
-  constructor(private dotaService: Dota, private router: Router,private cdr: ChangeDetectorRef) {}
+  constructor(private dotaService: Dota, private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.dotaService.getOrderHistory().subscribe({
       next: (data) => {
+        console.log('Historial recibido:', data);
         this.history = data;
         this.loading = false;
+        this.cdr.detectChanges(); // Forzar actualización de UI
       },
       error: (err) => {
         console.error('Error fetching history', err);
@@ -40,7 +42,7 @@ export class OrderHistory implements OnInit {
   }
 
   openTrade(offerId: string) {
-      // Opcional: Abrir detalle en Steam si se tiene el ID
-      // window.open(...)
+    // Opcional: Abrir detalle en Steam si se tiene el ID
+    // window.open(...)
   }
 }

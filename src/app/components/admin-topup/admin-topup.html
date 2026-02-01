@@ -21,10 +21,10 @@
         <p><b>Método:</b> {{ r.paymentMethod }}</p>
         <p><b>Moneda:</b> {{ r.currencyCode }}</p>
         <p><b>Notas:</b> {{ r.notes || '—' }}</p>
+        <p><b>Nro. Operación:</b> <span class="op-number">{{ r.evidenceUrl || '—' }}</span></p>
         <p>
             <b>Comprobante:</b>
-            <a *ngIf="r.evidenceUrl" [href]="r.evidenceUrl" target="_blank">Ver</a>
-            <span *ngIf="!r.evidenceUrl">No enviado</span>
+            <a class="view-link" (click)="openEvidence(r.evidenceBase64, r.evidenceUrl)">Ver Comprobante</a>
         </p>
     </div>
 </div>
@@ -32,3 +32,30 @@
 <p *ngIf="pending.length === 0" class="empty">
     🎉 No hay recargas pendientes hoy
 </p>
+
+<!-- MODAL DE COMPROBANTE DE PAGO -->
+<div class="modal-overlay" *ngIf="selectedEvidence" (click)="closeEvidence()">
+    <div class="modal-content receipt-modal" (click)="$event.stopPropagation()">
+        <button class="btn-close" (click)="closeEvidence()">✕</button>
+
+        <div class="receipt-container">
+            <div class="receipt-header">
+                <h3>Comprobante de Pago</h3>
+                <p>Verificación de transferencia realizada</p>
+            </div>
+
+            <div class="receipt-body">
+                <div class="image-wrapper">
+                    <img [src]="selectedEvidence" alt="Comprobante" />
+                </div>
+            </div>
+
+            <div class="receipt-footer">
+                <p>⚠️ Verifica que el monto y la fecha coincidan con la solicitud.</p>
+                <div class="actions">
+                    <button class="btn-close-modal" (click)="closeEvidence()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

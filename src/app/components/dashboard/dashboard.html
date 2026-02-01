@@ -1,33 +1,163 @@
-<div class="dashboard">
+<div class="dashboard-container">
     <!-- Sidebar -->
     <aside class="sidebar">
-        <h2 class="logo">Mi Dashboard</h2>
-        <nav>
+        <div class="brand">
+            <span class="logo-icon">⚡</span>
+            <h2>Dota P2P</h2>
+        </div>
+
+        <nav class="nav-menu">
             <ul>
                 <li>
-                    <a routerLink="recargas" routerLinkActive="active">
-                        💳 Recargas
+                    <a (click)="switchTab('recargas')" [class.active]="activeTab === 'recargas'" class="nav-item">
+                        <span class="icon">💳</span>
+                        <span class="label">Recargas</span>
                     </a>
                 </li>
                 <li>
-                    <a routerLink="dota-items" routerLinkActive="active">🎮 Usuario</a>
+                    <a (click)="switchTab('verificaciones')" [class.active]="activeTab === 'verificaciones'"
+                        class="nav-item">
+                        <span class="icon">🛡️</span>
+                        <span class="label">Verificaciones</span>
+                    </a>
                 </li>
                 <li>
-                    <a (click)="logout()">🚪 Cerrar sesión</a>
+                    <a (click)="logout()" class="nav-item logout-btn">
+                        <span class="icon">🚪</span>
+                        <span class="label">Cerrar Sesión</span>
+                    </a>
                 </li>
             </ul>
         </nav>
     </aside>
 
-    <!-- Main -->
-    <div class="main">
-        <!-- Header -->
+    <!-- Main Content -->
+    <main class="main-content">
 
-        <app-header></app-header>
-
-        <!-- Content -->
-        <section class="content">
+        <!-- Recargas Tab -->
+        <div class="content-wrapper" *ngIf="activeTab === 'recargas'">
             <router-outlet></router-outlet>
-        </section>
+        </div>
+
+        <!-- VERIFICACIONES TAB -->
+        <div class="content-wrapper verification-wrapper" *ngIf="activeTab === 'verificaciones'">
+            <div class="page-header">
+                <h1>Verificaciones Pendientes</h1>
+                <p>Gestiona las solicitudes de identidad de los usuarios.</p>
+            </div>
+
+            <div class="loading-state" *ngIf="isLoadingVerifications">
+                <div class="spinner"></div>
+                <p>Cargando solicitudes...</p>
+            </div>
+
+            <div class="empty-state"
+                *ngIf="!isLoadingVerifications && (!pendingVerifications || pendingVerifications.length === 0)">
+                <span class="icon">✅</span>
+                <h3>Todo al día</h3>
+                <p>No hay verificaciones pendientes en este momento.</p>
+            </div>
+
+            <div class="verification-grid" *ngIf="!isLoadingVerifications && pendingVerifications.length > 0">
+                <div class="verification-card" *ngFor="let user of pendingVerifications">
+                    <div class="card-header">
+                        <div class="user-avatar">
+                            {{ user.displayName.charAt(0).toUpperCase() }}
+                        </div>
+                        <div class="user-meta">
+                            <h3>{{ user.displayName }}</h3>
+                            <span class="email">{{ user.email }}</span>
+                        </div>
+                        <span class="date-badge">{{ user.updatedAtUtc | date:'MMM d, h:mm a' }}</span>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="info-row">
+                            <div class="info-item">
+                                <label>DNI</label>
+                                <span>{{ user.numeroDocumento }}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Celular</label>
+                                <span>{{ user.celular }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Botón para ver fotos en Modal -->
+                        <button class="btn-view-docs" (click)="openPhotoModal(user)">
+                            <span class="icon">👁️</span> Ver Documento de Identidad
+                        </button>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn-action btn-reject" (click)="rejectUser(user.userId)">
+                            <span class="icon">✕</span> Rechazar
+                        </button>
+                        <button class="btn-action btn-approve" (click)="approveUser(user.userId)">
+                            <span class="icon">✓</span> Aprobar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL DE VISUALIZACIÓN DE DNI -->
+    <div class="modal-overlay" *ngIf="showModal && selectedUserForModal" (click)="closePhotoModal()">
+        <div class="modal-content dni-modal" (click)="$event.stopPropagation()">
+            <button class="btn-close" (click)="closePhotoModal()">✕</button>
+
+            <div class="dni-card-container">
+                <div class="dni-header">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Escudo_nacional_del_Per%C3%BA.png"
+                        alt="Escudo" class="escudo" />
+                    <div class="header-text">
+                        <h2>REPÚBLICA DEL PERÚ</h2>
+                        <h3>DOCUMENTO NACIONAL DE IDENTIDAD</h3>
+                    </div>
+                </div>
+
+                <div class="dni-body">
+                    <div class="dni-photo-section">
+                        <div class="photo-frame">
+                            <!-- Foto Frontal como principal -->
+                            <img [src]="selectedUserForModal.fotoDniF" alt="Foto DNI" />
+                        </div>
+                    </div>
+                    <div class="dni-info-section">
+                        <div class="dni-field">
+                            <label>CUI</label>
+                            <span class="highlight">{{ selectedUserForModal.numeroDocumento }}</span>
+                        </div>
+                        <div class="dni-field">
+                            <label>APELLIDOS Y NOMBRES</label>
+                            <span>{{ selectedUserForModal.displayName | uppercase }}</span>
+                        </div>
+                        <div class="dni-field">
+                            <label>CELULAR</label>
+                            <span>{{ selectedUserForModal.celular }}</span>
+                        </div>
+                        <div class="dni-field">
+                            <label>FECHA DE REGISTRO</label>
+                            <span>{{ selectedUserForModal.updatedAtUtc | date:'dd/MM/yyyy' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dni-footer">
+                    <!-- Foto Reverso pequeña abajo o al hacer click cambiar -->
+                    <div class="dni-reverse-preview">
+                        <span>REVERSO:</span>
+                        <img [src]="selectedUserForModal.fotoDniF" alt="Reverso" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-approve-large" (click)="approveUser(selectedUserForModal.userId)">✅ APROBAR
+                    IDENTIDAD</button>
+            </div>
+        </div>
     </div>
+
 </div>

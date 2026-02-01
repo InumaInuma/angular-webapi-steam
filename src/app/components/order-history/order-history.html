@@ -21,12 +21,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of history" [class.buy-row]="item.transactionType === 'Buy'">
+                <tr *ngFor="let item of history" [class.buy-row]="item.transactionType?.toLowerCase() === 'buy'">
                     <td>{{ item.createdAtUtc | date:'medium' }}</td>
                     <td>
-                        <span class="badge" [class.badge-buy]="item.transactionType === 'Buy'"
-                            [class.badge-sell]="item.transactionType === 'Sell'">
-                            {{ item.transactionType === 'Buy' ? 'COMPRA' : 'VENTA' }}
+                        <span class="badge" [class.badge-buy]="item.transactionType?.toLowerCase() === 'buy'"
+                            [class.badge-sell]="item.transactionType?.toLowerCase() === 'sell'">
+                            {{ item.transactionType?.toLowerCase() === 'buy' ? 'COMPRA' : 'VENTA' }}
                         </span>
                     </td>
                     <td>

@@ -1,1 +1,49 @@
-<router-outlet></router-outlet>
+<nav class="navbar" *ngIf="!isAdminRoute">
+    <div class="nav-container">
+        <!-- Sección Izquierda: Atrás + Logo -->
+        <div class="nav-left">
+            <button class="back-btn" *ngIf="showBackButton" (click)="goBack()">
+                <span class="arrow">←</span> Atrás
+            </button>
+            <a routerLink="/pagina-principal" class="brand">
+                <img src="dotados.png" alt="Logo" class="nav-logo" />
+                <span class="brand-text">DOTA P2P</span>
+            </a>
+        </div>
+
+        <!-- Sección Central: Links -->
+        <div class="nav-links">
+            <a routerLink="/pagina-principal" fragment="marketplace" routerLinkActive="active">Mercado</a>
+            <ng-container *ngIf="isLoggedIn$ | async">
+                <a routerLink="/dota-items" routerLinkActive="active">Mi Inventario</a>
+                <a routerLink="/pending-sales" routerLinkActive="active">Mis Ventas</a>
+                <a routerLink="/order-history" routerLinkActive="active">Historial</a>
+            </ng-container>
+        </div>
+
+        <!-- Sección Derecha: Usuario/Login -->
+        <div class="nav-right">
+            <ng-container *ngIf="isLoggedIn$ | async; else loginBtn">
+                <div class="wallet-display" routerLink="/topup" style="cursor: pointer;">
+                    <span class="wallet-icon">💰</span>
+                    <span class="balance">S/ {{ (balance$ | async) | number:'1.2-2' }}</span>
+                    <span class="plus-icon" style="margin-left:8px; font-size: 0.8em; color: #22c55e;">+</span>
+                </div>
+                <a routerLink="/profile" class="profile-link">Mi Perfil</a>
+                <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
+            </ng-container>
+            <ng-template #loginBtn>
+                <div class="wallet-display guest">
+                    <span class="wallet-icon">💰</span>
+                    <span class="balance">S/ 0.00</span>
+                </div>
+                <a routerLink="/login" class="login-nav-btn">Iniciar Sesión</a>
+                <a routerLink="/register" class="register-nav-btn">Registrarse</a>
+            </ng-template>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content" [class.admin-layout]="isAdminRoute">
+    <router-outlet></router-outlet>
+</main>

@@ -17,7 +17,7 @@ export class AdminTopup implements OnInit {
   constructor(
     private walletService: Walletservice,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.load();
@@ -33,23 +33,6 @@ export class AdminTopup implements OnInit {
   toggle(id: number) {
     this.expandedId = this.expandedId === id ? null : id;
   }
-
-  // approve(id: number) {
-  //   if (!confirm('¿Confirmar aprobación?')) return;
-
-  //   this.walletService.approve(id).subscribe(() => {
-  //     this.pending = this.pending.filter((x) => x.requestId !== id);
-  //   });
-  // }
-
-  // reject(id: number) {
-  //   const reason = prompt('Motivo del rechazo');
-  //   if (!reason) return;
-
-  //   this.walletService.reject(id, reason).subscribe(() => {
-  //     this.pending = this.pending.filter((x) => x.requestId !== id);
-  //   });
-  // }
 
   approve(id: number) {
     if (!confirm('¿Confirmar aprobación?')) return;
@@ -88,5 +71,28 @@ export class AdminTopup implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  // Lógica del Modal de Evidencia
+  selectedEvidence: string | null = null;
+
+  openEvidence(base64: string | null, url: string | null) {
+    if (base64) {
+      if (base64.startsWith('data:image')) {
+        this.selectedEvidence = base64;
+      } else {
+        // 🛠️ Fix: Si viene sin cabecera (raw base64), asumimos JPEG/PNG
+        // Lo ideal es que el backend guarde el mime type, pero esto soluciona el 90% de casos
+        this.selectedEvidence = `data:image/jpeg;base64,${base64}`;
+      }
+    } else if (url) {
+      this.selectedEvidence = url;
+    } else {
+      alert('No hay comprobante adjunto');
+    }
+  }
+
+  closeEvidence() {
+    this.selectedEvidence = null;
   }
 }

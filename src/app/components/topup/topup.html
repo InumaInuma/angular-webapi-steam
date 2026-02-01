@@ -1,33 +1,84 @@
-<h2>💳 Recargar saldo</h2>
+<div class="topup-container">
+    <div class="topup-card">
+        <header class="card-header">
+            <div class="icon-wrapper">
+                💳
+            </div>
+            <h2>Recargar Saldo</h2>
+            <p>Añade fondos a tu billetera de forma segura</p>
+        </header>
 
-<form (ngSubmit)="submit()">
+        <form (ngSubmit)="submit()">
 
-    <label for="amount">Monto</label>
-    <input type="number" [(ngModel)]="model.amount" name="amount" id="amount" required />
+            <div class="form-group">
+                <label for="amount">Monto a recargar (S/)</label>
+                <div class="input-wrapper">
+                    <span class="currency-symbol">S/</span>
+                    <input type="number" [(ngModel)]="model.amount" name="amount" id="amount" placeholder="0.00" min="1"
+                        required />
+                </div>
+            </div>
 
-    <label for="paymentMethod">Método de pago</label>
-    <input type="text" [(ngModel)]="model.paymentMethod" name="paymentMethod" id="paymentMethod"
-        placeholder="Yape / Plin / Stripe" required />
+            <div class="form-group">
+                <label for="paymentMethod">Método de pago</label>
+                <div class="select-wrapper">
+                    <select [(ngModel)]="model.paymentMethod" name="paymentMethod" id="paymentMethod" required>
+                        <option value="" disabled selected>Selecciona un método</option>
+                        <option value="Yape">Yape</option>
+                        <option value="Plin">Plin</option>
+                        <option value="Transferencia BCP">Transferencia BCP</option>
+                        <option value="Transferencia Interbank">Transferencia Interbank</option>
+                    </select>
+                    <span class="icon">🏦</span>
+                </div>
+            </div>
 
-    <label for="evidenceUrl">URL de comprobante (opcional)</label>
-    <input type="url" [(ngModel)]="model.evidenceUrl" name="evidenceUrl" id="evidenceUrl" placeholder="https://..." />
+            <div class="form-divider">
+                <span>Comprobante de Pago</span>
+            </div>
 
-    <label for="fileInput">O subir imagen del comprobante</label>
-    <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" />
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="evidenceUrl">Número de Operación</label>
+                    <div class="input-wrapper">
+                        <span class="currency-symbol">#</span>
+                        <input type="text" [(ngModel)]="model.evidenceUrl" name="evidenceUrl" id="evidenceUrl"
+                            placeholder="Ej: 1234567" maxlength="7" pattern="\d{7}" (keypress)="onlyNumbers($event)"
+                            required />
+                    </div>
+                    <small class="hint">Debe tener 7 dígitos.</small>
+                </div>
 
-    <label for="notes">Notas</label>
-    <textarea [(ngModel)]="model.notes" name="notes" id="notes"></textarea>
+                <div class="form-group half upload-group">
+                    <label for="fileInput" class="upload-label" [class.uploaded]="model.evidenceBase64">
+                        <span class="upload-icon" *ngIf="!model.evidenceBase64">📁</span>
+                        <span *ngIf="!model.evidenceBase64">Subir captura (Obligatorio)</span>
 
-    <button type="submit" [disabled]="loading">
-        Enviar solicitud
-    </button>
+                        <span class="upload-icon" *ngIf="model.evidenceBase64">✅</span>
+                        <span *ngIf="model.evidenceBase64">Imagen cargada</span>
+                    </label>
+                    <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
+                </div>
+            </div>
 
-    <p *ngIf="success" class="success">
-        ✅ Solicitud enviada, pendiente de aprobación
-    </p>
+            <div class="form-group">
+                <label for="notes">Notas adicionales</label>
+                <textarea [(ngModel)]="model.notes" name="notes" id="notes"
+                    placeholder="Ej: Nombre del titular..."></textarea>
+            </div>
 
-    <p *ngIf="error" class="error">
-        ❌ {{ error }}
-    </p>
+            <button type="submit" [disabled]="loading" class="btn-submit">
+                <span *ngIf="!loading">Enviar Solicitud</span>
+                <span *ngIf="loading" class="spinner">⏳ Procesando...</span>
+            </button>
 
-</form>
+            <div *ngIf="success" class="alert success">
+                ✅ Solicitud enviada correctamente. Redirigiendo...
+            </div>
+
+            <div *ngIf="error" class="alert error">
+                ❌ {{ error }}
+            </div>
+        </form>
+    </div>
+</div>

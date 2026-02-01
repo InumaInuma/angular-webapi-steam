@@ -5,6 +5,60 @@
         <h2 class="name">{{ user.displayName }}</h2>
         <p class="email">{{ user.email }}</p>
 
+        <!-- Sección de Verificación -->
+        <div class="verification-section">
+            <h3>Verificación de Identidad</h3>
+
+            <div class="status-verification" [class.active]="user.activo" [class.pending]="!user.activo">
+                Status: {{ user.activo ? '✅ Verificado (Activo)' : '⏳ Pendiente / Inactivo' }}
+            </div>
+
+            <div class="form-group">
+                <label>Número de Documento (DNI/Pasaporte)</label>
+                <input type="text" [(ngModel)]="numeroDocumento" placeholder="Ej. 78451236" [disabled]="user.activo"
+                    maxlength="10">
+            </div>
+
+            <div class="form-group">
+                <label>Celular</label>
+                <input type="text" [(ngModel)]="celular" placeholder="Ej. 999111222" [disabled]="user.activo"
+                    maxlength="16">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Foto Frontal</label>
+                    <div class="file-upload-wrapper" [class.uploaded]="fotoDniF">
+                        <input type="file" id="fileF" (change)="onFileSelected($event, 'F')" accept="image/*"
+                            [disabled]="user.activo">
+                        <label for="fileF">
+                            <i class="icon">📷</i>
+                            <span *ngIf="!fotoDniF">Subir Frontal</span>
+                            <span *ngIf="fotoDniF">Cambiar Foto</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group col">
+                    <label>Foto Reverso</label>
+                    <div class="file-upload-wrapper" [class.uploaded]="fotoDniR">
+                        <input type="file" id="fileR" (change)="onFileSelected($event, 'R')" accept="image/*"
+                            [disabled]="user.activo">
+                        <label for="fileR">
+                            <i class="icon">📷</i>
+                            <span *ngIf="!fotoDniR">Subir Reverso</span>
+                            <span *ngIf="fotoDniR">Cambiar Foto</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-save btn-verify" (click)="saveProfileDetails()"
+                [disabled]="isSavingProfile || user.activo">
+                {{ isSavingProfile ? 'Enviando...' : (user.activo ? 'Datos Verificados' : 'Guardar y Solicitar
+                Verificación') }}
+            </button>
+        </div>
 
         <div class="trade-url-container">
             <label for="tradeUrl">URL de Intercambio (Trade Offer URL)</label>
@@ -20,9 +74,10 @@
 
         <div class="trade-url-container api-key-section">
             <label for="apiKey">Steam Web API Key (Para automatización)</label>
-            <p class="hint">Obtenla en <a href="https://steamcommunity.com/dev/apikey" target="_blank">steamcommunity.com/dev/apikey</a></p>
-            <input type="password" id="apiKey" [(ngModel)]="newApiKey"
-                placeholder="Pegar tu API Key aquí..." class="trade-input" />
+            <p class="hint">Obtenla en <a href="https://steamcommunity.com/dev/apikey"
+                    target="_blank">steamcommunity.com/dev/apikey</a></p>
+            <input type="password" id="apiKey" [(ngModel)]="newApiKey" placeholder="Pegar tu API Key aquí..."
+                class="trade-input" />
             <button (click)="saveApiKey()" [disabled]="isSavingKey" class="btn-save btn-key">
                 {{ isSavingKey ? 'Guardando...' : 'Guardar API Key' }}
             </button>
@@ -30,9 +85,10 @@
 
 
         <div class="status" [class.banned]="user.isBanned">
-            <span *ngIf="!user.isBanned">✅ Activo</span>
             <span *ngIf="user.isBanned">⛔ Suspendido</span>
         </div>
+
+
     </div>
 </div>
 
