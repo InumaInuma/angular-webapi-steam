@@ -22,26 +22,26 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of history" [class.buy-row]="item.transactionType?.toLowerCase() === 'buy'">
-                    <td>{{ item.createdAtUtc | date:'medium' }}</td>
-                    <td>
+                    <td data-label="Fecha">{{ item.createdAtUtc | date:'medium' }}</td>
+                    <td data-label="Tipo">
                         <span class="badge" [class.badge-buy]="item.transactionType?.toLowerCase() === 'buy'"
                             [class.badge-sell]="item.transactionType?.toLowerCase() === 'sell'">
                             {{ item.transactionType?.toLowerCase() === 'buy' ? 'COMPRA' : 'VENTA' }}
                         </span>
                     </td>
-                    <td>
+                    <td data-label="Ítem">
                         <div class="item-cell">
                             <img [src]="item.iconUrl" alt="icon" class="item-icon">
-                            {{ item.itemName }}
+                            <span class="item-name">{{ item.itemName }}</span>
                         </div>
                     </td>
-                    <td>
+                    <td data-label="Estado">
                         <span class="status-badge" [ngClass]="getStatusClass(item.orderStatus)">
                             {{ item.orderStatus }}
                         </span>
                     </td>
-                    <td>{{ item.otherPartyName }}</td>
-                    <td class="price">
+                    <td data-label="Contraparte">{{ item.otherPartyName }}</td>
+                    <td class="price" data-label="Precio">
                         {{ item.currencyCode }} {{ item.price | number:'1.2-2' }}
                     </td>
                 </tr>

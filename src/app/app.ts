@@ -17,6 +17,7 @@ export class App implements OnInit {
   protected readonly title = signal('auth-app-angular');
   showBackButton = false;
   isAdminRoute = false;
+  mobileMenuOpen = false;
   isLoggedIn$: any;
   balance$: any;
 
@@ -69,5 +70,14 @@ export class App implements OnInit {
 
   logout(): void {
     this.authService.logout();
+    this.closeMenu();
+  }
+
+  toggleMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  closeMenu(): void {
+    this.mobileMenuOpen = false;
   }
 }

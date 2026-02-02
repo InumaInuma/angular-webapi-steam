@@ -1,9 +1,14 @@
 <nav class="navbar" *ngIf="!isAdminRoute">
     <div class="nav-container">
-        <!-- Sección Izquierda: Atrás + Logo -->
+        <!-- Sección Izquierda: Hamburger + Atrás + Logo -->
         <div class="nav-left">
+            <button class="hamburger-btn" (click)="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <button class="back-btn" *ngIf="showBackButton" (click)="goBack()">
-                <span class="arrow">←</span> Atrás
+                <span class="arrow">←</span> <span class="text-back">Atrás</span>
             </button>
             <a routerLink="/pagina-principal" class="brand">
                 <img src="dotados.png" alt="Logo" class="nav-logo" />
@@ -11,8 +16,8 @@
             </a>
         </div>
 
-        <!-- Sección Central: Links -->
-        <div class="nav-links">
+        <!-- Sección Central: Links (Desktop) -->
+        <div class="nav-links desktop-only">
             <a routerLink="/pagina-principal" fragment="marketplace" routerLinkActive="active">Mercado</a>
             <ng-container *ngIf="isLoggedIn$ | async">
                 <a routerLink="/dota-items" routerLinkActive="active">Mi Inventario</a>
@@ -21,8 +26,8 @@
             </ng-container>
         </div>
 
-        <!-- Sección Derecha: Usuario/Login -->
-        <div class="nav-right">
+        <!-- Sección Derecha: Usuario (Desktop) -->
+        <div class="nav-right desktop-only">
             <ng-container *ngIf="isLoggedIn$ | async; else loginBtn">
                 <div class="wallet-display" routerLink="/topup" style="cursor: pointer;">
                     <span class="wallet-icon">💰</span>
@@ -41,8 +46,46 @@
                 <a routerLink="/register" class="register-nav-btn">Registrarse</a>
             </ng-template>
         </div>
+
+        <!-- Wallet Mobile (Siempre visible si logueado) -->
+        <div class="nav-right mobile-only" *ngIf="isLoggedIn$ | async">
+            <div class="wallet-display compact" routerLink="/topup">
+                <span class="wallet-icon">💰</span>
+                <span class="balance">S/ {{ (balance$ | async) | number:'1.2-2' }}</span>
+            </div>
+        </div>
     </div>
 </nav>
+
+<!-- Sidebar Móvil -->
+<div class="sidebar-overlay" [class.active]="mobileMenuOpen" (click)="closeMenu()"></div>
+<div class="mobile-sidebar" [class.active]="mobileMenuOpen">
+    <div class="sidebar-header">
+        <h3>Menú</h3>
+        <button class="close-menu-btn" (click)="closeMenu()">✕</button>
+    </div>
+
+    <div class="sidebar-content">
+        <a routerLink="/pagina-principal" fragment="marketplace" routerLinkActive="active"
+            (click)="closeMenu()">Mercado</a>
+
+        <ng-container *ngIf="isLoggedIn$ | async; else guestMobile">
+            <div class="divider"></div>
+            <a routerLink="/dota-items" routerLinkActive="active" (click)="closeMenu()">🎒 Mi Inventario</a>
+            <a routerLink="/pending-sales" routerLinkActive="active" (click)="closeMenu()">📦 Mis Ventas</a>
+            <a routerLink="/order-history" routerLinkActive="active" (click)="closeMenu()">📜 Historial</a>
+            <a routerLink="/profile" routerLinkActive="active" (click)="closeMenu()">👤 Mi Perfil</a>
+            <div class="divider"></div>
+            <button class="logout-link" (click)="logout()">🚪 Cerrar Sesión</button>
+        </ng-container>
+
+        <ng-template #guestMobile>
+            <div class="divider"></div>
+            <a routerLink="/login" class="login-mobile-btn" (click)="closeMenu()">Iniciar Sesión</a>
+            <a routerLink="/register" class="register-mobile-btn" (click)="closeMenu()">Registrarse</a>
+        </ng-template>
+    </div>
+</div>
 
 <main class="main-content" [class.admin-layout]="isAdminRoute">
     <router-outlet></router-outlet>

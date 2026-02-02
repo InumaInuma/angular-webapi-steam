@@ -78,22 +78,40 @@
 /* Responsive */
 @media (max-width: 768px) {
   .hero {
-    height: 80vh;
+    height: auto;
+    min-height: 80vh;
   }
 
   .hero-overlay {
     text-align: center;
     align-items: center;
+    padding: 3rem 1.5rem;
+
+    h1 {
+      font-size: 2.5rem;
+    }
   }
 
   .hero-actions {
     flex-direction: column;
     width: 100%;
+    gap: 12px;
   }
 
   .btn {
     width: 100%;
     text-align: center;
+  }
+
+  .marketplace-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    /* 2 columns on small screens */
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  .market-image {
+    height: 140px;
   }
 }
 

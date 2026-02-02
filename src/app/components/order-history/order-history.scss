@@ -20,13 +20,13 @@
         background: #1b2838;
         border-radius: 8px;
         padding: 1rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        
+
         th {
             text-align: left;
             padding: 1rem;
@@ -38,6 +38,12 @@
             padding: 1rem;
             border-bottom: 1px solid #2a3f5a;
             vertical-align: middle;
+
+            /* Primera columna (Fecha) en Azul */
+            &:first-child {
+                color: #66c0f4;
+                font-weight: 500;
+            }
         }
 
         tr:hover {
@@ -55,6 +61,12 @@
             height: 40px;
             border-radius: 4px;
         }
+
+        .item-name {
+            color: #66c0f4;
+            /* Azul Steam / Eléctrico Readable */
+            font-weight: 500;
+        }
     }
 
     .price {
@@ -70,7 +82,7 @@
 
         &-buy {
             background: #4caf50;
-            color: white;
+            color: rgb(255, 255, 255);
         }
 
         &-sell {
@@ -81,9 +93,180 @@
 
     .status-badge {
         font-weight: bold;
-        
-        &.status-completed { color: #66c0f4; }
-        &.status-canceled { color: #ff5252; }
-        &.status-refunded { color: #bcaaa4; }
+
+        &.status-completed {
+            color: #66c0f4;
+        }
+
+        &.status-canceled {
+            color: #ff5252;
+        }
+
+        &.status-refunded {
+            color: #bcaaa4;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .history-container {
+        padding: 1rem;
+
+        /* Asegurar que el contenedor no tenga fondo blanco accidental */
+        background: transparent;
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .table-responsive {
+            background: transparent;
+            padding: 0;
+            box-shadow: none;
+            overflow: visible;
+        }
+
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+            display: block;
+        }
+
+        thead {
+            display: none;
+        }
+
+        /* DISEÑO PREMIUM DE TARJETAS MÓVILES */
+        tr {
+            background: linear-gradient(145deg, #1b2838 0%, #151e2b 100%);
+            /* Fondo degradado Steam */
+            border: 1px solid rgba(102, 192, 244, 0.2);
+            /* Borde sutil azul */
+            border-radius: 12px;
+            margin-bottom: 1.2rem;
+            padding: 1rem 1.2rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            /* Sombra profunda */
+            position: relative;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+
+            /* Evitar highlight azul estándar en móviles al tocar */
+            -webkit-tap-highlight-color: transparent;
+
+            /* Estado Hover solo si no es táctil */
+            @media (hover: hover) {
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 12px 25px rgba(0, 10, 20, 0.6);
+                    border-color: #66c0f4;
+                }
+            }
+
+            /* Estado ACTIVO/TOCADO - AZUL SOLICITADO */
+            &:active,
+            &:focus-within {
+                background-color: #1e40af !important;
+                background-image: none !important;
+                /* Eliminar gradiente */
+                border-color: #60a5fa;
+                transform: scale(0.99);
+                box-shadow: 0 0 15px rgba(37, 99, 235, 0.6);
+            }
+
+            /* Forzar texto blanco al tocar para contraste */
+            &:active *,
+            &:focus-within * {
+                color: #ffffff !important;
+                text-shadow: none !important;
+            }
+
+            /* Ajustar etiquetas al tocar */
+            &:active td::before,
+            &:focus-within td::before {
+                color: #bfdbfe !important;
+                /* Azul muy claro */
+            }
+        }
+
+        td {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            /* Columna etiquetas fija, resto valor */
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: right;
+            min-height: 30px;
+
+            &:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+
+            /* Primera columna (Fecha) en Azul en Móvil */
+            &:first-child {
+                padding-top: 5px;
+                color: #66c0f4 !important;
+                font-weight: 500;
+            }
+
+            /* La etiqueta (Label) - Estilo */
+            &::before {
+                content: attr(data-label);
+                font-family: 'Roboto', sans-serif;
+                font-weight: 600;
+                font-size: 0.9rem;
+                color: #8b9bb4;
+                /* Color gris azulado suave */
+                text-align: left;
+                white-space: nowrap;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            /* El valor de la celda */
+            font-size: 1rem;
+            color: #f3f4f6;
+        }
+
+        /* Ajustes para Ítem (Imagen + Texto) */
+        .item-cell {
+            justify-content: flex-end;
+            width: 100%;
+            overflow: hidden;
+
+            .item-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 6px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+                border: 1px solid #3e4a59;
+            }
+
+            .item-name {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 160px;
+                font-weight: 500;
+                color: #66c0f4 !important;
+                /* Azul Steam forzado en móvil */
+            }
+        }
+
+        /* Ajuste Precio */
+        .price {
+            color: #a4d007;
+            /* Verde Steam */
+            font-family: 'Consolas', monospace;
+            /* Fuente numérica clara */
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px rgba(164, 208, 7, 0.3);
+        }
     }
 }
