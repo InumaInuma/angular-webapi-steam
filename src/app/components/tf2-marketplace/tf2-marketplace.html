@@ -1,0 +1,48 @@
+<section class="marketplace tf2-theme">
+    <div class="market-header">
+        <img src="forteam.png" alt="TF2" class="game-banner" />
+        <h2 class="marketplace-title">🎩 Sombreros y más de Team Fortress 2</h2>
+    </div>
+
+    <div class="search-price-container">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Buscar sombreros, armas, burlas..." [(ngModel)]="searchName"
+                (ngModelChange)="applyFilter()">
+        </div>
+
+        <div class="price-range">
+            <input type="number" placeholder="Min S/." [(ngModel)]="minPrice" (ngModelChange)="applyFilter()">
+            <span>-</span>
+            <input type="number" placeholder="Max S/." [(ngModel)]="maxPrice" (ngModelChange)="applyFilter()">
+        </div>
+    </div>
+
+    <div class="marketplace-grid">
+        <div class="market-card" *ngFor="let item of filteredItems">
+            <div class="market-image tf2-card-img">
+                <img [src]="item.iconUrl" [alt]="item.itemName" />
+            </div>
+
+            <div class="market-body">
+                <h3 class="item-name">{{ item.itemName }}</h3>
+                <div class="item-details">
+                    <span [style.color]="item.rarityColor || '#fff'">{{ item.rarity }}</span>
+                    <span *ngIf="item.type"> • {{ item.type }}</span>
+                </div>
+
+                <p class="price">
+                    {{ item.currencyCode }} {{ item.price | number:'1.2-2' }}
+                </p>
+
+                <p class="seller">
+                    👤 {{ item.seller }}
+                </p>
+
+                <button class="btn-buy" (click)="buy(item)">
+                    Comprar Item
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

@@ -48,11 +48,31 @@
         <div *ngFor="let item of pagedItems" class="item-card" (click)="openModal(item)" role="button" tabindex="0">
             <div class="card-image">
                 <img [src]="item.imageUrl" [alt]="item.name" />
-                <span class="badge">Avatar</span>
+                <span class="badge" [style.background-color]="item.rarityColor || '#555'">{{ item.rarity || 'Común'
+                    }}</span>
             </div>
             <div class="card-body">
                 <h3 class="item-name">{{ item.name }}</h3>
-                <p class="item-desc">Ítem de Dota 2</p>
+                <p class="item-desc">{{ item.type }}</p>
+                <p class="item-hero" *ngIf="item.hero">Heroe: <strong>{{ item.hero }}</strong></p>
+
+                <!-- GEMAS -->
+                <div class="item-gems" *ngIf="item.gems && item.gems.length > 0">
+                    <div class="gem-row" *ngFor="let gem of item.gems" [title]="gem.name">
+                        <img *ngIf="gem.iconUrl" [src]="gem.iconUrl" class="gem-img" alt="gem" />
+                        <span *ngIf="!gem.iconUrl" class="gem-icon" [style.color]="'#' + gem.color">💎</span>
+                        <span class="gem-name" [style.color]="'#' + gem.color">{{ gem.name }}</span>
+                    </div>
+                </div>
+
+                <!-- ESTILOS -->
+                <div class="item-styles" *ngIf="item.styles && item.styles.length > 0">
+                    <div class="style-header" style="font-size: 0.7rem; color: #94a3b8; font-weight: bold;">Styles:
+                    </div>
+                    <div class="style-row" *ngFor="let style of item.styles" [ngClass]="{'locked': style.isLocked}">
+                        <span class="style-name">{{ style.name }}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -80,8 +100,45 @@
         </div>
 
         <div class="modal-body" *ngIf="selectedItem">
-            <img class="modal-image" [src]="selectedItem.imageUrl" [alt]="selectedItem.name" />
-            <h3 class="modal-name">{{ selectedItem.name }}</h3>
+            <div class="modal-top-section">
+                <img class="modal-image" [src]="selectedItem.imageUrl" [alt]="selectedItem.name" />
+                <div class="modal-info">
+                    <h3 class="modal-name">{{ selectedItem.name }}</h3>
+                    <p class="modal-rarity" [style.color]="selectedItem.rarityColor">{{ selectedItem.rarity }}</p>
+                    <p class="modal-hero" *ngIf="selectedItem.hero">Used By: <strong>{{ selectedItem.hero }}</strong>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Gems in Modal -->
+            <div class="modal-gems" *ngIf="selectedItem.gems && selectedItem.gems.length > 0">
+                <div *ngFor="let gem of selectedItem.gems" class="modal-gem-item">
+                    <img *ngIf="gem.iconUrl" [src]="gem.iconUrl" alt="gem" />
+                    <span *ngIf="!gem.iconUrl" [style.color]="'#' + gem.color" style="margin-right: 5px;">💎</span>
+                    <span [style.color]="'#' + gem.color">{{ gem.name }}</span>
+                </div>
+            </div>
+
+            <!-- Styles in Modal (Collapsible) -->
+            <div class="modal-styles-container" *ngIf="selectedItem.styles && selectedItem.styles.length > 0">
+                <details class="styles-details">
+                    <summary class="styles-summary">
+                        Ver Estilos ({{ selectedItem.styles.length }})
+                        <span class="chevron">▼</span>
+                    </summary>
+                    <div class="modal-styles">
+                        <div *ngFor="let style of selectedItem.styles" class="modal-style-item"
+                            [ngClass]="{'locked': style.isLocked}">
+                            {{ style.name }}
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Lore / Description -->
+            <div class="modal-description" *ngIf="selectedItem.description">
+                <p>{{ selectedItem.description }}</p>
+            </div>
 
             <label class="price-label" for="price">Precio</label>
             <input id="price" type="number" min="0" step="0.01" [(ngModel)]="price" placeholder="0.00"

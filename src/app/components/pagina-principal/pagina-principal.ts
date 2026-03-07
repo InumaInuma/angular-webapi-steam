@@ -21,40 +21,15 @@ import { Auth } from '../../service/auth';
   styleUrl: './pagina-principal.scss',
 })
 export class PaginaPrincipal implements AfterViewInit {
-  items: MarketplaceItem[] = [];
-  isLoggedIn$: Observable<boolean>; // 👈 Declarar tipo
-
+  isLoggedIn$: Observable<boolean>;
   constructor(
-    private dotaService: Dota,
     private cdr: ChangeDetectorRef,
-    private authService: Auth // 👈 Inyectar Auth
+    private authService: Auth
   ) {
-    this.isLoggedIn$ = this.authService.isLoggedIn$; // 👈 Inicializar en constructor
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
   }
 
   ngOnInit() {
-    this.dotaService.getMarketplaceItems().subscribe((res) => {
-      this.items = res ?? [];
-      this.cdr.detectChanges();
-    });
-  }
-
-  buy(item: MarketplaceItem) {
-    if (!confirm(`¿Estás seguro de comprar ${item.itemName} por ${item.currencyCode} ${item.price}?`)) {
-      return;
-    }
-
-    this.dotaService.buyItem(item.listingId).subscribe({
-      next: (res) => {
-        alert('✅ ¡Compra exitosa! Revisa tus pedidos pendientes.');
-        // Recargar items para quitar el comprado
-        this.ngOnInit();
-      },
-      error: (err) => {
-        console.error(err);
-        alert('❌ Error al comprar: ' + (err.error?.message || err.message));
-      }
-    });
   }
 
   @ViewChild('videoRef') video!: ElementRef<HTMLVideoElement>;
@@ -65,7 +40,7 @@ export class PaginaPrincipal implements AfterViewInit {
         if (!this.video) return;
 
         if (entry.isIntersecting) {
-          this.video.nativeElement.muted = false; // 👈 Forzar mute para políticas de navegador
+          this.video.nativeElement.muted = true; // 👈 Forzar mute para políticas de navegador
           this.video.nativeElement.play().catch(err => console.warn('Error autoplay:', err));
           this.cdr.detectChanges(); // 👈 Solicitado por usuario
         } else {

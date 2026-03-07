@@ -19,7 +19,7 @@ export class Dashboard implements OnInit {
   // 🛡️ Admin Properties
   pendingVerifications: any[] = [];
   isLoadingVerifications = false;
-  activeTab: 'recargas' | 'verificaciones' = 'recargas'; // Control de Tabs
+  activeTab: 'recargas' | 'verificaciones' | 'soporte' = 'recargas'; // Control de Tabs
 
   // 🖼️ Modal Properties
   showModal = false;
@@ -47,6 +47,8 @@ export class Dashboard implements OnInit {
     // 2. Por defecto cargamos lo que diga la URL
     if (this.router.url.includes('recargas')) {
       this.activeTab = 'recargas';
+    } else if (this.router.url.includes('soporte')) {
+      this.activeTab = 'soporte';
     }
   }
 
@@ -99,13 +101,15 @@ export class Dashboard implements OnInit {
     });
   }
 
-  switchTab(tab: 'recargas' | 'verificaciones') {
+  switchTab(tab: 'recargas' | 'verificaciones' | 'soporte') {
     this.activeTab = tab;
     if (tab === 'verificaciones') {
       this.loadPendingVerifications();
       this.router.navigate(['/dashboard']);
     } else if (tab === 'recargas') {
       this.router.navigate(['recargas'], { relativeTo: this.route });
+    } else if (tab === 'soporte') {
+      this.router.navigate(['soporte'], { relativeTo: this.route });
     }
   }
 

@@ -1,0 +1,116 @@
+<div class="admin-support-container">
+    <div class="header">
+        <h1>Gestión de Soporte</h1>
+        <p>Administra y atiende los tickets de los usuarios.</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+        <button [class.active]="filterStatus === 'All'" (click)="setFilter('All')">Todos</button>
+        <button [class.active]="filterStatus === 'Pending'" (click)="setFilter('Pending')">Pendientes</button>
+        <button [class.active]="filterStatus === 'InReview'" (click)="setFilter('InReview')">En Revisión</button>
+        <button [class.active]="filterStatus === 'Resolved'" (click)="setFilter('Resolved')">Resueltos</button>
+        <button [class.active]="filterStatus === 'Rejected'" (click)="setFilter('Rejected')">Rechazados</button>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading" *ngIf="isLoading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container" *ngIf="!isLoading">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario (ID)</th>
+                    <th>Asunto</th>
+                    <th>Categoría</th>
+                    <th>Prioridad</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ticket of filteredTickets">
+                    <td>#{{ ticket.ticketId }}</td>
+                    <td>
+                        <div class="user-info">
+                            <span class="email">{{ ticket.userEmail || 'ID: ' + ticket.userId }}</span>
+                        </div>
+                    </td>
+                    <td class="subject-cell">{{ ticket.subject }}</td>
+                    <td>{{ ticket.category }}</td>
+                    <td>
+                        <span class="priority-badge" [ngClass]="ticket.priority.toLowerCase()">
+                            {{ ticket.priority }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="status-badge" [ngClass]="ticket.status.toLowerCase()">
+                            {{ ticket.status }}
+                        </span>
+                    </td>
+                    <td>{{ ticket.createdAtUtc | date:'short' }}</td>
+                    <td>
+                        <button class="action-btn" (click)="openTicketModal(ticket)">Ver / Atender</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="empty-state" *ngIf="filteredTickets.length === 0">
+            <p>No hay tickets en esta categoría.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Ticket Detail / Action Modal -->
+<div class="modal-overlay" *ngIf="selectedTicket">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Ticket #{{ selectedTicket.ticketId }}</h2>
+            <button class="close-btn" (click)="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="ticket-info">
+                <p><strong>Asunto:</strong> {{ selectedTicket.subject }}</p>
+                <p><strong>Descripción:</strong></p>
+                <div class="description-box">
+                    {{ selectedTicket.description }}
+                </div>
+                <div *ngIf="selectedTicket.evidenceUrl">
+                    <p><strong>Evidencia:</strong> <a [href]="selectedTicket.evidenceUrl" target="_blank">Ver
+                            Archivo</a></p>
+                </div>
+            </div>
+
+            <div class="admin-actions">
+                <h3>Acciones de Administrador</h3>
+                <div class="form-group">
+                    <label>Cambiar Estado</label>
+                    <select [(ngModel)]="newStatus">
+                        <option value="Pending">Pendiente</option>
+                        <option value="InReview">En Revisión</option>
+                        <option value="Resolved">Resuelto</option>
+                        <option value="Rejected">Rechazado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Notas de Admin (Respuesta)</label>
+                    <textarea [(ngModel)]="adminNotes" rows="3"
+                        placeholder="Escribe una respuesta o nota interna..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="cancel-btn" (click)="closeModal()">Cancelar</button>
+                <button class="save-btn" (click)="updateStatus()" [disabled]="isUpdating">
+                    {{ isUpdating ? 'Guardando...' : 'Actualizar Ticket' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

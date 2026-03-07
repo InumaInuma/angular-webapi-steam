@@ -80,4 +80,8 @@ export class App implements OnInit {
   closeMenu(): void {
     this.mobileMenuOpen = false;
   }
+
+  isSalesActive(): boolean {
+    return this.router.url.includes('/pending-sales') || this.router.url.includes('/order-history');
+  }
 }

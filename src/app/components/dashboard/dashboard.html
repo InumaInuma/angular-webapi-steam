@@ -22,6 +22,12 @@
                     </a>
                 </li>
                 <li>
+                    <a (click)="switchTab('soporte')" [class.active]="activeTab === 'soporte'" class="nav-item">
+                        <span class="icon">🎧</span>
+                        <span class="label">Soporte</span>
+                    </a>
+                </li>
+                <li>
                     <a (click)="logout()" class="nav-item logout-btn">
                         <span class="icon">🚪</span>
                         <span class="label">Cerrar Sesión</span>
@@ -36,6 +42,11 @@
 
         <!-- Recargas Tab -->
         <div class="content-wrapper" *ngIf="activeTab === 'recargas'">
+            <router-outlet></router-outlet>
+        </div>
+
+        <!-- Soporte Tab -->
+        <div class="content-wrapper" *ngIf="activeTab === 'soporte'">
             <router-outlet></router-outlet>
         </div>
 

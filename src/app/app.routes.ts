@@ -14,6 +14,11 @@ import { AdminTopup } from './components/admin-topup/admin-topup';
 import { WalletHistory } from './components/wallet-history/wallet-history';
 import { PendingSales } from './components/pending-sales/pending-sales';
 import { OrderHistory } from './components/order-history/order-history';
+import { MarketplaceComponent } from './components/marketplace/marketplace';
+import { SupportCenter } from './components/support-center/support-center.component';
+import { AdminSupport } from './components/admin-support/admin-support.component';
+import { Cs2Marketplace } from './components/cs2-marketplace/cs2-marketplace';
+import { Tf2Marketplace } from './components/tf2-marketplace/tf2-marketplace';
 
 export const routes: Routes = [
 
@@ -23,6 +28,18 @@ export const routes: Routes = [
   {
     path: 'pagina-principal',
     component: PaginaPrincipal,
+  },
+  {
+    path: 'marketplace',
+    component: MarketplaceComponent,
+  },
+  {
+    path: 'marketplace/cs2',
+    component: Cs2Marketplace,
+  },
+  {
+    path: 'marketplace/tf2',
+    component: Tf2Marketplace,
   },
 
   // Perfil Perfil → cualquier logeado
@@ -62,6 +79,14 @@ export const routes: Routes = [
     data: { role: 'Customer' },
   },
 
+  // Support Center
+  {
+    path: 'support',
+    component: SupportCenter,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'Customer' },
+  },
+
   // Dashboard  → Admins
 
   {
@@ -73,6 +98,10 @@ export const routes: Routes = [
       {
         path: 'recargas',
         component: AdminTopup,
+      },
+      {
+        path: 'soporte',
+        component: AdminSupport,
       },
     ],
   },

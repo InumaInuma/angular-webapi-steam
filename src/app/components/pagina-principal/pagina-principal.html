@@ -9,8 +9,8 @@
     </video>
 
     <div class="hero-overlay">
-        <h1>Bienvenido a Dota Marketplace 🎮</h1>
-        <p>Compra, vende e intercambia tus ítems de Dota 2 de forma segura.</p>
+        <h1 class="glow-text">El Mercado P2P más confiable 🚀</h1>
+        <p>Compra and vende ítems de Dota 2, CS2 y TF2 con total seguridad y rapidez.</p>
 
         <div class="hero-actions">
             <ng-container *ngIf="isLoggedIn$ | async; else loginBtn">
@@ -19,34 +19,7 @@
             <ng-template #loginBtn>
                 <a routerLink="/login" class="btn primary">Empezar</a>
             </ng-template>
-            <a routerLink="/pagina-principal" fragment="marketplace" class="btn outline">Explorar</a>
-        </div>
-    </div>
-</section>
-<section class="marketplace" id="marketplace">
-    <h2 class="marketplace-title">🛒 Ítems en venta</h2>
-
-    <div class="marketplace-grid">
-        <div class="market-card" *ngFor="let item of items">
-            <div class="market-image">
-                <img [src]="item.iconUrl" [alt]="item.itemName" />
-            </div>
-
-            <div class="market-body">
-                <h3 class="item-name">{{ item.itemName }}</h3>
-
-                <p class="price">
-                    {{ item.currencyCode }} {{ item.price | number:'1.2-2' }}
-                </p>
-
-                <p class="seller">
-                    👤 {{ item.seller }}
-                </p>
-
-                <button class="btn-buy" (click)="buy(item)">
-                    Comprar
-                </button>
-            </div>
+            <a routerLink="/marketplace" class="btn outline">Explorar</a>
         </div>
     </div>
 </section>

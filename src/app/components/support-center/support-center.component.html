@@ -1,0 +1,153 @@
+<div class="support-container fade-in">
+    <div class="header-section">
+        <h1>Centro de Soporte</h1>
+        <p>¿Tienes algún problema? Crea un ticket y te ayudaremos en breve.</p>
+        <button class="create-btn" (click)="openCreateModal()">
+            <span>+</span> Nuevo Ticket
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Cargando tus tickets...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && tickets.length === 0">
+        <i class="fas fa-ticket-alt"></i>
+        <h3>No tienes tickets creados</h3>
+        <p>Crea uno nuevo si necesitas ayuda con algún pedido o recarga.</p>
+    </div>
+
+    <!-- Tickets List -->
+    <div class="tickets-grid" *ngIf="!isLoading && tickets.length > 0">
+        <div class="ticket-card" *ngFor="let ticket of tickets" (click)="viewTicket(ticket)">
+            <div class="card-header">
+                <span class="ticket-id">#{{ ticket.ticketId }}</span>
+                <span class="status-badge" [ngClass]="ticket.status.toLowerCase()">
+                    {{ getStatusLabel(ticket.status) }}
+                </span>
+            </div>
+            <h3 class="ticket-subject">{{ ticket.subject }}</h3>
+            <div class="card-footer">
+                <span class="category">{{ ticket.category }}</span>
+                <span class="date">{{ ticket.createdAtUtc | date:'dd MMM yyyy, HH:mm' }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Ticket Modal -->
+<div class="modal-overlay" *ngIf="showCreateModal">
+    <div class="modal-content slide-up">
+        <div class="modal-header">
+            <h2>Nuevo Ticket de Soporte</h2>
+            <button class="close-btn" (click)="closeCreateModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="createForm" (ngSubmit)="submitTicket()">
+                <div class="form-group">
+                    <label>Asunto</label>
+                    <input type="text" formControlName="subject" placeholder="Ej: Problema con recarga..."
+                        [class.error]="isInvalid('subject')">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select formControlName="category" [class.error]="isInvalid('category')">
+                            <option value="">Seleccionar...</option>
+                            <option value="Payment">Pagos / Recargas</option>
+                            <option value="Order">Pedidos / Items</option>
+                            <option value="Bug">Reporte de Error</option>
+                            <option value="Other">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Prioridad</label>
+                        <select formControlName="priority">
+                            <option value="Low">Baja</option>
+                            <option value="Medium">Media</option>
+                            <option value="High">Alta</option>
+                            <option value="Critical">Crítica</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción Detallada</label>
+                    <textarea formControlName="description" rows="5" placeholder="Describe tu problema con detalle..."
+                        [class.error]="isInvalid('description')"></textarea>
+                </div>
+
+                <!-- Evidence Upload (Optional) -->
+                <!-- Future improvement: Real file upload handling -->
+
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" (click)="closeCreateModal()">Cancelar</button>
+                    <button type="submit" class="submit-btn" [disabled]="createForm.invalid || isSubmitting">
+                        {{ isSubmitting ? 'Enviando...' : 'Crear Ticket' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- View Ticket Modal -->
+<div class="modal-overlay" *ngIf="selectedTicket">
+    <div class="modal-content slide-up">
+        <div class="modal-header">
+            <h2>Ticket #{{ selectedTicket.ticketId }}</h2>
+            <button class="close-btn" (click)="closeViewModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="ticket-details">
+                <div class="detail-row">
+                    <span class="label">Asunto:</span>
+                    <span class="value">{{ selectedTicket.subject }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Estado:</span>
+                    <span class="status-badge" [ngClass]="selectedTicket.status.toLowerCase()">
+                        {{ getStatusLabel(selectedTicket.status) }}
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Categoría:</span>
+                    <span class="value">{{ selectedTicket.category }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Fecha:</span>
+                    <span class="value">{{ selectedTicket.createdAtUtc | date:'dd MMM yyyy, HH:mm' }}</span>
+                </div>
+
+                <div class="description-section">
+                    <label>Descripción:</label>
+                    <div class="description-box">
+                        {{ selectedTicket.description }}
+                    </div>
+                </div>
+
+                <div class="evidence-section" *ngIf="selectedTicket.evidenceUrl">
+                    <label>Evidencia:</label>
+                    <a [href]="selectedTicket.evidenceUrl" target="_blank" class="evidence-link">
+                        <i class="fas fa-external-link-alt"></i> Ver Archivo Adjunto
+                    </a>
+                </div>
+
+                <div class="response-section" *ngIf="selectedTicket.adminNotes">
+                    <label>Respuesta del Administrador:</label>
+                    <div class="admin-response">
+                        {{ selectedTicket.adminNotes }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" (click)="closeViewModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

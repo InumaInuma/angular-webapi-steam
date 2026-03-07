@@ -1,0 +1,177 @@
+.tf2-theme {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    .market-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+
+        .game-banner {
+            width: 240px;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 126, 0, 0.3);
+        }
+
+        .marketplace-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ff7e00;
+            text-shadow: 0 0 20px rgba(255, 126, 0, 0.2);
+        }
+    }
+
+    .search-price-container {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        background: rgba(255, 126, 0, 0.03);
+        padding: 1.5rem;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 126, 0, 0.1);
+
+        .search-box {
+            flex: 1;
+            position: relative;
+
+            input {
+                width: 100%;
+                background: #0f172a;
+                border: 1px solid rgba(255, 126, 0, 0.2);
+                color: #fff;
+                padding: 12px 20px;
+                border-radius: 12px;
+                outline: none;
+                transition: 0.3s;
+
+                &:focus {
+                    border-color: #ff7e00;
+                    box-shadow: 0 0 0 4px rgba(255, 126, 0, 0.1);
+                }
+            }
+        }
+
+        .price-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            input {
+                width: 120px;
+                background: #0f172a;
+                border: 1px solid rgba(255, 126, 0, 0.2);
+                color: #fff;
+                padding: 12px;
+                border-radius: 12px;
+                outline: none;
+            }
+        }
+    }
+
+    .marketplace-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .market-card {
+        background: #1e1b18; // TF2 dark theme
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 126, 0, 0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 126, 0, 0.5);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .market-image {
+            height: 200px;
+            background: radial-gradient(circle, #2c2824 0%, #1e1b18 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                filter: drop-shadow(0 0 15px rgba(255, 126, 0, 0.1));
+            }
+        }
+
+        .market-body {
+            padding: 1.5rem;
+
+            .item-name {
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+                color: #fff;
+            }
+
+            .item-details {
+                font-size: 0.85rem;
+                color: #a8a096;
+                margin-bottom: 1rem;
+            }
+
+            .price {
+                font-size: 1.5rem;
+                font-weight: 800;
+                color: #ff7e00;
+                margin-bottom: 1rem;
+            }
+
+            .seller {
+                font-size: 0.85rem;
+                color: #a8a096;
+                margin-bottom: 1.5rem;
+            }
+
+            .btn-buy {
+                width: 100%;
+                background: linear-gradient(135deg, #ff7e00 0%, #d35400 100%);
+                color: white;
+                border: none;
+                padding: 12px;
+                border-radius: 12px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: 0.3s;
+
+                &:hover {
+                    box-shadow: 0 0 20px rgba(255, 126, 0, 0.4);
+                    transform: scale(1.02);
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .tf2-theme {
+        padding: 1rem;
+
+        .market-header {
+            .marketplace-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        .search-price-container {
+            flex-direction: column;
+        }
+
+        .marketplace-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+}

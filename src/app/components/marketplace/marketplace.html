@@ -1,0 +1,134 @@
+<section class="marketplace">
+    <h2 class="marketplace-title">🛒 Ítems en venta</h2>
+
+    <!-- Buff-Style Filter Board -->
+    <div class="buff-filter-board">
+        <!-- Top Row: Specialties -->
+        <div class="filter-row specialties-row">
+            <div class="section-label">Atributo</div>
+            <div class="specialty-container-compact">
+                <div *ngFor="let spec of specialties" class="specialty-card-compact"
+                    [class.active]="activeSpecialty === spec.id" (mouseenter)="hoveredSpec = spec.id"
+                    (mouseleave)="hoveredSpec = null" (click)="setSpecialtyFilter(spec.id)">
+
+                    <div class="spec-header-compact" [style.border-top-color]="spec.color">
+                        <img [src]="spec.icon" class="spec-icon" [alt]="spec.name">
+                        <span class="spec-name">{{ spec.name }}</span>
+                    </div>
+
+                    <!-- Hero Grid Overlay (Positioned absolutely relative to the board or card) -->
+                    <div class="hero-hover-grid" *ngIf="hoveredSpec === spec.id">
+                        <div class="hero-portrait" *ngFor="let hero of heroCategories[spec.id]"
+                            (click)="$event.stopPropagation(); setHeroFilter(hero)"
+                            [class.active]="activeHeroFilter === hero">
+                            <div class="hero-img-wrapper" [title]="hero">
+                                <img [src]="getHeroImageUrl(hero, spec.id)" (error)="onHeroImageError($event)"
+                                    [alt]="hero" class="hero-portrait-img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Row: Rarity/Quality Filters -->
+        <div class="filter-row qualities-row">
+            <div class="section-label">Rareza</div>
+            <div class="rarity-filters">
+                <button *ngFor="let filter of filters" class="filter-chip" [class.active]="activeFilter === filter"
+                    (click)="setFilter(filter)">
+                    {{ filter }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Row: Search & Price (Footer Style) -->
+        <div class="filter-footer">
+            <div class="active-filters-tags" *ngIf="activeHeroFilter !== 'Todos'">
+                <span class="filter-tag">
+                    Héroe: {{ activeHeroFilter }}
+                    <i class="fas fa-times" (click)="setHeroFilter('Todos')"></i>
+                </span>
+            </div>
+
+            <div class="footer-controls">
+                <div class="search-box-buff">
+                    <input type="text" placeholder="Buscar por nombre..." [(ngModel)]="searchName"
+                        (ngModelChange)="applyFilter()">
+                    <i class="fas fa-search"></i>
+                </div>
+
+                <div class="price-range-buff">
+                    <input type="number" placeholder="Min" [(ngModel)]="minPrice" (ngModelChange)="applyFilter()">
+                    <span class="separator">-</span>
+                    <input type="number" placeholder="Max" [(ngModel)]="maxPrice" (ngModelChange)="applyFilter()">
+                    <span class="currency">S/.</span>
+                </div>
+
+                <button class="btn-buff-search" (click)="applyFilter()">Buscar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="marketplace-grid">
+        <div class="market-card" *ngFor="let item of filteredItems">
+            <div class="market-image">
+                <img [src]="item.iconUrl" [alt]="item.itemName" />
+            </div>
+
+            <div class="market-body">
+                <h3 class="item-name">{{ item.itemName }}</h3>
+
+                <div class="item-details">
+                    <span [style.color]="item.rarityColor || '#fff'">{{ item.rarity }}</span>
+                    <span *ngIf="item.type"> • {{ item.type }}</span>
+                    <div *ngIf="item.hero" class="item-hero-text">Héroe: <strong>{{ item.hero }}</strong></div>
+
+                    <!-- GEMAS Marketplace -->
+                    <div class="item-gems" *ngIf="item.gems && item.gems.length > 0">
+                        <div class="gem-row" *ngFor="let gem of item.gems" [title]="gem.name">
+                            <img *ngIf="gem.iconUrl" [src]="gem.iconUrl" class="gem-img" alt="gem" />
+                            <span *ngIf="!gem.iconUrl" class="gem-icon" [style.color]="'#' + gem.color">💎</span>
+                            <span class="gem-name" [style.color]="'#' + gem.color">{{ gem.name }}</span>
+                        </div>
+                    </div>
+
+                    <!-- STYLES Marketplace -->
+                    <div class="item-styles-market" *ngIf="item.styles && item.styles.length > 0">
+                        <details class="market-styles-details">
+                            <summary>Estilos ({{ item.styles.length }})</summary>
+                            <div class="market-styles-list">
+                                <div *ngFor="let style of item.styles" [ngClass]="{'locked': style.isLocked}">
+                                    {{ style.name }}
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <p class="price">
+                    {{ item.currencyCode }} {{ item.price | number:'1.2-2' }}
+                </p>
+
+                <div class="seller">
+                    <div class="seller-info">
+                        👤 {{ item.seller }}
+                    </div>
+                    <div class="seller-rating" *ngIf="(item.sellerRating ?? 0) > 0"
+                        [title]="(item.totalRatings || 0) + ' calificaciones'">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-val">{{ item.sellerRating | number:'1.1-1' }}</span>
+                        <span class="rating-count">({{ item.totalRatings }})</span>
+                    </div>
+                    <span class="no-rating" *ngIf="!item.sellerRating || item.sellerRating === 0">
+                        (Vendedor Nuevo)
+                    </span>
+                </div>
+
+                <button class="btn-buy" (click)="buy(item)">
+                    Comprar
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

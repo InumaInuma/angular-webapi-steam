@@ -24,12 +24,12 @@ export class PendingSales implements OnInit {
   loadSales() {
     this.loading = true;
     this.dotaService.getPendingSales().subscribe({
-      next: (res) => {
+      next: (res: PendingSaleDto[]) => {
         this.sales = res;
         this.loading = false;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error(err);
         this.loading = false;
       }
@@ -101,7 +101,7 @@ export class PendingSales implements OnInit {
         alert('✅ Venta cancelada correctamente.');
         this.loadSales(); // 👈 Recargar desde el servidor para asegurar sincronización
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error(err);
         alert('❌ Error al cancelar la venta: ' + (err.error?.message || 'Error desconocido'));
       }

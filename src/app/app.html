@@ -10,19 +10,45 @@
             <button class="back-btn" *ngIf="showBackButton" (click)="goBack()">
                 <span class="arrow">←</span> <span class="text-back">Atrás</span>
             </button>
-            <a routerLink="/pagina-principal" class="brand">
-                <img src="dotados.png" alt="Logo" class="nav-logo" />
-                <span class="brand-text">DOTA P2P</span>
-            </a>
+            <div class="brand-dropdown">
+                <a routerLink="/pagina-principal" class="brand">
+                    <img src="dotados.png" alt="Logo" class="nav-logo" />
+                    <span class="brand-text">P2P MARKET <span class="arrow-down">▼</span></span>
+                </a>
+                <div class="brand-menu">
+                    <a routerLink="/marketplace" class="game-option">
+                        <img src="cabeseradota.png" alt="Dota 2" />
+                        <span>Dota 2</span>
+                    </a>
+                    <a routerLink="/marketplace/cs2" class="game-option">
+                        <img src="cs2.png" alt="CS2" />
+                        <span>Counter-Strike 2</span>
+                    </a>
+                    <a routerLink="/marketplace/tf2" class="game-option">
+                        <img src="forteam.png" alt="TF2" />
+                        <span>Team Fortress 2</span>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- Sección Central: Links (Desktop) -->
         <div class="nav-links desktop-only">
-            <a routerLink="/pagina-principal" fragment="marketplace" routerLinkActive="active">Mercado</a>
+            <a routerLink="/marketplace" routerLinkActive="active">Mercado</a>
             <ng-container *ngIf="isLoggedIn$ | async">
                 <a routerLink="/dota-items" routerLinkActive="active">Mi Inventario</a>
-                <a routerLink="/pending-sales" routerLinkActive="active">Mis Ventas</a>
-                <a routerLink="/order-history" routerLinkActive="active">Historial</a>
+
+                <div class="nav-dropdown">
+                    <a class="dropdown-trigger" [class.active-parent]="isSalesActive()">
+                        Mis Ventas <span class="arrow-down">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a routerLink="/pending-sales" routerLinkActive="active">📦 En Venta</a>
+                        <a routerLink="/order-history" routerLinkActive="active">📜 Historial</a>
+                    </div>
+                </div>
+
+                <a routerLink="/support" routerLinkActive="active">Soporte</a>
             </ng-container>
         </div>
 
@@ -66,14 +92,27 @@
     </div>
 
     <div class="sidebar-content">
-        <a routerLink="/pagina-principal" fragment="marketplace" routerLinkActive="active"
-            (click)="closeMenu()">Mercado</a>
+        <div class="sidebar-section">
+            <span class="section-title">🌐 Juegos</span>
+            <div class="game-links-mobile">
+                <a routerLink="/marketplace" routerLinkActive="active" (click)="closeMenu()">
+                    <img src="cabeseradota.png" width="24" height="24" /> Dota 2
+                </a>
+                <a routerLink="/marketplace/cs2" routerLinkActive="active" (click)="closeMenu()">
+                    <img src="cs2.png" width="24" height="24" /> CS2
+                </a>
+                <a routerLink="/marketplace/tf2" routerLinkActive="active" (click)="closeMenu()">
+                    <img src="forteam.png" width="24" height="24" /> TF2
+                </a>
+            </div>
+        </div>
 
         <ng-container *ngIf="isLoggedIn$ | async; else guestMobile">
             <div class="divider"></div>
             <a routerLink="/dota-items" routerLinkActive="active" (click)="closeMenu()">🎒 Mi Inventario</a>
             <a routerLink="/pending-sales" routerLinkActive="active" (click)="closeMenu()">📦 Mis Ventas</a>
             <a routerLink="/order-history" routerLinkActive="active" (click)="closeMenu()">📜 Historial</a>
+            <a routerLink="/support" routerLinkActive="active" (click)="closeMenu()">🎧 Soporte</a>
             <a routerLink="/profile" routerLinkActive="active" (click)="closeMenu()">👤 Mi Perfil</a>
             <div class="divider"></div>
             <button class="logout-link" (click)="logout()">🚪 Cerrar Sesión</button>

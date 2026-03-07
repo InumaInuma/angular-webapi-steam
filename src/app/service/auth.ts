@@ -12,6 +12,11 @@ export class Auth {
   private apiBaseUrl = `${environment.apiUrl}`; // Tu URL base de la API
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
+
+  public isLoggedInValue(): boolean {
+    return this.isLoggedInSubject.value;
+  }
+
   private balanceSubject = new BehaviorSubject<number>(0);
   public balance$ = this.balanceSubject.asObservable();
   private steamIdSubject = new BehaviorSubject<string | null>(localStorage.getItem('steamId'));

@@ -150,6 +150,11 @@ export class DotaItems implements OnInit {
         title: this.selectedItem.name,
         iconUrl: this.selectedItem.imageUrl,
         price: this.price,
+        rarity: this.selectedItem.rarity,
+        type: this.selectedItem.type,
+        hero: this.selectedItem.hero,
+        gems: this.selectedItem.gems, // 👈 Include gems
+        styles: this.selectedItem.styles // 👈 Include styles
       })
       .subscribe({
         next: () => {

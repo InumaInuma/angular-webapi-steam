@@ -68,22 +68,119 @@
     }
 }
 
-.brand {
+.brand-dropdown {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 10px;
-    text-decoration: none;
 
-    .nav-logo {
-        height: 32px;
-        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        transition: 0.3s;
+
+        .nav-logo {
+            height: 32px;
+            width: auto;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+        }
+
+        .brand-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .arrow-down {
+                font-size: 0.7rem;
+                opacity: 0.6;
+                transition: 0.3s;
+            }
+        }
+
+        &:hover {
+            opacity: 0.8;
+        }
     }
 
-    .brand-text {
-        color: white;
-        font-weight: 800;
-        font-size: 1.25rem;
-        letter-spacing: 1px;
+    .brand-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 15px;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 12px;
+        min-width: 260px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        z-index: 3000;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 0;
+            right: 0;
+            height: 15px;
+        }
+
+        .game-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #e2e8f0;
+            transition: 0.2s ease;
+
+            img {
+                width: 36px;
+                height: 36px;
+                object-fit: cover;
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            span {
+                font-weight: 600;
+                font-size: 1rem;
+            }
+
+            &:hover {
+                background: rgba(59, 130, 246, 0.15);
+                color: #60a5fa;
+                transform: translateX(5px);
+
+                img {
+                    border-color: #60a5fa;
+                    box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+                }
+            }
+        }
+    }
+
+    &:hover {
+        .brand-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .arrow-down {
+            transform: rotate(180deg);
+            color: #60a5fa;
+        }
     }
 }
 
@@ -109,23 +206,22 @@
     display: flex;
     gap: 2rem;
 
-    a {
-        color: #f1f5f9; // Casi blanco para máxima visibilidad
+    align-items: center;
+
+    >a {
+        color: #f1f5f9;
         text-decoration: none;
-        font-weight: 600; // Más grueso
-        font-size: 1rem; // Un poco más grande
+        font-weight: 600;
+        font-size: 1rem;
         transition: 0.3s;
         position: relative;
         padding-bottom: 4px;
 
         &:hover {
-            color: #60a5fa; // Azul claro al pasar el ratón
+            color: #60a5fa;
         }
 
-
-        &.active,
-        &[ng-reflect-fragment="marketplace"] {
-            // Asegurar visibilidad del botón Mercado
+        &.active {
             color: #60a5fa;
             text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
 
@@ -138,6 +234,115 @@
                 height: 2px;
                 background: var(--accent);
                 box-shadow: 0 0 10px var(--accent);
+            }
+        }
+    }
+
+    .nav-dropdown {
+        position: relative;
+        display: inline-block;
+
+        .dropdown-trigger {
+            color: #f1f5f9;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 4px;
+            transition: 0.3s;
+
+            .arrow-down {
+                font-size: 0.7rem;
+                transition: transform 0.3s;
+            }
+
+            &:hover {
+                color: #60a5fa;
+            }
+
+            &.active-parent {
+                color: #60a5fa;
+                text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    height: 2px;
+                    background: var(--accent);
+                    box-shadow: 0 0 10px var(--accent);
+                }
+            }
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(15px);
+            background: #0f172a;
+            min-width: 180px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+
+            &::before {
+                // Invisible bridge to prevent losing hover
+                content: '';
+                position: absolute;
+                top: -15px;
+                left: 0;
+                right: 0;
+                height: 15px;
+            }
+
+            a {
+                display: block;
+                padding: 10px 20px;
+                color: #e2e8f0 !important;
+                font-size: 0.95rem;
+                font-weight: 500;
+                text-decoration: none;
+                transition: 0.2s;
+                border: none !important;
+
+                &::after {
+                    display: none !important; // Desactivar la línea inferior en el dropdown
+                }
+
+                &:hover {
+                    background: rgba(59, 130, 246, 0.1);
+                    color: #60a5fa !important;
+                    padding-left: 25px;
+                }
+
+                &.active {
+                    background: rgba(59, 130, 246, 0.15);
+                    color: #60a5fa !important;
+                }
+            }
+        }
+
+        &:hover {
+            .dropdown-menu {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(5px);
+            }
+
+            .arrow-down {
+                transform: rotate(180deg);
             }
         }
     }
@@ -348,6 +553,50 @@
             flex-direction: column;
             gap: 0.5rem;
             overflow-y: auto;
+
+            .sidebar-section {
+                margin-bottom: 1.5rem;
+
+                .section-title {
+                    display: block;
+                    padding: 0 16px 8px;
+                    font-size: 0.8rem;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    color: #64748b;
+                    font-weight: 700;
+                }
+            }
+
+            .game-links-mobile {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 12px 16px;
+                    border-radius: 12px;
+                    color: #fff;
+                    font-weight: 600;
+
+                    img {
+                        border-radius: 6px;
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                    }
+
+                    &.active {
+                        background: rgba(59, 130, 246, 0.1);
+                        color: #60a5fa;
+
+                        img {
+                            border-color: #60a5fa;
+                        }
+                    }
+                }
+            }
 
             a {
                 display: block;

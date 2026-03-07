@@ -89,6 +89,61 @@
     font-size: 0.9rem;
     margin: 0;
   }
+
+  .item-gems {
+    display: flex;
+    flex-wrap: wrap;
+    /* 👈 Permitir que bajen si son muchas */
+    gap: 6px;
+    margin-top: 10px;
+
+    .gem-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.75rem;
+      background: rgba(15, 23, 42, 0.6);
+      /* Fondo oscuro translúcido */
+      padding: 3px 8px;
+      border-radius: 12px;
+      /* Pill shape */
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+      max-width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        background: rgba(15, 23, 42, 0.9);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      .gem-img {
+        width: 28px;
+        /* 👈 Aumentado considerablemente */
+        height: 28px;
+        object-fit: contain;
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+        /* Resaltar imagen */
+      }
+
+      .gem-icon {
+        font-size: 0.8rem;
+        filter: drop-shadow(0 0 2px currentColor);
+        /* Glow effect del mismo color */
+      }
+
+      .gem-name {
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 140px;
+        /* Limitar ancho para no romper la card */
+      }
+    }
+  }
 }
 
 .pagination {
@@ -265,33 +320,50 @@
     border: 1px solid #eee;
   }
 
-  .modal-name {
-    margin: 0.2rem 0 0.6rem;
-    font-weight: 700;
-    font-size: 1.05rem;
-  }
+  font-weight: 700;
+  font-size: 1.05rem;
+}
 
-  .price-label {
-    align-self: start;
-    font-size: 0.9rem;
-    color: #444;
-  }
+.modal-gems {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
 
-  .price-input {
-    width: 100%;
-    max-width: 260px;
-    padding: 0.55rem 0.7rem;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    outline: none;
-
-    &:focus {
-      border-color: #6200ea;
-      box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.12);
-    }
+  .modal-gem-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
   }
 }
+
+.price-label {
+  align-self: start;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.price-input {
+  width: 100%;
+  max-width: 260px;
+  padding: 0.55rem 0.7rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+
+  &:focus {
+    border-color: #6200ea;
+    box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.12);
+  }
+}
+
 
 .modal-actions {
   margin-top: 1rem;

@@ -18,6 +18,7 @@
                     <th>Estado</th>
                     <th>Contraparte</th>
                     <th>Precio</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,8 +45,35 @@
                     <td class="price" data-label="Precio">
                         {{ item.currencyCode }} {{ item.price | number:'1.2-2' }}
                     </td>
+                    <!-- Botón Calificar -->
+                    <td *ngIf="item.transactionType?.toLowerCase() === 'buy' && item.orderStatus === 'Completed'">
+                        <button *ngIf="!item.hasRated" class="rate-btn" (click)="openRatingModal(item)">★
+                            Calificar</button>
+                        <span *ngIf="item.hasRated" class="rated-badge">✔ Calificado</span>
+                    </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <!-- Modal de Calificación -->
+    <div class="modal-overlay" *ngIf="ratingModalOpen">
+        <div class="modal-content">
+            <h3>Calificar Vendedor</h3>
+            <p>¿Qué te pareció la compra?</p>
+
+            <div class="stars-input">
+                <span *ngFor="let star of [1,2,3,4,5]" (click)="setRating(star)" [class.active]="star <= currentRating">
+                    ★
+                </span>
+            </div>
+
+            <textarea [(ngModel)]="ratingComment" placeholder="Escribe un comentario opcional..."></textarea>
+
+            <div class="modal-actions">
+                <button (click)="submitRating()" [disabled]="currentRating === 0">Enviar</button>
+                <button class="cancel-btn" (click)="closeRatingModal()">Cancelar</button>
+            </div>
+        </div>
     </div>
 </div>

@@ -2,11 +2,30 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 
+export interface ItemGem {
+  name: string;
+  color: string;
+  type: string;
+  iconUrl?: string; // 👈 New property
+}
+
+export interface ItemStyle {
+  name: string;
+  isLocked: boolean;
+}
+
 export interface DotaItemDto {
   assetId: string;
   name: string;
   imageUrl: string;
   isTradable: boolean;
+  rarity?: string;
+  type?: string;
+  hero?: string;
+  rarityColor?: string;
+  gems?: ItemGem[]; // 👈 Add gems
+  styles?: ItemStyle[]; // 👈 Fixed missingStyles
+  description?: string; // 👈 Add description (Lore)
 }
 
 export interface MarketplaceItem {
@@ -19,6 +38,14 @@ export interface MarketplaceItem {
   itemName: string;
   sellerUserId: number;
   seller: string;
+  sellerRating?: number; // 👈 New
+  totalRatings?: number; // 👈 New
+  rarity?: string;
+  type?: string;
+  hero?: string;
+  rarityColor?: string;
+  gems?: ItemGem[]; // 👈 Fixed type for ngFor
+  styles?: ItemStyle[]; // 👈 Add styles
 }
 
 export interface PendingSaleDto {
@@ -78,13 +105,24 @@ export class Dota {
     );
   }
 
+
   sellItem(payload: {
     assetId: string;
     title: string;
     iconUrl: string;
     price: number;
+    rarity?: string;
+    type?: string;
+    hero?: string;
+    gems?: any[];
+    styles?: any[];
   }) {
     return this.http.post<any>(`${this.apiUrl}/sell`, payload);
+  }
+
+  // 👇 Nuevo método para calificar
+  rateSeller(payload: { orderId: number; rating: number; comment: string }) {
+    return this.http.post<any>(`${environment.apiUrl}/Rating`, payload);
   }
 
   getMarketplaceItems() {
