@@ -19,6 +19,20 @@ export class PendingSales implements OnInit {
 
   ngOnInit() {
     this.loadSales();
+
+    // Escuchar respuesta de la Extensión
+    window.addEventListener("message", (event) => {
+      if (event.data && event.data.type === "P2P_MARKET_OFFER_RESULT") {
+        this.isSending = false;
+        if (event.data.success) {
+          alert("✅ " + event.data.message);
+          this.loadSales(); // Recargar ventas
+          this.closeModal();
+        } else {
+          alert("❌ Error desde Extensión: " + event.data.message);
+        }
+      }
+    });
   }
 
   loadSales() {
@@ -49,33 +63,52 @@ export class PendingSales implements OnInit {
   confirmSend() {
     if (!this.selectedSale || !this.selectedSale.buyerTradeUrl) return;
 
-    // Construir URL manual
-    // Intenta pre-seleccionar el ítem del inventario del vendedor (nosotros)
-    // Formato: &for_item_<APPID>_<CONTEXTID>_<ASSETID>=1
-    // Ejemplo: &for_item_570_2_123456789=1
+    this.isSending = true;
 
+    // Enviar mensaje a la Extensión de Chrome
+    window.postMessage({
+      type: "P2P_MARKET_SEND_OFFER",
+      payload: {
+        orderId: this.selectedSale.orderId,
+        buyerTradeUrl: this.selectedSale.buyerTradeUrl,
+        buyerSteamId: this.extractSteamId(this.selectedSale.buyerTradeUrl),
+        assetId: this.selectedSale.itemAssetId,
+        appId: this.selectedSale.appId || 570,
+        contextId: this.selectedSale.contextId || 2
+      }
+    }, "*");
+
+    // Timeout por si la extensión no está instalada o falla en responder (20 segundos)
+    setTimeout(() => {
+      if (this.isSending) {
+        this.isSending = false;
+        alert("⚠️ Tiempo de espera agotado. Asegúrate de tener la Extensión 'P2P Market Auto-Sender' instalada y activa.");
+
+        // Fallback: abrir manual
+        this.openManualTradeUrl();
+      }
+    }, 20000); // <-- 20 segundos para dar tiempo a la macro de UI
+  }
+
+  extractSteamId(tradeUrl: string): string {
+    // tradeUrl ejemplo: https://steamcommunity.com/tradeoffer/new/?partner=12345678&token=abcde
+    const urlObj = new URL(tradeUrl);
+    return urlObj.searchParams.get('partner') || '';
+  }
+
+  openManualTradeUrl() {
+    if (!this.selectedSale) return;
     let tradeUrl = this.selectedSale.buyerTradeUrl;
-
     if (this.selectedSale.itemAssetId) {
       const appId = this.selectedSale.appId || 570;
       const contextId = this.selectedSale.contextId || 2;
-      const assetId = this.selectedSale.itemAssetId;
-
-      // 🚀 add_item: Intenta que el item aparezca en los cuadros de la derecha (Tus artículos)
-      tradeUrl += `&add_item=${appId}_${contextId}_${assetId}`;
+      tradeUrl += `&add_item=${appId}_${contextId}_${this.selectedSale.itemAssetId}`;
     }
-
-    // Abrir en popup centrado
     const width = 1050;
     const height = 850;
     const left = (window.screen.width - width) / 2;
     const top = (window.screen.height - height) / 2;
-
-    window.open(
-      tradeUrl,
-      'SteamTrade',
-      `width=${width},height=${height},top=${top},left=${left},resizable,scrollbars=yes,status=1`
-    );
+    window.open(tradeUrl, 'SteamTrade', `width=${width},height=${height},top=${top},left=${left},resizable,scrollbars=yes,status=1`);
     this.closeModal();
   }
 

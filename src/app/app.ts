@@ -5,6 +5,7 @@ import { Auth } from './service/auth';
 import { filter, switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Walletservice } from './service/walletservice';
+import { FcmService } from './services/fcm.service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,8 @@ export class App implements OnInit {
     private router: Router,
     private authService: Auth,
     private cdr: ChangeDetectorRef,
-    private walletService: Walletservice
+    private walletService: Walletservice,
+    private fcmService: FcmService
   ) {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
     this.balance$ = this.authService.balance$;
@@ -56,6 +58,10 @@ export class App implements OnInit {
         this.authService.setBalance(res.balance);
         this.cdr.detectChanges();
       }
+
+      // Solicitar permisos FCM y escuchar mensajes después de iniciar sesión
+      this.fcmService.requestPermission();
+      this.fcmService.receiveMessage();
     });
 
     // Cargar info inicial si ya hay token al entrar/refrescar
