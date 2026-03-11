@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Dota, MarketplaceItem } from '../../service/dota';
 import { Auth } from '../../service/auth';
+import { Walletservice } from '../../service/walletservice';
 
 @Component({
     selector: 'app-cs2-marketplace',
@@ -26,7 +27,8 @@ export class Cs2Marketplace implements OnInit {
         private dotaService: Dota,
         private cdr: ChangeDetectorRef,
         private authService: Auth,
-        private router: Router
+        private router: Router,
+        private walletService: Walletservice
     ) {
         this.isLoggedIn$ = this.authService.isLoggedIn$;
     }
@@ -60,6 +62,13 @@ export class Cs2Marketplace implements OnInit {
             return;
         }
 
+        // 2. Validar que no sea su propio item
+        const currentUserId = Number(localStorage.getItem('userId'));
+        if (item.sellerUserId === currentUserId) {
+            alert('❌ No puedes comprar un artículo que tú mismo has puesto en venta.');
+            return;
+        }
+
         if (!confirm(`¿Estás seguro de comprar ${item.itemName} por ${item.currencyCode} ${item.price}?`)) {
             return;
         }
@@ -67,7 +76,16 @@ export class Cs2Marketplace implements OnInit {
         this.dotaService.buyItem(item.listingId).subscribe({
             next: () => {
                 alert('✅ ¡Compra exitosa! Revisa tus pedidos pendientes.');
-                this.ngOnInit();
+                this.ngOnInit(); // Recargar la lista
+                // Actualizar balance global
+                this.walletService.getBalance().subscribe({
+                    next: (res: any) => {
+                        if (res && res.balance !== undefined) {
+                            this.authService.setBalance(res.balance);
+                        }
+                    },
+                    error: (err) => console.error('Error fetching balance:', err)
+                });
             },
             error: (err: any) => {
                 alert('❌ Error al comprar: ' + (err.error?.message || err.message));

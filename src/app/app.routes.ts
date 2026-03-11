@@ -13,6 +13,7 @@ import { Topup } from './components/topup/topup';
 import { AdminTopup } from './components/admin-topup/admin-topup';
 import { WalletHistory } from './components/wallet-history/wallet-history';
 import { PendingSales } from './components/pending-sales/pending-sales';
+import { PendingPurchasesComponent } from './components/pending-purchases/pending-purchases';
 import { OrderHistory } from './components/order-history/order-history';
 import { MarketplaceComponent } from './components/marketplace/marketplace';
 import { SupportCenter } from './components/support-center/support-center.component';
@@ -67,6 +68,12 @@ export const routes: Routes = [
   {
     path: 'pending-sales',
     component: PendingSales,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'Customer' },
+  },
+  {
+    path: 'pending-purchases',
+    component: PendingPurchasesComponent,
     canActivate: [authGuard, roleGuard],
     data: { role: 'Customer' },
   },

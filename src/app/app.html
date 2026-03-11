@@ -40,10 +40,11 @@
 
                 <div class="nav-dropdown">
                     <a class="dropdown-trigger" [class.active-parent]="isSalesActive()">
-                        Mis Ventas <span class="arrow-down">▼</span>
+                        Transacciones <span class="arrow-down">▼</span>
                     </a>
                     <div class="dropdown-menu">
                         <a routerLink="/pending-sales" routerLinkActive="active">📦 En Venta</a>
+                        <a routerLink="/pending-purchases" routerLinkActive="active">🛒 Mis Compras</a>
                         <a routerLink="/order-history" routerLinkActive="active">📜 Historial</a>
                     </div>
                 </div>
@@ -111,6 +112,7 @@
             <div class="divider"></div>
             <a routerLink="/dota-items" routerLinkActive="active" (click)="closeMenu()">🎒 Mi Inventario</a>
             <a routerLink="/pending-sales" routerLinkActive="active" (click)="closeMenu()">📦 Mis Ventas</a>
+            <a routerLink="/pending-purchases" routerLinkActive="active" (click)="closeMenu()">🛒 Mis Compras</a>
             <a routerLink="/order-history" routerLinkActive="active" (click)="closeMenu()">📜 Historial</a>
             <a routerLink="/support" routerLinkActive="active" (click)="closeMenu()">🎧 Soporte</a>
             <a routerLink="/profile" routerLinkActive="active" (click)="closeMenu()">👤 Mi Perfil</a>

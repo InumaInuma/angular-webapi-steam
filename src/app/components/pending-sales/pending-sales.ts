@@ -26,10 +26,25 @@ export class PendingSales implements OnInit {
         this.isSending = false;
         if (event.data.success) {
           alert("✅ " + event.data.message);
-          this.loadSales(); // Recargar ventas
-          this.closeModal();
+
+          // Notificar al backend que se envió la oferta
+          if (event.data.tradeOfferId && this.selectedSale) {
+            this.dotaService.markOrderAsSent(this.selectedSale.orderId, event.data.tradeOfferId).subscribe({
+              next: () => {
+                console.log("Orden marcada como enviada en backend.");
+                this.loadSales(); // Recargar ventas
+                this.closeModal();
+              },
+              error: (err) => console.error(err)
+            });
+          } else {
+            this.loadSales();
+            this.closeModal();
+          }
+
         } else {
           alert("❌ Error desde Extensión: " + event.data.message);
+          this.cdr.detectChanges(); // Restaura el estado de isSending porque falló
         }
       }
     });

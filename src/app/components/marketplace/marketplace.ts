@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms'; // 👈 Import FormsModule
 import { Observable } from 'rxjs';
 import { Dota, MarketplaceItem } from '../../service/dota';
 import { Auth } from '../../service/auth';
+import { Walletservice } from '../../service/walletservice';
 
 @Component({
     selector: 'app-marketplace',
@@ -124,7 +125,8 @@ export class MarketplaceComponent implements OnInit {
         private dotaService: Dota,
         private cdr: ChangeDetectorRef,
         private authService: Auth,
-        private router: Router // 👈 Inject Router
+        private router: Router, // 👈 Inject Router
+        private walletService: Walletservice
     ) {
         this.isLoggedIn$ = this.authService.isLoggedIn$;
     }
@@ -222,6 +224,13 @@ export class MarketplaceComponent implements OnInit {
             return;
         }
 
+        // 2. Validar que no sea su propio item
+        const currentUserId = Number(localStorage.getItem('userId'));
+        if (item.sellerUserId === currentUserId) {
+            alert('❌ No puedes comprar un artículo que tú mismo has puesto en venta.');
+            return;
+        }
+
         if (!confirm(`¿Estás seguro de comprar ${item.itemName} por ${item.currencyCode} ${item.price}?`)) {
             return;
         }
@@ -230,6 +239,15 @@ export class MarketplaceComponent implements OnInit {
             next: (res: any) => {
                 alert('✅ ¡Compra exitosa! Revisa tus pedidos pendientes.');
                 this.ngOnInit(); // Recargar la lista
+                // Actualizar balance global
+                this.walletService.getBalance().subscribe({
+                    next: (res: any) => {
+                        if (res && res.balance !== undefined) {
+                            this.authService.setBalance(res.balance);
+                        }
+                    },
+                    error: (err) => console.error('Error fetching balance:', err)
+                });
             },
             error: (err: any) => {
                 console.error(err);

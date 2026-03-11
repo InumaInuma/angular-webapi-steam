@@ -1,0 +1,102 @@
+<div class="pending-purchases-container">
+    <div class="header-section">
+        <h1>🛒 Mis Compras <span>Por Aceptar</span></h1>
+        <p>Estos son los ítems que ya pagaste y el vendedor ya te envió. Acéptalos para recibir tu ítem en Steam.</p>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Cargando tus compras...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!loading && purchases.length === 0">
+        <div class="empty-icon">🎮</div>
+        <h2>No tienes compras pendientes</h2>
+        <p>Cuando compres un ítem y el vendedor te envíe la oferta de Steam, aparecerá aquí.</p>
+        <button class="btn-primary" routerLink="/marketplace">Ir al Mercado</button>
+    </div>
+
+    <!-- Purchases List -->
+    <div class="purchases-grid" *ngIf="!loading && purchases.length > 0">
+        <div class="purchase-card" *ngFor="let purchase of purchases">
+
+            <div class="card-header">
+                <div class="item-info">
+                    <img [src]="'https://community.cloudflare.steamstatic.com/economy/image/' + purchase.iconUrl"
+                        [alt]="purchase.itemName" class="item-img" onerror="this.src='dotados.png'" />
+                    <div class="item-details">
+                        <h3 class="item-name">{{ purchase.itemName }}</h3>
+                        <span class="order-id">Orden #{{ purchase.orderId }}</span>
+                    </div>
+                </div>
+                <div class="price-tag">
+                    {{ purchase.currencyCode }} {{ purchase.price | number:'1.2-2' }}
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="seller-info">
+                    <span class="label">VENDEDOR</span>
+                    <span class="value">
+                        <span class="avatar-sm">👤</span> {{ purchase.sellerName }}
+                    </span>
+                </div>
+                <div class="date-info">
+                    <span class="label">FECHA DE ORDEN</span>
+                    <span class="value">📅 {{ purchase.createdAtUtc | date:'short' }}</span>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button class="btn-success" (click)="openModal(purchase)">
+                    📥 Aceptar Ítem Automático
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal de Confirmación -->
+<div class="modal-overlay" *ngIf="selectedPurchase" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>Aceptar Ítem Automático</h2>
+            <button class="close-btn" (click)="closeModal()" *ngIf="!isAccepting">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="item-preview">
+                <img [src]="'https://community.cloudflare.steamstatic.com/economy/image/' + selectedPurchase.iconUrl"
+                    [alt]="selectedPurchase.itemName" onerror="this.src='dotados.png'" />
+                <div class="preview-details">
+                    <h3>{{ selectedPurchase.itemName }}</h3>
+                    <p class="price-highlight">Orden #{{ selectedPurchase.orderId }}</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p>Nuestra extensión aceptará la Oferta de Steam de forma invisible al instante. ¡No tendrás que abrir
+                    ninguna ventana!</p>
+                <div class="steam-offer-id">
+                    <strong>ID Oferta:</strong> {{ selectedPurchase.tradeOfferId }}
+                </div>
+            </div>
+
+            <!-- Hint: Steam Guard no se necesita para recibir ítems -->
+            <p class="steam-guard-note">🌟 No necesitas confirmar con Steam Guard en tu celular para recibir ítems.</p>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-secondary" (click)="closeModal()" [disabled]="isAccepting">Cancelar</button>
+            <button class="btn-success" (click)="confirmAccept()" [disabled]="isAccepting">
+                <span *ngIf="!isAccepting">Aceptar Ítem</span>
+                <span *ngIf="isAccepting" class="loading-text">
+                    <div class="spinner-small"></div> Aceptando...
+                </span>
+            </button>
+        </div>
+    </div>
+</div>

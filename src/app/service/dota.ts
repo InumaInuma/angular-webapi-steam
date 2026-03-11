@@ -158,6 +158,24 @@ export class Dota {
       withCredentials: true
     });
   }
+
+  getPendingPurchases() {
+    return this.http.get<any[]>(`${this.apiBaseUrl}/purchases/pending`, {
+      withCredentials: true
+    });
+  }
+
+  markOrderAsSent(orderId: number, steamOfferId: string) {
+    return this.http.post<any>(`${this.apiBaseUrl}/trade/mark-sent`, { orderId, steamOfferId }, {
+      withCredentials: true
+    });
+  }
+
+  markOrderAsAccepted(orderId: number) {
+    return this.http.post<any>(`${this.apiBaseUrl}/trade/mark-accepted/${orderId}`, {}, {
+      withCredentials: true
+    });
+  }
 }
 
 
