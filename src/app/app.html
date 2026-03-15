@@ -58,7 +58,7 @@
             <ng-container *ngIf="isLoggedIn$ | async; else loginBtn">
                 <div class="wallet-display" routerLink="/topup" style="cursor: pointer;">
                     <span class="wallet-icon">💰</span>
-                    <span class="balance">S/ {{ (balance$ | async) | number:'1.2-2' }}</span>
+                    <span class="balance" style="color: #86efac !important; font-weight: 800;">S/ {{ (balance$ | async) | number:'1.2-2' }}</span>
                     <span class="plus-icon" style="margin-left:8px; font-size: 0.8em; color: #22c55e;">+</span>
                 </div>
                 <a routerLink="/profile" class="profile-link">Mi Perfil</a>
@@ -78,7 +78,7 @@
         <div class="nav-right mobile-only" *ngIf="isLoggedIn$ | async">
             <div class="wallet-display compact" routerLink="/topup">
                 <span class="wallet-icon">💰</span>
-                <span class="balance">S/ {{ (balance$ | async) | number:'1.2-2' }}</span>
+                <span class="balance" style="color: #86efac !important; font-weight: 800;">S/ {{ (balance$ | async) | number:'1.2-2' }}</span>
             </div>
         </div>
     </div>

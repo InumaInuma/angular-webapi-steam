@@ -1,7 +1,29 @@
 <div class="support-container fade-in">
-    <div class="header-section">
-        <h1>Centro de Soporte</h1>
-        <p>¿Tienes algún problema? Crea un ticket y te ayudaremos en breve.</p>
+    <!-- FAQ Section Goes First -->
+    <div class="faq-container">
+        <h2>Centro de Ayuda y Preguntas Frecuentes</h2>
+        <div class="faq-grid">
+            <div class="faq-item" *ngFor="let faq of faqItems; let i = index">
+                <button class="faq-btn pastel-{{i}}" 
+                        [class.active]="activeFaqIndex === i" 
+                        (click)="toggleFaq(i)">
+                    {{ faq.question }}
+                </button>
+                <div class="faq-answer-wrapper" [class.open]="activeFaqIndex === i">
+                    <div class="faq-answer pastel-bg-{{i}}">
+                        {{ faq.answer }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tickets Management Header -->
+    <div class="header-section mt-4">
+        <div>
+            <h1>Mis Tickets de Soporte</h1>
+            <p>¿No encontraste la solución? Crea un ticket y te ayudaremos en breve.</p>
+        </div>
         <button class="create-btn" (click)="openCreateModal()">
             <span>+</span> Nuevo Ticket
         </button>

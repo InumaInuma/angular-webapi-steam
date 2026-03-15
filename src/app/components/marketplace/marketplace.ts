@@ -111,11 +111,103 @@ export class MarketplaceComponent implements OnInit {
         'Underlord': '/fuerza/Underlord.png',
         'Undying': '/fuerza/Undying.png',
         'Wraith King': '/fuerza/Wraith-King.png',
+
+        // Agilidad
+        'Bloodseeker': '/agilidad/Bloodseeker.png',
+        'Bounty Hunter': '/agilidad/BountyHunter.png',
+        'Broodmother': '/agilidad/Broodmother.png',
+        'Clinkz': '/agilidad/Clinkz.png',
+        'Drow Ranger': '/agilidad/Drow-Ranger.png',
+        'Ember Spirit': '/agilidad/Ember-Spirit.png',
+        'Faceless Void': '/agilidad/Faceless Void.png',
+        'Gyrocopter': '/agilidad/Gyrocopter.png',
+        'Hoodwink': '/agilidad/Hoodwink.png',
+        'Juggernaut': '/agilidad/Juggernaut.png',
+        'Kez': '/agilidad/Kez.png',
+        'Lone Druid': '/agilidad/Lone-Druid.png',
+        'Luna': '/agilidad/Luna.png',
+        'Medusa': '/agilidad/Medusa.png',
+        'Meepo': '/agilidad/Meepo.png',
+        'Mirana': '/agilidad/Mirana.png',
+        'Monkey King': '/agilidad/Monkey-King.png',
+        'Morphling': '/agilidad/Morphling.png',
+        'Naga Siren': '/agilidad/Naga-Siren.png',
+        'Phantom Assassin': '/agilidad/Phantom-Assassin.png',
+        'Phantom Lancer': '/agilidad/Phantom-Lancer.png',
+        'Razor': '/agilidad/Razor.png',
+        'Riki': '/agilidad/Riki.png',
+        'Shadow Fiend': '/agilidad/Shadow-Fiend.png',
+        'Slark': '/agilidad/Slark.png',
+        'Sniper': '/agilidad/Sniper.png',
+        'Templar Assassin': '/agilidad/Templar-Assassin.png',
+        'Terrorblade': '/agilidad/Terrorblade.png',
+        'Troll Warlord': '/agilidad/Troll-Warlord.png',
+        'Ursa': '/agilidad/Ursa.png',
+        'Vengeful Spirit': '/agilidad/Vengeful-Spirit.png',
+        'Viper': '/agilidad/Viper.png',
+        'Weaver': '/agilidad/Weaver.png',
         'Anti-Mage': '/agilidad/antimage.png',
-        'Faceless Void': '/agilidad/void.png',
-        'Lion': '/inteligencia/lion.png',
-        'Zeus': '/inteligencia/zeus.png',
-        'Techies': '/universal/techis.png'
+
+        // Inteligencia / Universal
+        'Ancient Apparition': '/inteligencia/Ancient-Apparition.png',
+        'Chen': '/inteligencia/Chen.png',
+        'Crystal Maiden': '/inteligencia/Crystal-Maiden.png',
+        'Dark Seer': '/inteligencia/Dark-Seer.png',
+        'Dark Willow': '/inteligencia/Dark-Willow.png',
+        'Disruptor': '/inteligencia/Disruptor.png',
+        'Enchantress': '/inteligencia/Enchantress.png',
+        'Grimstroke': '/inteligencia/Grimstroke.png',
+        'Invoker': '/inteligencia/Invoker.png',
+        'Jakiro': '/inteligencia/Jakiro.png',
+        'Keeper of the Light': '/inteligencia/Keeper-of- the-Light.png',
+        'Leshrac': '/inteligencia/Leshrac.png',
+        'Lich': '/inteligencia/Lich.png',
+        'Lina': '/inteligencia/Lina.png',
+        'Lion': '/inteligencia/Lion.png',
+        'Muerta': '/inteligencia/Muerta.png',
+        'Necrophos': '/inteligencia/Necrophos.png',
+        'Oracle': '/inteligencia/Oracle.png',
+        'Outworld Destroyer': '/inteligencia/Outworld-Destroyer.png',
+        'Puck': '/inteligencia/Puck.png',
+        'Pugna': '/inteligencia/Pugna.png',
+        'Queen of Pain': '/inteligencia/Queen-of-Pain.png',
+        'Ringmaster': '/inteligencia/Ringmaster.png',
+        'Rubick': '/inteligencia/Rubick.png',
+        'Shadow Demon': '/inteligencia/Shadow-Demon.png',
+        'Shadow Shaman': '/inteligencia/Shadow-Shaman.png',
+        'Silencer': '/inteligencia/Silencer.png',
+        'Skywrath Mage': '/inteligencia/Skywrath-Mage.png',
+        'Storm Spirit': '/inteligencia/Storm-Spirit.png',
+        'Tinker': '/inteligencia/Tinker.png',
+        'Warlock': '/inteligencia/Warlock.png',
+        'Winter Wyvern': '/inteligencia/Winter-Wyvern.png',
+        'Witch Doctor': '/inteligencia/Witch-Doctor.png',
+        'Zeus': '/inteligencia/Zeus.png',
+
+        // Universal
+        'Abaddon': '/universal/Abaddon.png',
+        'Arc Warden': '/universal/Arc-Warden.png',
+        'Bane': '/universal/Bane.png',
+        'Batrider': '/universal/Batrider.png',
+        'Beastmaster': '/universal/Beastmaster.png',
+        'Brewmaster': '/universal/Brewmaster.png',
+        'Dazzle': '/universal/Dazzle.png',
+        'Death Prophet': '/universal/Death-Prophet.png',
+        'Enigma': '/universal/Enigma.png',
+        'Io': '/universal/Io.png',
+        'Magnus': '/universal/Magnus.png',
+        'Marci': '/universal/Marci.png',
+        'Nature\'s Prophet': '/universal/Nature\'s-Prophet.png',
+        'Nyx Assassin': '/universal/Nyx-Assassin.png',
+        'Pangolier': '/universal/Pangolier.png',
+        'Sand King': '/universal/Sand-King.png',
+        'Snapfire': '/universal/Snapfire.png',
+        'Spectre': '/universal/Spectre.png',
+        'Techies': '/universal/Techies.png',
+        'Venomancer': '/universal/Venomancer.png',
+        'Visage': '/universal/Visage.png',
+        'Void Spirit': '/universal/Void-Spirit.png',
+        'Windranger': '/universal/Windranger.png'
     };
 
     // State for hover
@@ -163,6 +255,13 @@ export class MarketplaceComponent implements OnInit {
     }
 
     setFilter(filter: string) {
+        if (filter === 'Todos') {
+            this.activeHeroFilter = 'Todos';
+            this.activeSpecialty = null;
+            this.searchName = '';
+            this.minPrice = null;
+            this.maxPrice = null;
+        }
         this.activeFilter = filter;
         this.applyFilter();
     }

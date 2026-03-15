@@ -11,12 +11,12 @@
         margin-bottom: 2.5rem;
 
         h1 {
-            color: #66c0f4;
+            color: var(--pastel-blue);
             font-size: 2.2rem;
             margin-bottom: 0.5rem;
 
             span {
-                color: #a4d007; // Verde para destacar "Por Aceptar"
+                color: var(--pastel-green); // Verde para destacar "Por Aceptar"
             }
         }
 
@@ -35,8 +35,8 @@
         height: 200px;
 
         .spinner {
-            border: 4px solid rgba(102, 192, 244, 0.2);
-            border-top: 4px solid #66c0f4;
+            border: 4px solid rgba(147, 197, 253, 0.2);
+            border-top: 4px solid var(--pastel-blue);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -64,7 +64,7 @@
         }
 
         h2 {
-            color: #66c0f4;
+            color: var(--pastel-blue);
             margin-bottom: 0.5rem;
         }
 
@@ -74,18 +74,18 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #1f6789 0%, #0d4662 100%);
-            color: #fff;
+            background: var(--pastel-blue);
+            color: #000;
             border: none;
             padding: 0.8rem 2rem;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
 
             &:hover {
-                background: linear-gradient(135deg, #2a81ab 0%, #155e81 100%);
+                background: #bfdbfe;
                 transform: translateY(-2px);
             }
         }
@@ -154,8 +154,8 @@
             }
 
             .price-tag {
-                background: rgba(164, 208, 7, 0.15);
-                color: #a4d007;
+                background: rgba(134, 239, 172, 0.15);
+                color: var(--pastel-green);
                 padding: 4px 10px;
                 border-radius: 20px;
                 font-weight: bold;
@@ -242,7 +242,7 @@
 
         h2 {
             margin: 0;
-            color: #66c0f4;
+            color: var(--pastel-blue);
             font-size: 1.2rem;
         }
 
@@ -288,8 +288,9 @@
 
             .price-highlight {
                 margin: 0;
-                color: #a4d007;
+                color: var(--pastel-green);
                 font-size: 0.9rem;
+                font-weight: 700;
             }
         }
 
@@ -337,19 +338,26 @@
 
         .btn-success {
             flex-grow: 1; // Hacer el botón de aceptar más prominente en el modal
+            background-color: var(--pastel-green);
+            color: #000;
+            font-weight: 700;
+            
+            &:hover:not(:disabled) {
+                background-color: #86efac;
+            }
         }
     }
 }
 
 /* Botones y utilidades comunes (basado en lo que ya existía en globals) */
 .btn-success {
-    background-color: #22c55e;
-    color: #fff;
+    background-color: var(--pastel-green);
+    color: #000;
     border: none;
     padding: 0.8rem 1.5rem;
     border-radius: 6px;
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
@@ -359,9 +367,9 @@
     width: 100%;
 
     &:hover:not(:disabled) {
-        background-color: #16a34a;
+        background-color: #86efac;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        box-shadow: 0 4px 12px rgba(134, 239, 172, 0.3);
     }
 
     &:disabled {
@@ -381,8 +389,8 @@
 .steam-offer-id {
     margin-top: 10px;
     font-size: 0.9rem;
-    color: #60a5fa;
-    background: rgba(96, 165, 250, 0.1);
+    color: var(--pastel-blue);
+    background: rgba(147, 197, 253, 0.1);
     padding: 5px 10px;
     border-radius: 4px;
     display: inline-block;

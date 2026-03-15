@@ -21,7 +21,9 @@ import { FormsModule } from '@angular/forms';
 export class DotaItems implements OnInit {
   /*  items: any[] = []; */
   items: DotaItemDto[] = [];
+  filteredItems: DotaItemDto[] = []; // 👈 Nuevo: Lista de ítems filtrados
   pagedItems: DotaItemDto[] = [];
+  searchTerm: string = ''; // 👈 Nuevo: Término de búsqueda
   loading = true;
   currentPage = 1;
   pageSize = 10; // 👈 cantidad de ítems por página
@@ -105,10 +107,24 @@ export class DotaItems implements OnInit {
     this.loading = true; // 👈 Asegurar que el loader se vea al empezar
     this.dotaService.getUserDotaItems().subscribe((items) => {
       this.items = items.filter((i) => i.isTradable);
-      this.updatePagedItems();
+      this.applyFilter(); // 👈 Llama al filtro inicial (que copia todos a filteredItems)
       this.loading = false;
       this.cdr.detectChanges();
     });
+  }
+
+  // 👇 Filtrar localmente por nombre
+  applyFilter(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+    if (!term) {
+      this.filteredItems = [...this.items];
+    } else {
+      this.filteredItems = this.items.filter(item =>
+        item.name.toLowerCase().includes(term)
+      );
+    }
+    this.currentPage = 1; // 👈 Volver a pág 1 al filtrar
+    this.updatePagedItems();
   }
 
   loginWithSteam(): void {
@@ -171,7 +187,7 @@ export class DotaItems implements OnInit {
   // 🧹 Quitar ítem del listado local
   removeItemFromList(assetId: string) {
     this.items = this.items.filter((i) => i.assetId !== assetId);
-    this.updatePagedItems();
+    this.applyFilter(); // 👈 Refrescar filtros y paginación
     this.cdr.detectChanges();
   }
 
@@ -211,13 +227,13 @@ export class DotaItems implements OnInit {
 
   // 👇 Getter que evita usar Math directamente en el template
   get totalPages(): number {
-    return Math.ceil(this.items.length / this.pageSize);
+    return Math.max(1, Math.ceil(this.filteredItems.length / this.pageSize));
   }
 
   updatePagedItems(): void {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedItems = this.items.slice(start, end);
+    this.pagedItems = this.filteredItems.slice(start, end);
   }
 
   nextPage(): void {

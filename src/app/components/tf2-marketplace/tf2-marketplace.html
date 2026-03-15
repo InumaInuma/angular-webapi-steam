@@ -16,6 +16,8 @@
             <span>-</span>
             <input type="number" placeholder="Max S/." [(ngModel)]="maxPrice" (ngModelChange)="applyFilter()">
         </div>
+
+        <button class="btn-search" (click)="applyFilter()">Buscar</button>
     </div>
 
     <div class="marketplace-grid">

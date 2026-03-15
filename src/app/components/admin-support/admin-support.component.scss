@@ -38,9 +38,10 @@
             }
 
             &.active {
-                background: #667eea;
-                color: #fff;
-                border-color: #667eea;
+                background: var(--pastel-blue);
+                color: #000;
+                border-color: var(--pastel-blue);
+                font-weight: 700;
             }
         }
     }
@@ -91,23 +92,23 @@
     font-weight: bold;
 
     &.low {
-        color: #63b3ed;
-        background: rgba(99, 179, 237, 0.1);
+        color: var(--pastel-blue);
+        background: rgba(147, 197, 253, 0.1);
     }
 
     &.medium {
-        color: #ecc94b;
-        background: rgba(236, 201, 75, 0.1);
+        color: var(--pastel-orange);
+        background: rgba(253, 186, 116, 0.1);
     }
 
     &.high {
-        color: #ed8936;
-        background: rgba(237, 137, 54, 0.1);
+        color: #fb923c; // Adjusted for high priority peach
+        background: rgba(251, 146, 60, 0.1);
     }
 
     &.critical {
-        color: #f56565;
-        background: rgba(245, 101, 101, 0.1);
+        color: var(--pastel-pink);
+        background: rgba(251, 207, 232, 0.1);
     }
 }
 
@@ -119,19 +120,19 @@
     text-transform: uppercase;
 
     &.pending {
-        color: #ecc94b;
+        color: var(--pastel-orange);
     }
 
     &.inreview {
-        color: #63b3ed;
+        color: var(--pastel-blue);
     }
 
     &.resolved {
-        color: #48bb78;
+        color: var(--pastel-green);
     }
 
     &.rejected {
-        color: #f56565;
+        color: var(--pastel-pink);
     }
 }
 
@@ -160,7 +161,7 @@
     width: 30px;
     height: 30px;
     border: 3px solid rgba(255, 255, 255, 0.1);
-    border-top-color: #667eea;
+    border-top-color: var(--pastel-blue);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto;
@@ -279,8 +280,8 @@
             }
 
             .save-btn {
-                background: #48bb78;
-                color: white;
+                background: var(--pastel-green);
+                color: #000;
 
                 &:disabled {
                     opacity: 0.7;

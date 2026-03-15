@@ -5,6 +5,11 @@ import { SupportService } from '../../services/support.service';
 import { SupportTicket, CreateSupportTicketDto } from '../../interfaces/support-ticket.interface';
 import { firstValueFrom } from 'rxjs';
 
+interface FaqItem {
+    question: string;
+    answer: string;
+}
+
 @Component({
     selector: 'app-support-center',
     standalone: true,
@@ -19,6 +24,35 @@ export class SupportCenter implements OnInit {
     showCreateModal = false;
     isSubmitting = false;
     createForm: FormGroup;
+
+    // FAQ Data
+    activeFaqIndex: number | null = null;
+    faqItems: FaqItem[] = [
+        {
+            question: "Problemas de cuenta",
+            answer: "Si olvidaste tu contraseña o perdiste acceso a tu cuenta de Steam, por favor asegúrate de verificar tu correo electrónico asociado. Nuestro equipo soporte no puede recuperar cuentas que pertenecen directamente a Steam."
+        },
+        {
+            question: "¿Cómo empezar a operar?",
+            answer: "Para empezar, asegúrate de tener tu inventario de Steam público. Luego inicia sesión en nuestra web, ve a la sección 'Mi Inventario' y publica los ítems que deseas vender, o explora la sección 'Mercado' para hacer compras."
+        },
+        {
+            question: "PROBLEMAS CON RECARGAS",
+            answer: "Las recargas pueden demorar hasta 15 minutos en reflejarse. Si el monto fue descontado de tu cuenta bancaria y no aparece en tu saldo (S/), por favor envíanos un ticket adjuntando el voucher de pago para validarlo."
+        },
+        {
+            question: "PROBLEMAS CON ARTÍCULOS",
+            answer: "Si has comprado un artículo y no te ha llegado la oferta de intercambio a Steam, asegúrate de que tu Trade URL sea correcta y que no tengas ningún bloqueo de intercambio (Trade Ban) ni Steam Guard desactivado."
+        },
+        {
+            question: "Seguridad de la cuenta y protección contra estafas comerciales",
+            answer: "Nosotros NUNCA te pediremos tu contraseña ni que nos envíes tus ítems 'para revisión'. Nuestro sistema de intercambio maneja transacciones exclusivamente a través del Robot del sistema. Cuidado con usuarios haciéndose pasar por Administradores."
+        },
+        {
+            question: "Programa de afiliados",
+            answer: "Actualmente estamos desarrollando nuestro programa de afiliados, ¡donde podrás recibir recompensas en saldo por invitar a tus amigos con tu código único! Mantente al tanto de nuestros próximos anuncios."
+        }
+    ];
 
     constructor(
         private supportService: SupportService,
@@ -102,5 +136,10 @@ export class SupportCenter implements OnInit {
     isInvalid(field: string): boolean {
         const control = this.createForm.get(field);
         return control ? (control.invalid && (control.dirty || control.touched)) : false;
+    }
+
+    toggleFaq(index: number) {
+        // Si clicamos el mismo que está abierto, lo cerramos. Si no, lo abrimos.
+        this.activeFaqIndex = this.activeFaqIndex === index ? null : index;
     }
 }

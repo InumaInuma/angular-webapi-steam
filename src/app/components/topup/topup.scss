@@ -4,10 +4,10 @@ $bg-card: #1e293b;
 $bg-input: #334155;
 $text-primary: #f8fafc;
 $text-secondary: #94a3b8;
-$accent-color: #3b82f6;
-$accent-hover: #2563eb;
-$success-color: #22c55e;
-$error-color: #ef4444;
+$accent-color: var(--pastel-blue);
+$accent-hover: #bfdbfe;
+$success-color: var(--pastel-green);
+$error-color: var(--pastel-pink);
 $border-radius: 12px;
 
 .topup-container {
@@ -91,7 +91,7 @@ select {
 
   &:focus {
     border-color: $accent-color;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.2);
     background: #3c4c63;
   }
 
@@ -228,7 +228,7 @@ select {
 
   &:hover:not([disabled]) {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 5px 15px rgba(147, 197, 253, 0.4);
   }
 
   &:disabled {
@@ -248,15 +248,15 @@ select {
 }
 
 .alert.success {
-  background: rgba($success-color, 0.15);
-  color: #4ade80; // manually lightened success
-  border: 1px solid rgba($success-color, 0.3);
+  background: rgba($success-color, 0.1);
+  color: var(--pastel-green);
+  border: 1px solid rgba($success-color, 0.2);
 }
 
 .alert.error {
-  background: rgba($error-color, 0.15);
-  color: #f87171; // manually lightened error
-  border: 1px solid rgba($error-color, 0.3);
+  background: rgba($error-color, 0.1);
+  color: var(--pastel-pink);
+  border: 1px solid rgba($error-color, 0.2);
 }
 
 @keyframes fadeIn {

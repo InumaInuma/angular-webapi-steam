@@ -6,7 +6,7 @@
 
     h2 {
         text-align: center;
-        color: #38bdf8;
+        color: var(--pastel-blue);
         margin-bottom: 0.5rem;
     }
 
@@ -77,15 +77,15 @@
     text-transform: uppercase;
 
     &.badge-buy {
-        background: #22c55e20;
-        color: #4ade80;
-        border: 1px solid #22c55e40;
+        background: rgba(134, 239, 172, 0.15);
+        color: var(--pastel-green);
+        border: 1px solid rgba(134, 239, 172, 0.3);
     }
 
     &.badge-sell {
-        background: #f59e0b20;
-        color: #fbbf24;
-        border: 1px solid #f59e0b40;
+        background: rgba(253, 186, 116, 0.15);
+        color: var(--pastel-orange);
+        border: 1px solid rgba(253, 186, 116, 0.3);
     }
 }
 
@@ -94,28 +94,28 @@
     font-weight: 500;
 
     &.status-completed {
-        color: #4ade80;
+        color: var(--pastel-green);
     }
 
     &.status-canceled {
-        color: #f87171;
+        color: var(--pastel-pink);
     }
 
     &.status-refunded {
-        color: #a78bfa;
+        color: var(--pastel-purple);
     }
 }
 
 .price {
     font-family: 'Roboto Mono', monospace;
-    color: #fbbf24;
-    font-weight: 600;
+    color: var(--pastel-orange);
+    font-weight: 700;
 }
 
 .rate-btn {
     background: transparent;
-    border: 1px solid #eab308;
-    color: #eab308;
+    border: 1px solid var(--pastel-orange);
+    color: var(--pastel-orange);
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
@@ -177,7 +177,7 @@
 
             &:hover,
             &.active {
-                color: #eab308;
+                color: var(--pastel-orange);
             }
         }
     }
@@ -206,8 +206,9 @@
             font-weight: 600;
 
             &:first-child {
-                background: #38bdf8;
+                background: var(--pastel-blue);
                 color: #0f172a;
+                font-weight: 700;
 
                 &:disabled {
                     opacity: 0.5;

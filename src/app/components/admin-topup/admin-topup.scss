@@ -2,9 +2,9 @@ $bg-card: #1e293b;
 $bg-input: #334155;
 $text-primary: #f8fafc;
 $text-secondary: #94a3b8;
-$accent-color: #3b82f6;
-$success-color: #22c55e;
-$error-color: #ef4444;
+$accent-color: var(--pastel-blue);
+$success-color: var(--pastel-green);
+$error-color: var(--pastel-pink);
 
 h2 {
   color: $text-primary;
@@ -81,19 +81,21 @@ h2 {
 
 .approve {
   background: $success-color;
-  color: white;
+  color: #000;
 
   &:hover {
-    background: #16a34a;
+    background: #86efac;
+    transform: translateY(-1px);
   }
 }
 
 .reject {
   background: $error-color;
-  color: white;
+  color: #000;
 
   &:hover {
-    background: #dc2626;
+    background: #fbcfe8;
+    transform: translateY(-1px);
   }
 }
 

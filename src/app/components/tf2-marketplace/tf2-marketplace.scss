@@ -21,19 +21,20 @@
         .marketplace-title {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #ff7e00;
-            text-shadow: 0 0 20px rgba(255, 126, 0, 0.2);
+            color: var(--pastel-orange);
+            text-shadow: 0 0 20px rgba(253, 186, 116, 0.2);
         }
     }
 
     .search-price-container {
         display: flex;
-        gap: 1rem;
-        margin-bottom: 2rem;
-        background: rgba(255, 126, 0, 0.03);
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+        background: rgba(251, 191, 36, 0.03); // Pastel Orange alpha
         padding: 1.5rem;
         border-radius: 16px;
-        border: 1px solid rgba(255, 126, 0, 0.1);
+        border: 1px solid rgba(251, 191, 36, 0.1);
 
         .search-box {
             flex: 1;
@@ -41,18 +42,28 @@
 
             input {
                 width: 100%;
-                background: #0f172a;
-                border: 1px solid rgba(255, 126, 0, 0.2);
+                background: #020617;
+                border: 1px solid rgba(255, 255, 255, 0.1);
                 color: #fff;
-                padding: 12px 20px;
+                padding: 12px 20px 12px 45px;
                 border-radius: 12px;
                 outline: none;
                 transition: 0.3s;
 
                 &:focus {
-                    border-color: #ff7e00;
-                    box-shadow: 0 0 0 4px rgba(255, 126, 0, 0.1);
+                    border-color: var(--pastel-orange);
+                    box-shadow: 0 0 15px rgba(253, 186, 116, 0.15);
+                    background: rgba(253, 186, 116, 0.05);
                 }
+            }
+            
+            i {
+                position: absolute;
+                left: 18px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #475569;
+                pointer-events: none;
             }
         }
 
@@ -62,13 +73,41 @@
             gap: 10px;
 
             input {
-                width: 120px;
-                background: #0f172a;
-                border: 1px solid rgba(255, 126, 0, 0.2);
+                width: 100px;
+                background: #020617;
+                border: 1px solid rgba(255, 255, 255, 0.1);
                 color: #fff;
                 padding: 12px;
                 border-radius: 12px;
                 outline: none;
+                text-align: center;
+                
+                &:focus {
+                    border-color: var(--pastel-orange);
+                }
+            }
+            
+            span {
+                color: #475569;
+                font-weight: bold;
+            }
+        }
+
+        .btn-search {
+            background: linear-gradient(135deg, var(--pastel-orange) 0%, #fed7aa 100%);
+            color: #000;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(253, 186, 116, 0.2);
+
+            &:hover {
+                background: linear-gradient(135deg, #fed7aa 0%, var(--pastel-orange) 100%);
+                transform: translateY(-2px) scale(1.02);
+                box-shadow: 0 8px 25px rgba(253, 186, 116, 0.4);
             }
         }
     }
@@ -88,7 +127,7 @@
 
         &:hover {
             transform: translateY(-8px);
-            border-color: rgba(255, 126, 0, 0.5);
+            border-color: var(--pastel-orange);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
 
@@ -126,7 +165,7 @@
             .price {
                 font-size: 1.5rem;
                 font-weight: 800;
-                color: #ff7e00;
+                color: var(--pastel-orange);
                 margin-bottom: 1rem;
             }
 
@@ -138,18 +177,19 @@
 
             .btn-buy {
                 width: 100%;
-                background: linear-gradient(135deg, #ff7e00 0%, #d35400 100%);
-                color: white;
+                background: linear-gradient(135deg, var(--pastel-orange) 0%, #fed7aa 100%);
+                color: #000;
                 border: none;
                 padding: 12px;
                 border-radius: 12px;
                 font-weight: 700;
                 cursor: pointer;
-                transition: 0.3s;
+                transition: all 0.3s;
 
                 &:hover {
-                    box-shadow: 0 0 20px rgba(255, 126, 0, 0.4);
+                    box-shadow: 0 0 20px rgba(253, 186, 116, 0.4);
                     transform: scale(1.02);
+                    background: linear-gradient(135deg, #fed7aa 0%, var(--pastel-orange) 100%);
                 }
             }
         }

@@ -1,8 +1,15 @@
+:host {
+    display: block;
+    background-color: #0b0f19; /* dark theme */
+    min-height: 100vh;
+}
+
 .support-container {
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
     color: #fff;
+    padding-bottom: 5rem;
 }
 
 .header-section {
@@ -28,13 +35,13 @@
     }
 
     .create-btn {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--pastel-blue);
         border: none;
         padding: 0.75rem 1.5rem;
-        color: white;
+        color: #000;
         border-radius: 8px;
         cursor: pointer;
-        font-weight: 600;
+        font-weight: 700;
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -42,12 +49,109 @@
 
         &:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(118, 75, 162, 0.4);
+            background: #bfdbfe;
+            box-shadow: 0 4px 12px rgba(147, 197, 253, 0.3);
         }
 
         span {
             font-size: 1.2rem;
         }
+    }
+}
+
+/* FAQ Section */
+.faq-container {
+    margin-bottom: 3rem;
+
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #e2e8f0;
+    }
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    @media (max-width: 900px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.faq-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.faq-btn {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1.25rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Pastel dynamic themes */
+.faq-btn.pastel-0 { background: rgba(254, 226, 226, 0.05); color: #fecaca; border-color: rgba(254, 226, 226, 0.2); }
+.faq-btn.pastel-0.active, .faq-btn.pastel-0:hover { background: #fee2e2; color: #7f1d1d; border-color: #fca5a5; }
+.faq-answer.pastel-bg-0 { background: rgba(254, 226, 226, 0.05); color: #fecaca; border: 1px solid rgba(254, 226, 226, 0.2); border-top: none; }
+
+.faq-btn.pastel-1 { background: rgba(224, 231, 255, 0.05); color: #c7d2fe; border-color: rgba(224, 231, 255, 0.2); }
+.faq-btn.pastel-1.active, .faq-btn.pastel-1:hover { background: #e0e7ff; color: #3730a3; border-color: #a5b4fc; }
+.faq-answer.pastel-bg-1 { background: rgba(224, 231, 255, 0.05); color: #c7d2fe; border: 1px solid rgba(224, 231, 255, 0.2); border-top: none; }
+
+.faq-btn.pastel-2 { background: rgba(220, 252, 231, 0.05); color: #bbf7d0; border-color: rgba(220, 252, 231, 0.2); }
+.faq-btn.pastel-2.active, .faq-btn.pastel-2:hover { background: #dcfce7; color: #14532d; border-color: #86efac; }
+.faq-answer.pastel-bg-2 { background: rgba(220, 252, 231, 0.05); color: #bbf7d0; border: 1px solid rgba(220, 252, 231, 0.2); border-top: none; }
+
+.faq-btn.pastel-3 { background: rgba(254, 240, 138, 0.05); color: #fef08a; border-color: rgba(254, 240, 138, 0.2); }
+.faq-btn.pastel-3.active, .faq-btn.pastel-3:hover { background: #fef08a; color: #713f12; border-color: #fde047; }
+.faq-answer.pastel-bg-3 { background: rgba(254, 240, 138, 0.05); color: #fef08a; border: 1px solid rgba(254, 240, 138, 0.2); border-top: none; }
+
+.faq-btn.pastel-4 { background: rgba(250, 232, 255, 0.05); color: #f5d0fe; border-color: rgba(250, 232, 255, 0.2); }
+.faq-btn.pastel-4.active, .faq-btn.pastel-4:hover { background: #fae8ff; color: #701a75; border-color: #f0abfc; }
+.faq-answer.pastel-bg-4 { background: rgba(250, 232, 255, 0.05); color: #f5d0fe; border: 1px solid rgba(250, 232, 255, 0.2); border-top: none; }
+
+.faq-btn.pastel-5 { background: rgba(224, 242, 254, 0.05); color: #bae6fd; border-color: rgba(224, 242, 254, 0.2); }
+.faq-btn.pastel-5.active, .faq-btn.pastel-5:hover { background: #e0f2fe; color: #0c4a6e; border-color: #7dd3fc; }
+.faq-answer.pastel-bg-5 { background: rgba(224, 242, 254, 0.05); color: #bae6fd; border: 1px solid rgba(224, 242, 254, 0.2); border-top: none; }
+
+// Replace old answer styling
+.faq-answer-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+    
+    &.open {
+        grid-template-rows: 1fr;
+    }
+
+    .faq-answer {
+        overflow: hidden;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        padding: 0 1rem; 
+        margin-top: 0;
+        border-radius: 0 0 6px 6px;
+        transition: padding 0.3s ease, margin 0.3s ease;
+    }
+
+    &.open .faq-answer {
+        padding: 1.25rem 1rem;
+        margin-top: -4px; // Connect smoothly with the button above
     }
 }
 
@@ -72,7 +176,7 @@
 .spinner {
     border: 3px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    border-top: 3px solid #667eea;
+    border-top: 3px solid var(--pastel-blue);
     width: 30px;
     height: 30px;
     animation: spin 1s linear infinite;
@@ -128,23 +232,23 @@
             text-transform: uppercase;
 
             &.pending {
-                background: rgba(236, 201, 75, 0.2);
-                color: #ecc94b;
+                background: rgba(253, 186, 116, 0.15);
+                color: var(--pastel-orange);
             }
 
             &.inreview {
-                background: rgba(66, 153, 225, 0.2);
-                color: #63b3ed;
+                background: rgba(147, 197, 253, 0.15);
+                color: var(--pastel-blue);
             }
 
             &.resolved {
-                background: rgba(72, 187, 120, 0.2);
-                color: #48bb78;
+                background: rgba(134, 239, 172, 0.15);
+                color: var(--pastel-green);
             }
 
             &.rejected {
-                background: rgba(245, 101, 101, 0.2);
-                color: #f56565;
+                background: rgba(251, 207, 232, 0.15);
+                color: var(--pastel-pink);
             }
         }
     }
@@ -237,12 +341,12 @@
 
                 &:focus {
                     outline: none;
-                    border-color: #667eea;
-                    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+                    border-color: var(--pastel-blue);
+                    box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.1);
                 }
 
                 &.error {
-                    border-color: #f56565;
+                    border-color: var(--pastel-pink);
                 }
             }
         }
@@ -274,8 +378,8 @@
             }
 
             .submit-btn {
-                background: #667eea;
-                color: white;
+                background: var(--pastel-blue);
+                color: #000;
 
                 &:disabled {
                     opacity: 0.5;

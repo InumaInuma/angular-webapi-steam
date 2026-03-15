@@ -2,15 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #1b2838;
+  background: #0b0f19;
   padding: 10px 20px;
   color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
   .logo a {
     text-decoration: none;
     font-size: 1.3rem;
-    font-weight: bold;
-    color: #66c0f4;
+    font-weight: 800;
+    color: var(--pastel-blue);
   }
 
   .nav-links {
@@ -28,13 +29,15 @@
     }
 
     .login-btn {
-      background: #66c0f4;
-      color: #fff;
+      background: var(--pastel-blue);
+      color: #000;
+      font-weight: 700;
     }
 
     .register-btn {
-      background: #4caf50;
-      color: #fff;
+      background: var(--pastel-green);
+      color: #000;
+      font-weight: 700;
     }
 
     .menu {
@@ -48,7 +51,7 @@
         transition: color 0.3s;
 
         &:hover {
-          color: #66c0f4;
+          color: var(--pastel-blue);
         }
       }
     }
@@ -70,17 +73,24 @@
   gap: 12px;
 
   .balance {
-    font-weight: 600;
-    color: #2ecc71;
+    font-weight: 800;
+    color: var(--pastel-green) !important;
+    text-shadow: 0 0 8px rgba(134, 239, 172, 0.4);
+    letter-spacing: 0.5px;
   }
 
   .btn-topup {
     padding: 6px 12px;
     border-radius: 6px;
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
-    color: #fff;
+    background: var(--pastel-blue);
+    color: #000;
+    font-weight: 700;
     border: none;
     cursor: pointer;
     font-size: 13px;
+
+    &:hover {
+      background: #bfdbfe;
+    }
   }
 }

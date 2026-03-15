@@ -1,20 +1,21 @@
 h2 {
   margin-bottom: 16px;
   font-weight: 600;
-  color: #1f2937; // gray-800
+  color: var(--pastel-blue);
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  background: #ffffff;
+  background: #1e293b;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 thead {
-  background: #f9fafb;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 th,
@@ -26,19 +27,19 @@ td {
 
 th {
   font-weight: 600;
-  color: #374151; // gray-700
+  color: #94a3b8; // slate-400
 }
 
 tbody tr {
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 tbody tr:hover {
-  background: #f3f4f6;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 td {
-  color: #4b5563; // gray-600
+  color: #e2e8f0; // gray-200
 }
 
 /* Estados */
@@ -51,18 +52,18 @@ span {
 }
 
 .pending {
-  background: #fef3c7;
-  color: #92400e;
+  background: rgba(253, 186, 116, 0.15);
+  color: var(--pastel-orange);
 }
 
 .approved {
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(134, 239, 172, 0.15);
+  color: var(--pastel-green);
 }
 
 .rejected {
-  background: #fee2e2;
-  color: #991b1b;
+  background: rgba(251, 207, 232, 0.15);
+  color: var(--pastel-pink);
 }
 
 /* Loading / empty */
