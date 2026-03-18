@@ -62,7 +62,7 @@
                 left: 18px;
                 top: 50%;
                 transform: translateY(-50%);
-                color: #475569;
+                color: #94a3b8; // Brighter icon
                 pointer-events: none;
             }
         }
@@ -88,7 +88,7 @@
             }
             
             span {
-                color: #475569;
+                color: var(--pastel-white);
                 font-weight: bold;
             }
         }
@@ -171,7 +171,7 @@
 
             .seller {
                 font-size: 0.85rem;
-                color: #64748b;
+                color: #cbd5e1;
                 margin-bottom: 1.5rem;
             }
 

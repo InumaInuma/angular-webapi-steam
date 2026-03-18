@@ -37,7 +37,7 @@
   position: absolute;
   bottom: 20px;
   left: 20px;
-  color: #fff;
+  color: var(--pastel-white);
 }
 
 .overlay-title {
@@ -65,14 +65,14 @@
 .subtitle {
   font-size: 1rem;
   margin-bottom: 30px;
-  color: #94a3b8;
+  color: #cbd5e1; // Same as --text-muted
 }
 
 /* Footer */
 .footer-text {
   margin-top: 20px;
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: #cbd5e1;
 }
 
 .footer-text a {
@@ -91,37 +91,75 @@
   flex-direction: column;
   gap: 15px;
   margin-top: 20px;
+
+  .error {
+    color: #f87171; // Pastel Red (Tailwind red-400)
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: -10px;
+    margin-bottom: 5px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
 }
 
 .form input {
-  padding: 12px;
+  padding: 14px 18px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1rem;
   background: #0f172a;
-  color: #fff;
+  color: #f8fafc !important;
+  -webkit-text-fill-color: #f8fafc !important;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  &::placeholder {
+    color: #64748b;
+  }
 
   &:focus {
     outline: none;
+    background: #1e293b;
     border-color: var(--pastel-blue);
-    box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.1);
+    box-shadow: 0 0 15px rgba(147, 197, 253, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 }
 
 .btn-primary {
-  background: var(--pastel-blue);
-  color: #000;
+  background: linear-gradient(135deg, var(--pastel-blue) 0%, #bfdbfe 100%);
+  color: #f8fafc !important;
+  -webkit-text-fill-color: #f8fafc !important;
   border: none;
-  border-radius: 8px;
-  padding: 14px;
-  font-size: 1rem;
-  font-weight: 700;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 1.1rem;
+  font-weight: 800;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 25px -5px rgba(147, 197, 253, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 
   &:hover {
-    background: #bfdbfe;
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #bfdbfe 0%, var(--pastel-blue) 100%);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 40px -5px rgba(147, 197, 253, 0.6);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+
+  &:disabled {
+    background: #334155;
+    color: #64748b !important;
+    -webkit-text-fill-color: #64748b !important;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    opacity: 0.7;
   }
 }
 
@@ -177,7 +215,7 @@
   }
 
   .btn-primary {
-    font-size: 0.9rem;
-    padding: 12px;
+    font-size: 1rem;
+    padding: 14px;
   }
 }
