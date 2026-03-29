@@ -185,3 +185,48 @@
         </div>
     </div>
 </div>
+
+<!-- 🛡️ MODAL DE VERIFICACIÓN DE ESCROW -->
+<div class="modal-overlay escrow-overlay" *ngIf="escrowModalOpen" (click)="closeEscrowModal()">
+    <div class="escrow-modal" (click)="$event.stopPropagation()">
+
+        <!-- Estado: Verificando... -->
+        <div class="escrow-checking" *ngIf="escrowChecking">
+            <div class="escrow-spinner"></div>
+            <h3>Verificando tu cuenta de Steam...</h3>
+            <p>Consultando estado de retención con la extensión P2P Market.</p>
+        </div>
+
+        <!-- Resultado: Sin Escrow (Puede vender) -->
+        <div class="escrow-success" *ngIf="!escrowChecking && escrowResult && !escrowResult.hasEscrow">
+            <div class="escrow-icon success-icon">✅</div>
+            <h3>¡Cuenta verificada!</h3>
+            <p>{{ escrowResult.message }}</p>
+            <p class="escrow-item-detail" *ngIf="selectedItem">
+                Vas a vender <strong>"{{ selectedItem.name }}"</strong> por <strong>S/ {{ price }}</strong>
+            </p>
+            <div class="escrow-actions">
+                <button class="btn-escrow-confirm" (click)="proceedWithSale()">Sí, Vender</button>
+                <button class="btn-escrow-cancel" (click)="closeEscrowModal()">Cancelar</button>
+            </div>
+        </div>
+
+        <!-- Resultado: Escrow Detectado (Bloquear venta) -->
+        <div class="escrow-blocked" *ngIf="!escrowChecking && escrowResult && escrowResult.hasEscrow">
+            <div class="escrow-icon blocked-icon">🔒</div>
+            <h3>RETENCIÓN DE INTERCAMBIO DETECTADA</h3>
+            <p class="escrow-days">{{ escrowResult.daysHeld }} días de bloqueo</p>
+            <p>{{ escrowResult.message }}</p>
+            <p class="escrow-help">
+                Puede ser que Steam te haya bloqueado por otras razones.
+                <a href="https://help.steampowered.com/es/faqs/view/1069-2A41-D405-00A0" target="_blank" rel="noopener">
+                    Más información en Steam Support →
+                </a>
+            </p>
+            <div class="escrow-actions">
+                <button class="btn-escrow-understood" (click)="closeEscrowModal()">Entendido</button>
+            </div>
+        </div>
+
+    </div>
+</div>

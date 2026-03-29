@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
+  NgZone,
   OnInit,
 } from '@angular/core';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -40,7 +41,8 @@ export class DotaItems implements OnInit {
     private dotaService: Dota,
     private authService: Auth,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private zone: NgZone
   ) { }
 
   ngOnInit(): void {
@@ -151,14 +153,86 @@ export class DotaItems implements OnInit {
   //   });
   // }
 
-  // ✅ CONFIRMAR VENTA (BACKEND REAL)
+  // 🛡️ Escrow modal state
+  escrowModalOpen = false;
+  escrowChecking = false;
+  escrowResult: { hasEscrow: boolean; daysHeld: number; message: string } | null = null;
+
+  // 🛡️ VERIFICAR ESCROW ANTES DE VENDER
   confirmSell() {
     if (!this.selectedItem || !this.price || this.price <= 0) return;
 
-    const ok = confirm(
-      `¿Estás seguro que deseas vender "${this.selectedItem.name}" por S/ ${this.price}?`
-    );
-    if (!ok) return;
+    // Activar estado de "verificando..."
+    this.escrowChecking = true;
+    this.escrowModalOpen = true;
+    this.escrowResult = null;
+    this.cdr.detectChanges();
+
+    let listenerRemoved = false; // Flag para evitar race condition con el timeout
+
+    // Escuchar la respuesta de la extensión (una sola vez)
+    const escrowListener = (event: MessageEvent) => {
+      if (event.data?.type !== 'P2P_MARKET_ESCROW_RESULT') return;
+      if (listenerRemoved) return; // Timeout ya limpió, ignorar
+      listenerRemoved = true;
+      window.removeEventListener('message', escrowListener);
+
+      // NgZone garantiza que Angular detecte los cambios del evento externo
+      this.zone.run(() => {
+        this.escrowChecking = false;
+
+        if (!event.data.success) {
+          this.escrowResult = {
+            hasEscrow: false,
+            daysHeld: 0,
+            message: event.data.message || 'No se pudo verificar tu estado de Steam. Asegúrate de tener la extensión P2P Market instalada y estar logueado en Steam.'
+          };
+        } else if (event.data.hasEscrow) {
+          this.escrowResult = {
+            hasEscrow: true,
+            daysHeld: event.data.daysHeld,
+            message: event.data.message
+          };
+        } else {
+          this.escrowResult = {
+            hasEscrow: false,
+            daysHeld: 0,
+            message: '✅ Todo correcto, no tienes ninguna retención de ítems. ¿Deseas confirmar la venta?'
+          };
+        }
+        this.cdr.detectChanges();
+      });
+    };
+
+    window.addEventListener('message', escrowListener);
+
+    // Enviar mensaje a la extensión para que verifique el escrow
+    window.postMessage({ type: 'P2P_MARKET_CHECK_ESCROW' }, '*');
+
+    // Timeout de seguridad (si la extensión no responde en 10 segundos)
+    setTimeout(() => {
+      if (!listenerRemoved) {
+        listenerRemoved = true;
+        window.removeEventListener('message', escrowListener);
+        this.zone.run(() => {
+          this.escrowChecking = false;
+          this.escrowResult = {
+            hasEscrow: false,
+            daysHeld: 0,
+            message: '⚠️ La extensión P2P Market no respondió. Asegúrate de tenerla instalada y habilitada, y de estar logueado en steamcommunity.com.'
+          };
+          this.cdr.detectChanges();
+        });
+      }
+    }, 10000);
+  }
+
+  // ✅ CONFIRMAR VENTA REAL (Se llama solo si el usuario pasa la verificación de escrow)
+  proceedWithSale() {
+    if (!this.selectedItem || !this.price || this.price <= 0) return;
+
+    this.escrowModalOpen = false;
+    this.cdr.detectChanges();
 
     this.dotaService
       .sellItem({
@@ -169,8 +243,8 @@ export class DotaItems implements OnInit {
         rarity: this.selectedItem.rarity,
         type: this.selectedItem.type,
         hero: this.selectedItem.hero,
-        gems: this.selectedItem.gems, // 👈 Include gems
-        styles: this.selectedItem.styles // 👈 Include styles
+        gems: this.selectedItem.gems,
+        styles: this.selectedItem.styles
       })
       .subscribe({
         next: () => {
@@ -182,6 +256,14 @@ export class DotaItems implements OnInit {
           alert(err.error?.message ?? '❌ Error al publicar el ítem');
         },
       });
+  }
+
+  // Cerrar modal de escrow
+  closeEscrowModal() {
+    this.escrowModalOpen = false;
+    this.escrowResult = null;
+    this.escrowChecking = false;
+    this.cdr.detectChanges();
   }
 
   // 🧹 Quitar ítem del listado local
@@ -222,6 +304,7 @@ export class DotaItems implements OnInit {
   // Cerrar con tecla ESC
   @HostListener('document:keydown.escape')
   onEsc() {
+    if (this.escrowModalOpen) { this.closeEscrowModal(); return; }
     if (this.modalOpen) this.closeModal();
   }
 

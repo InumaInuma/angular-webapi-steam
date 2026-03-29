@@ -822,3 +822,209 @@
     }
   }
 }
+
+// ============================================
+// 🛡️ ESCROW VERIFICATION MODAL
+// ============================================
+.escrow-overlay {
+  z-index: 10000 !important;
+}
+
+.escrow-modal {
+  background: linear-gradient(145deg, #1a1f2e, #0f1320);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 460px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  animation: escrowSlideIn 0.3s ease-out;
+}
+
+@keyframes escrowSlideIn {
+  from { opacity: 0; transform: scale(0.9) translateY(-20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+// --- Checking State ---
+.escrow-checking {
+  padding: 1.5rem 0;
+
+  h3 {
+    color: #93c5fd;
+    font-size: 1.15rem;
+    margin-top: 1.2rem;
+  }
+
+  p {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+}
+
+.escrow-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(147, 197, 253, 0.2);
+  border-top-color: #93c5fd;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: escrowSpin 0.8s linear infinite;
+}
+
+@keyframes escrowSpin {
+  to { transform: rotate(360deg); }
+}
+
+// --- Success State ---
+.escrow-success {
+  .success-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  h3 {
+    color: #86efac;
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+
+  .escrow-item-detail {
+    background: rgba(134, 239, 172, 0.08);
+    border: 1px solid rgba(134, 239, 172, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+
+    strong {
+      color: #86efac;
+    }
+  }
+}
+
+// --- Blocked State ---
+.escrow-blocked {
+  .blocked-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  h3 {
+    color: #fca5a5;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .escrow-days {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  p {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+
+  .escrow-help {
+    background: rgba(251, 191, 36, 0.08);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.8rem;
+    color: #fbbf24;
+
+    a {
+      color: #93c5fd;
+      text-decoration: underline;
+      font-weight: 600;
+
+      &:hover {
+        color: #bfdbfe;
+      }
+    }
+  }
+}
+
+// --- Action Buttons ---
+.escrow-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.btn-escrow-confirm {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 2rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+  }
+}
+
+.btn-escrow-cancel {
+  background: rgba(148, 163, 184, 0.1);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  padding: 0.7rem 2rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(148, 163, 184, 0.2);
+    color: #e2e8f0;
+  }
+}
+
+.btn-escrow-understood {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 2.5rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+  }
+}
