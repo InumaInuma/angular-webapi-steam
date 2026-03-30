@@ -1,6 +1,8 @@
 networks:
   net_p2pmarket:
-    driver: bridge
+    name: net_p2pmarket
+    #driver: bridge
+    external: true
 
 services:
   p2p-market-frontend:

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { initializeApp, FirebaseApp } from 'firebase/app';
+import { getMessaging, getToken, onMessage, Messaging } from 'firebase/messaging';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
@@ -11,7 +11,6 @@ import { BehaviorSubject } from 'rxjs';
 export class FcmService {
     private http = inject(HttpClient);
 
-    // 🚨 REEMPLAZA ESTO CON LOS DATOS DE TU CONSOLA FIREBASE (Sección: Configuración de la SDK Web)
     private firebaseConfig = {
         apiKey: "AIzaSyBnAsTBEXou0aSjFTrrlRrFJjReBeDNiYo",
         authDomain: "steam-abde8.firebaseapp.com",
@@ -21,19 +20,41 @@ export class FcmService {
         appId: "1:37692643229:web:bce92e7b310735d1b14174"
     };
 
-    private messaging = getMessaging(initializeApp(this.firebaseConfig));
+    private app: FirebaseApp | null = null;
+    private messaging: Messaging | null = null;
     currentMessage = new BehaviorSubject(null);
 
-    constructor() { }
+    /** Verifica si el navegador soporta FCM (requiere HTTPS + Service Worker) */
+    private get isSupported(): boolean {
+        return (
+            typeof window !== 'undefined' &&
+            'Notification' in window &&
+            'serviceWorker' in navigator &&
+            location.protocol === 'https:'
+        );
+    }
+
+    /** Inicialización lazy: solo crea Firebase cuando realmente se necesita */
+    private initMessaging(): Messaging | null {
+        if (this.messaging) return this.messaging;
+        if (!this.isSupported) {
+            console.warn('[FCM] Firebase Messaging no disponible (requiere HTTPS). Notificaciones desactivadas.');
+            return null;
+        }
+        this.app = initializeApp(this.firebaseConfig);
+        this.messaging = getMessaging(this.app);
+        return this.messaging;
+    }
 
     requestPermission() {
+        const msg = this.initMessaging();
+        if (!msg) return; // HTTP o navegador sin soporte → salir silenciosamente
+
         console.log('Solicitando permiso para notificaciones...');
         Notification.requestPermission().then((permission) => {
             if (permission === 'granted') {
                 console.log('Permiso concedido.');
-                // 🚨 REEMPLAZA LA VAPID KEY CON LA QUE TE GENERE FIREBASE (Pestaña "Cloud Messaging")
-                // Opcional pero recomendado:
-                getToken(this.messaging, { vapidKey: 'BOjYw5TlSAWgjA42TCr_rclL_39CS-kH4OqdWKypNWeMyYTLbzfr3TNHPxJNCnZ6O5Ocb3tR1QM1ZXy6abjS7NU' })
+                getToken(msg, { vapidKey: 'BOjYw5TlSAWgjA42TCr_rclL_39CS-kH4OqdWKypNWeMyYTLbzfr3TNHPxJNCnZ6O5Ocb3tR1QM1ZXy6abjS7NU' })
                     .then((currentToken) => {
                         if (currentToken) {
                             console.log('Token FCM recibido:', currentToken);
@@ -51,16 +72,18 @@ export class FcmService {
     }
 
     receiveMessage() {
-        onMessage(this.messaging, (payload: any) => {
+        const msg = this.initMessaging();
+        if (!msg) return;
+
+        onMessage(msg, (payload: any) => {
             console.log("Nuevo Mensaje de FCM (Primer Plano): ", payload);
             this.currentMessage.next(payload);
         });
     }
 
     private sendTokenToBackend(token: string) {
-        // Si tienes el token JWT en tu interceptor, se enviará automáticamente.
         this.http.post(`${environment.apiUrl}/Account/fcm-token`, { token }).subscribe({
-            next: () => console.log('Token FCM guardado en la base de datos de SiglaStore.'),
+            next: () => console.log('Token FCM guardado en la base de datos.'),
             error: (err) => console.error('Error enviando token al backend:', err)
         });
     }
