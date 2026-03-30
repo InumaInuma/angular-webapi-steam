@@ -19,7 +19,7 @@ FROM nginx:1.28-alpine
 COPY --from=build_stage /app/dist/auth-app-angular/browser /usr/share/nginx/html
 
 # Copiamos configuración de nginx para SPA (Angular Router)
-COPY Deployment/Docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
