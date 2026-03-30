@@ -9,7 +9,7 @@ services:
       dockerfile: Deployment/Docker/Dockerfile
     container_name: p2p-market-frontend
     ports:
-      - "8075:80"
+      - "82:80"
     restart: unless-stopped
     mem_limit: 1g
     cpus: 1.0
