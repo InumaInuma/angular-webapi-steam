@@ -4,10 +4,12 @@ networks:
 
 services:
   p2p-market-frontend:
-    image: p2p-market-frontend:${IMAGE_TAG:-main-latest}
-    container_name: ${CONTAINER_NAME:-p2p-market-frontend}
+    build:
+      context: ../../
+      dockerfile: Deployment/Docker/Dockerfile
+    container_name: p2p-market-frontend
     ports:
-      - "${HOST_PORT:-8075}:80"
+      - "8075:80"
     restart: unless-stopped
     mem_limit: 1g
     cpus: 1.0
