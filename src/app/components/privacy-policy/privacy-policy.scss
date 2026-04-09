@@ -1,0 +1,238 @@
+/* Variables para colores premium */
+$bg-dark: #0f1115;
+$bg-card: #181b21;
+$text-main: #e2e8f0;
+$text-muted: #94a3b8;
+$accent-color: #ff9800; /* Naranja Dota/GG Causa */
+$accent-glow: rgba(255, 152, 0, 0.2);
+$border-color: rgba(255, 255, 255, 0.05);
+
+.privacy-wrapper {
+  min-height: 100vh;
+  background-color: $bg-dark;
+  color: $text-main;
+  font-family: 'Inter', 'Roboto', sans-serif;
+  padding-bottom: 60px;
+}
+
+/* ====================================
+   HERO SECTION
+==================================== */
+.privacy-hero {
+  background: linear-gradient(180deg, rgba(20, 24, 32, 1) 0%, $bg-dark 100%);
+  padding: 80px 20px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid $border-color;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(circle, $accent-glow 0%, transparent 70%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .shield-icon {
+    font-size: 3rem;
+    color: $accent-color;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px $accent-glow);
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 10px;
+    background: linear-gradient(to right, #ffffff, #a0aec0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    color: $text-muted;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid $border-color;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: $accent-color;
+    font-weight: 600;
+  }
+}
+
+/* ====================================
+   MAIN CONTAINER & CARD
+==================================== */
+.privacy-container {
+  max-width: 800px;
+  margin: -20px auto 0;
+  padding: 0 20px;
+  position: relative;
+  z-index: 3;
+}
+
+.policy-card {
+  background-color: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ====================================
+   CONTENT STYLES
+==================================== */
+.policy-section {
+  margin-bottom: 20px;
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+
+    .icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 152, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 152, 0, 0.2);
+      
+      i {
+        color: $accent-color;
+        font-size: 1.1rem;
+      }
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+  }
+
+  p {
+    color: $text-muted;
+    line-height: 1.7;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+  }
+}
+
+.highlight {
+  color: #fff;
+  font-weight: 600;
+}
+
+.styled-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+
+  li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 15px;
+    color: $text-muted;
+    line-height: 1.6;
+
+    &::before {
+      content: '⚡';
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 0.9rem;
+      color: $accent-color;
+    }
+
+    strong {
+      color: #fff;
+    }
+  }
+}
+
+.info-alert {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 4px solid $accent-color;
+  padding: 20px;
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+
+  i {
+    color: $accent-color;
+    font-size: 1.2rem;
+    margin-top: 3px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+}
+
+.divider {
+  height: 1px;
+  background: $border-color;
+  margin: 40px 0;
+}
+
+.link {
+  color: $accent-color;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: lighten($accent-color, 15%);
+    text-decoration: underline;
+  }
+}
+
+/* ====================================
+   RESPONSIVE DESIGN
+==================================== */
+@media (max-width: 768px) {
+  .privacy-hero {
+    padding: 60px 15px 30px;
+    
+    h1 {
+      font-size: 2rem;
+    }
+  }
+
+  .policy-card {
+    padding: 25px 20px;
+  }
+
+  .policy-section {
+    .section-header h2 {
+      font-size: 1.3rem;
+    }
+  }
+}

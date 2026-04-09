@@ -20,8 +20,14 @@ import { SupportCenter } from './components/support-center/support-center.compon
 import { AdminSupport } from './components/admin-support/admin-support.component';
 import { Cs2Marketplace } from './components/cs2-marketplace/cs2-marketplace';
 import { Tf2Marketplace } from './components/tf2-marketplace/tf2-marketplace';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy';
 
 export const routes: Routes = [
+
+  {
+    path: 'privacidad',
+    component: PrivacyPolicyComponent,
+  },
 
   { path: 'login', component: Login, canActivate: [publicauthGuard] },
 

@@ -35,6 +35,7 @@
         <!-- Sección Central: Links (Desktop) -->
         <div class="nav-links desktop-only">
             <a routerLink="/marketplace" routerLinkActive="active">Mercado</a>
+            <a routerLink="/privacidad" routerLinkActive="active">Privacidad</a>
             <ng-container *ngIf="isLoggedIn$ | async">
                 <a routerLink="/dota-items" routerLinkActive="active">Mi Inventario</a>
 
@@ -107,6 +108,9 @@
                 </a>
             </div>
         </div>
+        
+        <div class="divider"></div>
+        <a routerLink="/privacidad" routerLinkActive="active" (click)="closeMenu()">📄 Privacidad</a>
 
         <ng-container *ngIf="isLoggedIn$ | async; else guestMobile">
             <div class="divider"></div>
