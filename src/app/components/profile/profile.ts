@@ -25,19 +25,16 @@ export class Profile implements OnInit {
   isSavingProfile: boolean = false;
 
 
-  constructor(private authService: Auth, private cdr: ChangeDetectorRef) { }
+  constructor(public authService: Auth, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    // 1. Initial Load
     this.authService.getProfile().subscribe((profile) => {
+      if (!profile) return;
       this.user = profile;
-      this.newTradeUrl = profile.tradeOfferUrl || ''; // Cargamos la URL actual si existe
-
-      // Cargar datos nuevos si existen
+      this.newTradeUrl = profile.tradeOfferUrl || '';
       this.numeroDocumento = profile.numeroDocumento || '';
       this.celular = profile.celular || '';
-      // No cargamos las fotos base64 por performance/privacidad en la vista inicial, 
-      // solo mostramos si ya verificó, pero si quieres previsualizar, tendrías que traerlas.
-
       this.cdr.detectChanges();
     });
   }

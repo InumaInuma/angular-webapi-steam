@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
+  effect,
   HostListener,
   NgZone,
   OnInit,
 } from '@angular/core';
-import { distinctUntilChanged } from 'rxjs/operators';
 import { Dota, DotaItemDto } from '../../service/dota';
 import { Auth } from '../../service/auth';
 import { ActivatedRoute } from '@angular/router';
@@ -39,11 +39,28 @@ export class DotaItems implements OnInit {
 
   constructor(
     private dotaService: Dota,
-    private authService: Auth,
+    public authService: Auth,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private zone: NgZone
-  ) { }
+  ) {
+    // 🛡️ REACCIÓN AUTOMÁTICA A CAMBIOS DE STEAM ID (Angular v20 Effect)
+    effect(() => {
+      const currentSteamId = this.authService.steamId();
+      if (currentSteamId) {
+        this.hasSteamLinked = true;
+        this.steamId = currentSteamId;
+        this.loadItems();
+      } else {
+        this.hasSteamLinked = false;
+        // Solo dejamos de cargar si estamos seguros de que no hay sesión
+        if (!localStorage.getItem('jwt')) {
+          this.loading = false;
+        }
+      }
+      this.cdr.detectChanges();
+    });
+  }
 
   ngOnInit(): void {
     const savedSteamId = localStorage.getItem('steamId');
@@ -55,25 +72,7 @@ export class DotaItems implements OnInit {
       this.steamId = savedSteamId;
     }
 
-    // 2. Escuchar cambios reactivos y forzar detección
-    this.authService.steamId$
-      .pipe(distinctUntilChanged()) // 👈 Evitar duplicados si el ID es el mismo
-      .subscribe(steamId => {
-        if (steamId) {
-          this.hasSteamLinked = true;
-          this.steamId = steamId;
-          this.loadItems();
-        } else {
-          this.hasSteamLinked = false;
-          // Solo dejamos de cargar si estamos seguros de que no hay Steam (o no hay sesión)
-          if (!hasToken) {
-            this.loading = false;
-          }
-        }
-        this.cdr.detectChanges(); // 👈 Forzar para que el HTML reaccione al instante
-      });
-
-    // 3. Si hay token pero no SteamID, forzar una recarga de info del servidor
+    // 2. Si hay token pero no SteamID, forzar una recarga de info del servidor
     if (hasToken && !savedSteamId) {
       this.loading = true; // Aseguramos que el loader esté activo mientras esperamos al server
       this.authService.getUserInfo().subscribe({
@@ -90,7 +89,7 @@ export class DotaItems implements OnInit {
       });
     }
 
-    // 4. Procesar retorno de Steam (Query Params)
+    // 3. Procesar retorno de Steam (Query Params)
     this.route.queryParams.subscribe(params => {
       const token = params['token'];
       const steamIdFromUrl = params['steamId'];
@@ -158,73 +157,30 @@ export class DotaItems implements OnInit {
   escrowChecking = false;
   escrowResult: { hasEscrow: boolean; daysHeld: number; message: string } | null = null;
 
-  // 🛡️ VERIFICAR ESCROW ANTES DE VENDER
+  // 🛡️ VERIFICAR ESCROW ANTES DE VENDER (Simplificado con Signals)
   confirmSell() {
     if (!this.selectedItem || !this.price || this.price <= 0) return;
 
-    // Activar estado de "verificando..."
-    this.escrowChecking = true;
+    if (this.authService.isTradeBanned()) {
+      alert('🚫 No puedes vender ítems. Tu cuenta de Steam tiene los intercambios bloqueados permanentemente.');
+      return;
+    }
+
+    // Abrir el modal de verificación reflejando el estado global
     this.escrowModalOpen = true;
-    this.escrowResult = null;
+
+    // Si ya sabemos si está verificado o no, no hace falta "buscar"
+    // Pero forzamos un mini-check proactivo por si acaso el usuario acaba de limpiar su Steam
+    this.escrowChecking = true;
     this.cdr.detectChanges();
 
-    let listenerRemoved = false; // Flag para evitar race condition con el timeout
+    this.authService.triggerExtensionCheck();
 
-    // Escuchar la respuesta de la extensión (una sola vez)
-    const escrowListener = (event: MessageEvent) => {
-      if (event.data?.type !== 'P2P_MARKET_ESCROW_RESULT') return;
-      if (listenerRemoved) return; // Timeout ya limpió, ignorar
-      listenerRemoved = true;
-      window.removeEventListener('message', escrowListener);
-
-      // NgZone garantiza que Angular detecte los cambios del evento externo
-      this.zone.run(() => {
-        this.escrowChecking = false;
-
-        if (!event.data.success) {
-          this.escrowResult = {
-            hasEscrow: false,
-            daysHeld: 0,
-            message: event.data.message || 'No se pudo verificar tu estado de Steam. Asegúrate de tener la extensión P2P Market instalada y estar logueado en Steam.'
-          };
-        } else if (event.data.hasEscrow) {
-          this.escrowResult = {
-            hasEscrow: true,
-            daysHeld: event.data.daysHeld,
-            message: event.data.message
-          };
-        } else {
-          this.escrowResult = {
-            hasEscrow: false,
-            daysHeld: 0,
-            message: '✅ Todo correcto, no tienes ninguna retención de ítems. ¿Deseas confirmar la venta?'
-          };
-        }
-        this.cdr.detectChanges();
-      });
-    };
-
-    window.addEventListener('message', escrowListener);
-
-    // Enviar mensaje a la extensión para que verifique el escrow
-    window.postMessage({ type: 'P2P_MARKET_CHECK_ESCROW' }, '*');
-
-    // Timeout de seguridad (si la extensión no responde en 10 segundos)
+    // Simulamos un delay de "comprobación" para feedback visual
     setTimeout(() => {
-      if (!listenerRemoved) {
-        listenerRemoved = true;
-        window.removeEventListener('message', escrowListener);
-        this.zone.run(() => {
-          this.escrowChecking = false;
-          this.escrowResult = {
-            hasEscrow: false,
-            daysHeld: 0,
-            message: '⚠️ La extensión P2P Market no respondió. Asegúrate de tenerla instalada y habilitada, y de estar logueado en steamcommunity.com.'
-          };
-          this.cdr.detectChanges();
-        });
-      }
-    }, 10000);
+      this.escrowChecking = false;
+      this.cdr.detectChanges();
+    }, 1500);
   }
 
   // ✅ CONFIRMAR VENTA REAL (Se llama solo si el usuario pasa la verificación de escrow)

@@ -131,3 +131,62 @@
 <main class="main-content" [class.admin-layout]="isAdminRoute">
     <router-outlet></router-outlet>
 </main>
+
+<!-- 🚨 GLOBAL TRADE BAN MODAL -->
+<div class="global-ban-overlay" *ngIf="authService.isTradeBanned() && !banModalDismissed">
+    <div class="ban-card">
+        <div class="ban-header">
+            <i class="fas fa-user-slash"></i>
+            <h2>¡Restricción de Steam Detectada!</h2>
+        </div>
+        <div class="ban-body">
+            <p>Hemos detectado que tu cuenta de Steam tiene los <strong>intercambios bloqueados</strong> (Trade Ban o VAC).</p>
+            <p class="ban-warning">⚠️ No podrás realizar compras ni ventas en P2P Market mientras esta restricción esté activa.</p>
+            <p><strong>¿Por qué veo esto?</strong> La extensión P2P Market ha verificado tu perfil y detectó que <code>g_bCanTrade = false</code>.</p>
+        </div>
+        <div class="ban-footer">
+            <button class="btn-understand" (click)="dismissBanModal()">Entendido</button>
+        </div>
+    </div>
+</div>
+
+<!-- 🎉 GLOBAL SUCCESS VERIFICATION MODAL -->
+<div class="global-success-overlay" *ngIf="authService.showTradeSuccessModal() && !authService.isTradeBanned()">
+    <div class="success-card">
+        <div class="success-header">
+            <div class="check-animation">
+                <i class="fas fa-check-double"></i>
+            </div>
+            <h2>¡Cuenta en Orden!</h2>
+        </div>
+        <div class="success-body">
+            <p>La extensión P2P Market ha verificado tu cuenta de Steam y <strong>todo está perfecto</strong>.</p>
+            <div class="success-features">
+                <span><i class="fas fa-shield-alt"></i> Sin Escrow (7+ días Steam Guard)</span>
+                <span><i class="fas fa-check-circle"></i> Sin Bloqueos de Intercambio</span>
+            </div>
+            <p class="success-note">¡Ya puedes comprar y vender ítems al instante!</p>
+        </div>
+        <div class="success-footer">
+            <button class="btn-continue" (click)="dismissSuccessModal()">¡Excelente!</button>
+        </div>
+    </div>
+</div>
+
+<!-- 🚨 GLOBAL STEAM IDENTITY MISMATCH MODAL -->
+<div class="global-mismatch-overlay" *ngIf="authService.showTradeMismatchModal()">
+    <div class="mismatch-card">
+        <div class="mismatch-header">
+            <div class="warning-animation">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2>⚠️ Error de Identidad</h2>
+        </div>
+        <div class="mismatch-body">
+            <p class="mismatch-text">{{ authService.tradeMismatchMessage() }}</p>
+        </div>
+        <div class="mismatch-footer">
+            <button class="btn-understand-mismatch" (click)="dismissMismatchModal()">Entendido y Cerrar</button>
+        </div>
+    </div>
+</div>

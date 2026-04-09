@@ -40,14 +40,53 @@ $card-bg: #1e293b;
   }
 }
 
-.avatar {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
+// 🎮 Avatar con brillo Steam
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
   margin-bottom: 20px;
-  border: 4px solid white;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-  object-fit: cover;
+
+  .avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3px solid rgba(147, 197, 253, 0.6);
+    box-shadow: 0 0 0 5px rgba(147, 197, 253, 0.1), 0 8px 30px rgba(0, 0, 0, 0.4);
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+  }
+
+  .avatar-glow {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      rgba(147, 197, 253, 0.7),
+      rgba(167, 139, 250, 0.7),
+      rgba(96, 165, 250, 0.7),
+      rgba(147, 197, 253, 0.7)
+    );
+    z-index: -1;
+    animation: spin-glow 4s linear infinite;
+    filter: blur(6px);
+    opacity: 0.6;
+  }
+
+  &:hover .avatar {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 5px rgba(147, 197, 253, 0.25), 0 12px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  &:hover .avatar-glow {
+    opacity: 1;
+  }
+}
+
+@keyframes spin-glow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .name {
@@ -83,6 +122,115 @@ $card-bg: #1e293b;
     /* Por defecto activo si no es banned */
     display: none;
     /* Ocultar si no es banned para no redundar */
+  }
+}
+
+/* 🛡️ Steam Status Card (Expert Polish) */
+.steam-status-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 25px;
+  text-align: left;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+
+  &.verified {
+    border-color: rgba(46, 204, 113, 0.4);
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.08), rgba(46, 204, 113, 0.02));
+    
+    .status-icon {
+      color: #2ecc71;
+      background: rgba(46, 204, 113, 0.1);
+      box-shadow: 0 0 20px rgba(46, 204, 113, 0.2);
+    }
+    
+    .status-value {
+      color: #2ecc71;
+    }
+  }
+
+  &.warning {
+    border-color: rgba(243, 156, 18, 0.4);
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.08), rgba(243, 156, 18, 0.02));
+    animation: border-pulse-warn 3.5s infinite;
+
+    .status-icon {
+      color: #f39c12;
+      background: rgba(243, 156, 18, 0.1);
+      box-shadow: 0 0 20px rgba(243, 156, 18, 0.2);
+    }
+    .status-value {
+      color: #f39c12;
+    }
+  }
+
+  @keyframes border-pulse-warn {
+    0% { border-color: rgba(243, 156, 18, 0.3); }
+    50% { border-color: rgba(243, 156, 18, 0.7); box-shadow: 0 0 15px rgba(243, 156, 18, 0.1); }
+    100% { border-color: rgba(243, 156, 18, 0.3); }
+  }
+
+  .status-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+  }
+
+  .status-text {
+    flex-grow: 1;
+    
+    .status-label {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: $text-light;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .status-value {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .status-desc {
+      font-size: 0.85rem;
+      color: $text-light;
+      margin: 0;
+      line-height: 1.4;
+    }
+  }
+
+  .verified-medal {
+    font-size: 2.5rem;
+    color: #f1c40f;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.2;
+    filter: drop-shadow(0 0 10px rgba(241, 196, 15, 0.3));
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   }
 }
 

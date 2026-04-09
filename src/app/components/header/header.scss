@@ -97,6 +97,48 @@
 //   box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 // }
 
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-indicator-mini {
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  transition: 0.3s;
+  cursor: help;
+  margin-left: 4px;
+
+  &.verified {
+    color: #2ecc71;
+    text-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+  }
+
+  &.escrow {
+    color: #f1c40f;
+    text-shadow: 0 0 8px rgba(241, 196, 15, 0.4);
+    animation: pulse-warn-mini 2s infinite ease-in-out;
+  }
+
+  &.banned {
+    color: #e74c3c;
+    text-shadow: 0 0 8px rgba(231, 76, 60, 0.4);
+  }
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes pulse-warn-mini {
+  0% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 0.7; transform: scale(1); }
+}
+
 .wallet-info {
   display: flex;
   align-items: center;

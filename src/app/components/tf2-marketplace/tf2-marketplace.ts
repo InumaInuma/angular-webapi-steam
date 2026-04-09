@@ -53,10 +53,16 @@ export class Tf2Marketplace implements OnInit {
     }
 
     buy(item: MarketplaceItem) {
-        if (!this.authService.isLoggedInValue()) {
+        if (!this.authService.isLoggedIn()) {
             if (confirm('Necesitas iniciar sesión para comprar. ¿Ir al login?')) {
                 this.router.navigate(['/login']);
             }
+            return;
+        }
+
+        // 🚨 1.1 Validar IDENTIDAD Y TRADES (Expert Mode)
+        if (!this.authService.isTradeVerified()) {
+            this.authService.triggerExtensionCheck();
             return;
         }
 
@@ -71,23 +77,59 @@ export class Tf2Marketplace implements OnInit {
             return;
         }
 
-        this.dotaService.buyItem(item.listingId).subscribe({
-            next: () => {
-                alert('✅ ¡Compra exitosa! Revisa tus pedidos pendientes.');
-                this.ngOnInit(); // Recargar la lista
-                // Actualizar balance global
-                this.walletService.getBalance().subscribe({
-                    next: (res: any) => {
-                        if (res && res.balance !== undefined) {
-                            this.authService.setBalance(res.balance);
-                        }
-                    },
-                    error: (err) => console.error('Error fetching balance:', err)
-                });
-            },
-            error: (err: any) => {
-                alert('❌ Error al comprar: ' + (err.error?.message || err.message));
+        // 3. 🔒 Verificar estado de Escrow en Tiempo Real antes de comprar
+        const jwtToken = localStorage.getItem('jwt');
+        let escrowListenerRemoved = false;
+
+        const escrowBuyerListener = (event: MessageEvent) => {
+            if (event.data.type !== 'P2P_MARKET_ESCROW_RESULT') return;
+            if (escrowListenerRemoved) return;
+
+            escrowListenerRemoved = true;
+            window.removeEventListener('message', escrowBuyerListener);
+
+            if (!event.data.success) {
+                if (!event.data.message.includes('coincide')) {
+                    alert('❌ Falló la verificación de seguridad: ' + event.data.message);
+                }
+                return;
             }
-        });
+
+            if (event.data.hasEscrow) {
+                const reason = event.data.isTradeBanned
+                    ? '🚫 Tu cuenta de Steam tiene los intercambios bloqueados permanentemente.'
+                    : `⏳ Tu cuenta tiene una retención de ${event.data.daysHeld} días.`;
+                alert(reason);
+            } else {
+                this.dotaService.buyItem(item.listingId).subscribe({
+                    next: () => {
+                        alert('✅ ¡Compra exitosa! Revisa tus pedidos pendientes.');
+                        this.ngOnInit();
+                        this.walletService.getBalance().subscribe({
+                            next: (res: any) => {
+                                if (res && res.balance !== undefined) {
+                                    this.authService.setBalance(res.balance);
+                                }
+                            },
+                            error: (err) => console.error('Error fetching balance:', err)
+                        });
+                    },
+                    error: (err: any) => {
+                        alert('❌ Error al comprar: ' + (err.error?.message || err.message));
+                    }
+                });
+            }
+        };
+
+        window.addEventListener('message', escrowBuyerListener);
+        window.postMessage({ type: 'P2P_MARKET_CHECK_ESCROW', jwtToken, expectedSteamId: this.authService.steamId() }, '*');
+
+        setTimeout(() => {
+            if (!escrowListenerRemoved) {
+                escrowListenerRemoved = true;
+                window.removeEventListener('message', escrowBuyerListener);
+                alert('⚠️ La extensión P2P Market no respondió. Inténtalo de nuevo.');
+            }
+        }, 8000);
     }
 }

@@ -17,7 +17,6 @@ import { Walletservice } from '../../service/walletservice';
 export class MarketplaceComponent implements OnInit {
     items: MarketplaceItem[] = [];
     filteredItems: MarketplaceItem[] = [];
-    isLoggedIn$: Observable<boolean>;
 
     filters = ['Todos', 'Arcana', 'Immortal', 'Legendary', 'Mythical', 'Rare'];
     activeFilter = 'Todos';
@@ -216,12 +215,10 @@ export class MarketplaceComponent implements OnInit {
     constructor(
         private dotaService: Dota,
         private cdr: ChangeDetectorRef,
-        private authService: Auth,
+        public authService: Auth,
         private router: Router, // 👈 Inject Router
         private walletService: Walletservice
-    ) {
-        this.isLoggedIn$ = this.authService.isLoggedIn$;
-    }
+    ) { }
 
     ngOnInit() {
         this.dotaService.getMarketplaceItems().subscribe((res) => {
@@ -316,10 +313,18 @@ export class MarketplaceComponent implements OnInit {
 
     buy(item: MarketplaceItem) {
         // 1. Validar Login
-        if (!this.authService.isLoggedInValue()) {
+        if (!this.authService.isLoggedIn()) {
             if (confirm('Necesitas iniciar sesión para comprar. ¿Ir al login?')) {
                 this.router.navigate(['/login']);
             }
+            return;
+        }
+
+        // 🚨 1.1 Validar IDENTIDAD Y TRADES (Expert Mode)
+        // Si el estado global es falso, ni siquiera pedimos confirmación
+        if (!this.authService.isTradeVerified()) {
+            this.authService.triggerExtensionCheck();
+            // El modal global (Identity Mismatch o Ban) se encargará de informar al usuario
             return;
         }
 
@@ -334,25 +339,70 @@ export class MarketplaceComponent implements OnInit {
             return;
         }
 
-        this.dotaService.buyItem(item.listingId).subscribe({
-            next: (res: any) => {
-                alert('✅ ¡Compra exitosa! Revisa tus pedidos pendientes.');
-                this.ngOnInit(); // Recargar la lista
-                // Actualizar balance global
-                this.walletService.getBalance().subscribe({
-                    next: (res: any) => {
-                        if (res && res.balance !== undefined) {
-                            this.authService.setBalance(res.balance);
-                        }
-                    },
-                    error: (err) => console.error('Error fetching balance:', err)
-                });
-            },
-            error: (err: any) => {
-                console.error(err);
-                alert('❌ Error al comprar: ' + (err.error?.message || err.message));
+        // 3. 🔒 Verificar estado de Escrow del COMPRADOR antes de crear la orden (Doble Check Tiempo Real)
+        const jwtToken = localStorage.getItem('jwt');
+        let escrowListenerRemoved = false;
+
+        const escrowBuyerListener = (event: MessageEvent) => {
+            if (event.data.type !== 'P2P_MARKET_ESCROW_RESULT') return;
+            if (escrowListenerRemoved) return;
+
+            escrowListenerRemoved = true;
+            window.removeEventListener('message', escrowBuyerListener);
+
+            // 🔍 Validar éxito de la operación (Identidad / Errores Extensión)
+            if (!event.data.success) {
+                console.error('🚨 Error de validación previo a compra:', event.data.message);
+                // Si hay desajuste, el modal ya se habrá disparado vía AuthService,
+                // pero por seguridad también mostramos el alert o cortamos el proceso.
+                if (event.data.message.includes('coincide')) {
+                   // No hacemos nada, el modal de identidad ya debe estar visible
+                } else {
+                   alert('❌ Falló la verificación de seguridad: ' + event.data.message);
+                }
+                return;
             }
-        });
+
+            if (event.data.hasEscrow) {
+                // ❌ Comprador con retención → Bloquear compra
+                const reason = event.data.isTradeBanned
+                    ? '🚫 Tu cuenta de Steam tiene los intercambios bloqueados permanentemente. No puedes comprar ítems hasta resolver esto con Steam Support.'
+                    : `⏳ Tu cuenta tiene una retención de ${event.data.daysHeld} días. Activa el Autenticador Móvil de Steam Guard y espera 7 días para poder comprar.`;
+                alert(reason);
+            } else {
+                // ✅ Comprador limpio → Proceder con la compra
+                this.dotaService.buyItem(item.listingId).subscribe({
+                    next: (res: any) => {
+                        alert('✅ ¡Compra exitosa! Revisa tus pedidos pendientes.');
+                        this.ngOnInit();
+                        this.walletService.getBalance().subscribe({
+                            next: (res: any) => {
+                                if (res && res.balance !== undefined) {
+                                    this.authService.setBalance(res.balance);
+                                }
+                            },
+                            error: (err) => console.error('Error fetching balance:', err)
+                        });
+                    },
+                    error: (err: any) => {
+                        console.error(err);
+                        alert('❌ Error al comprar: ' + (err.error?.message || err.message));
+                    }
+                });
+            }
+        };
+
+        window.addEventListener('message', escrowBuyerListener);
+        window.postMessage({ type: 'P2P_MARKET_CHECK_ESCROW', jwtToken, expectedSteamId: this.authService.steamId() }, '*');
+
+        // Timeout de seguridad: si la extensión no responde, bloquear la compra por precaución
+        setTimeout(() => {
+            if (!escrowListenerRemoved) {
+                escrowListenerRemoved = true;
+                window.removeEventListener('message', escrowBuyerListener);
+                alert('⚠️ La extensión P2P Market no respondió. Asegúrate de tenerla instalada y habilitada, y de estar logueado en steamcommunity.com antes de comprar.');
+            }
+        }, 10000);
     }
 
     getHeroImageUrl(hero: string, spec: string): string {

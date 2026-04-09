@@ -1,9 +1,65 @@
 <div class="profile-container" *ngIf="user; else loading">
     <div class="profile-card">
-        <img src="https://ui-avatars.com/api/?name={{ user.displayName }}&size=128" alt="Avatar" class="avatar" />
+        <div class="avatar-wrapper">
+            <img [src]="user.profilePic || 'https://ui-avatars.com/api/?name=' + user.displayName + '&size=128'" 
+                 alt="Avatar" class="avatar" />
+            <div class="avatar-glow"></div>
+        </div>
 
-        <h2 class="name">{{ user.displayName }}</h2>
+        <h2 class="name">{{ user.personaName || user.displayName }}</h2>
         <p class="email">{{ user.email }}</p>
+
+        <!-- 🛡️ SEGURIDAD COMERCIAL DE STEAM (Simplified & Expert) -->
+        <div class="steam-status-card" 
+             [class.verified]="authService.isTradeVerified()" 
+             [class.warning]="!authService.isTradeVerified()">
+            
+            <div class="status-icon">
+                <i class="fas" [ngClass]="{
+                    'fa-check-circle': authService.isTradeVerified(),
+                    'fa-exclamation-triangle': !authService.isTradeVerified()
+                }"></i>
+            </div>
+
+            <div class="status-text">
+                <span class="status-label">Seguridad Comercial de Steam</span>
+                
+                <span class="status-value" *ngIf="authService.isTradeVerified()">✅ Cuenta Verificada</span>
+                <span class="status-value" *ngIf="!authService.isTradeVerified()">⚠️ Verificación Pendiente</span>
+
+                <!-- 1. Caso: Cuenta Verificada -->
+                <p class="status-desc" *ngIf="authService.isTradeVerified()">
+                    Tu cuenta está lista para comprar y vender ítems al instante.
+                </p>
+                
+                <!-- 2. Casos: Verificación Pendiente -->
+                <ng-container *ngIf="!authService.isTradeVerified()">
+                    <!-- Prioridad A: Error de Identidad -->
+                    <p class="status-desc error-urgent" *ngIf="authService.tradeMismatchMessage()">
+                        <strong>🔒 Error de Identidad:</strong> {{ authService.tradeMismatchMessage() }}
+                    </p>
+
+                    <!-- Prioridad B: Baneo Permanente -->
+                    <p class="status-desc error-urgent" *ngIf="authService.isTradeBanned()">
+                        <strong>🚫 Restricción Detectada:</strong> Tu cuenta tiene un bloqueo de Steam (Trade Ban/VAC). No puedes operar.
+                    </p>
+
+                    <!-- Prioridad C: Escrow (Solo si no hay mismatch/ban) -->
+                    <p class="status-desc" *ngIf="!authService.isTradeBanned() && !authService.tradeMismatchMessage() && authService.daysHeld() > 0">
+                        <strong>⏳ Retención de Steam:</strong> Tienes una retención de {{ authService.daysHeld() }} días por no tener Steam Guard Móvil activo por más de 7 días.
+                    </p>
+
+                    <!-- Prioridad D: Verificación Inicial / Procesando -->
+                    <p class="status-desc" *ngIf="!authService.isTradeBanned() && !authService.tradeMismatchMessage() && authService.daysHeld() === 0">
+                        <strong>⌛ Comprobando...</strong> Abre tu perfil de Steam en otra pestaña para que la extensión valide tu cuenta.
+                    </p>
+                </ng-container>
+
+                <div class="status-timestamp" *ngIf="authService.tradeVerifiedAtUtc()">
+                    <i class="fas fa-history"></i> Última comprobación: {{ authService.tradeVerifiedAtUtc() | date:'short' }}
+                </div>
+            </div>
+        </div>
 
         <!-- Sección de Verificación -->
         <div class="verification-section">

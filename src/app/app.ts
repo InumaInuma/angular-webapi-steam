@@ -21,11 +21,27 @@ export class App implements OnInit {
   mobileMenuOpen = false;
   isLoggedIn$: any;
   balance$: any;
+  banModalDismissed = false; // 👈 Manejo local de cierre del modal
+
+  dismissBanModal() {
+    this.banModalDismissed = true;
+    this.cdr.detectChanges();
+  }
+
+  dismissSuccessModal() {
+    this.authService.showTradeSuccessModal.set(false);
+    this.cdr.detectChanges();
+  }
+
+  dismissMismatchModal() {
+    this.authService.showTradeMismatchModal.set(false);
+    this.cdr.detectChanges();
+  }
 
   constructor(
     private location: Location,
     private router: Router,
-    private authService: Auth,
+    public authService: Auth, // 👈 Public for template access
     private cdr: ChangeDetectorRef,
     private walletService: Walletservice,
     private fcmService: FcmService
