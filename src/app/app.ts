@@ -38,6 +38,20 @@ export class App implements OnInit {
     this.cdr.detectChanges();
   }
 
+  // 👈 Extension Promo Modal
+  showExtensionPromoModal = false;
+
+  dismissExtensionPromo() {
+    this.showExtensionPromoModal = false;
+    localStorage.setItem('extensionPromoDismissed', 'true');
+    this.cdr.detectChanges();
+  }
+
+  installExtension() {
+    window.open('https://chromewebstore.google.com/detail/jpnmnppohmkhepdnojfcliociacbbbfm?utm_source=item-share-cb', '_blank');
+    this.dismissExtensionPromo();
+  }
+
   constructor(
     private location: Location,
     private router: Router,
@@ -83,6 +97,11 @@ export class App implements OnInit {
     // Cargar info inicial si ya hay token al entrar/refrescar
     if (localStorage.getItem('jwt')) {
       this.authService.getUserInfo().subscribe();
+    }
+
+    // 👈 Evaluar si mostramos el modal de extensión
+    if (!localStorage.getItem('extensionPromoDismissed')) {
+      this.showExtensionPromoModal = true;
     }
   }
 

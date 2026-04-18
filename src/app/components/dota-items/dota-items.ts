@@ -29,6 +29,7 @@ export class DotaItems implements OnInit {
   currentPage = 1;
   pageSize = 10; // 👈 cantidad de ítems por página
   steamId: string | null = null;
+  selectedGame: string = 'dota2'; // 👈 'dota2', 'tf2', 'cs2'
 
   // 👇 Modal state
   modalOpen = false;
@@ -105,13 +106,36 @@ export class DotaItems implements OnInit {
   }
   // ✅ Ahora solo los cargo después de vincular Steam
   loadItems(): void {
-    this.loading = true; // 👈 Asegurar que el loader se vea al empezar
-    this.dotaService.getUserDotaItems().subscribe((items) => {
-      this.items = items.filter((i) => i.isTradable);
-      this.applyFilter(); // 👈 Llama al filtro inicial (que copia todos a filteredItems)
+    if (!this.steamId) return;
+    this.loading = true;
+    this.items = [];
+    this.filteredItems = [];
+    this.pagedItems = [];
+
+    const request = this.selectedGame === 'tf2'
+      ? this.dotaService.getUserTf2Items()
+      : this.selectedGame === 'cs2'
+        ? this.dotaService.getUserCs2Items()
+        : this.dotaService.getUserDotaItems();
+
+    request.subscribe((items) => {
+      // 👈 Se aplica el filtro solo para Dota 2 y CS2. En TF2 se muestran todos (para ver llaves con bloqueo).
+      if (this.selectedGame === 'tf2') {
+        this.items = items;
+      } else {
+        this.items = items.filter((i) => i.isTradable);
+      }
+      this.applyFilter();
       this.loading = false;
       this.cdr.detectChanges();
     });
+  }
+
+  selectGame(game: string): void {
+    if (this.selectedGame === game) return;
+    this.selectedGame = game;
+    this.currentPage = 1;
+    this.loadItems();
   }
 
   // 👇 Filtrar localmente por nombre
@@ -161,6 +185,11 @@ export class DotaItems implements OnInit {
   confirmSell() {
     if (!this.selectedItem || !this.price || this.price <= 0) return;
 
+    if (!this.selectedItem.isTradable) {
+      alert('Este ítem está actualmente bloqueado y no puede ser intercambiado por el momento.');
+      return;
+    }
+
     if (this.authService.isTradeBanned()) {
       alert('🚫 No puedes vender ítems. Tu cuenta de Steam tiene los intercambios bloqueados permanentemente.');
       return;
@@ -200,7 +229,10 @@ export class DotaItems implements OnInit {
         type: this.selectedItem.type,
         hero: this.selectedItem.hero,
         gems: this.selectedItem.gems,
-        styles: this.selectedItem.styles
+        styles: this.selectedItem.styles,
+        game: this.selectedGame,
+        appId: this.selectedItem.appId,     // 👈 Pass appId
+        contextId: this.selectedItem.contextId // 👈 Pass contextId
       })
       .subscribe({
         next: () => {

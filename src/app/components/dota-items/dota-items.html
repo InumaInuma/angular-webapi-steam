@@ -36,15 +36,33 @@
 </div>
 
 <ng-template #itemsTemplate>
+    <!-- Selector de Juego -->
+    <div class="game-selector-container" *ngIf="hasSteamLinked">
+        <div class="game-selector">
+            <button class="selector-btn" [class.active]="selectedGame === 'dota2'" (click)="selectGame('dota2')">
+                <span class="game-icon">🎮</span>
+                <span class="game-name">DOTA 2</span>
+            </button>
+            <button class="selector-btn" [class.active]="selectedGame === 'cs2'" (click)="selectGame('cs2')">
+                <span class="game-icon">🔫</span>
+                <span class="game-name">CS 2</span>
+            </button>
+            <button class="selector-btn" [class.active]="selectedGame === 'tf2'" (click)="selectGame('tf2')">
+                <span class="game-icon">🔧</span>
+                <span class="game-name">TF 2</span>
+            </button>
+        </div>
+    </div>
+
     <!-- Filtros de Inventario -->
     <div class="inventory-header" *ngIf="hasSteamLinked">
         <div class="search-box-inventory">
             <input type="text" placeholder="Buscar mi ítem..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()">
             <i class="fas fa-search"></i>
         </div>
-        
+
         <button class="btn-search" (click)="applyFilter()">Buscar</button>
-        
+
         <button class="relink-btn" (click)="loginWithSteam()">
             <span class="icon">🔄</span> Sincronizar / Cambiar Steam
         </button>
@@ -103,7 +121,7 @@
         <button class="modal-close" (click)="closeModal()">✕</button>
 
         <div class="modal-content-split" *ngIf="selectedItem">
-            
+
             <!-- LEFT COLUMN: Image -->
             <div class="modal-left">
                 <div class="modal-image-wrapper">
@@ -114,9 +132,10 @@
             <!-- RIGHT COLUMN: Details & Actions -->
             <div class="modal-right">
                 <h2 class="modal-title">{{ selectedItem.name }}</h2>
-                
+
                 <div class="modal-meta">
-                    <span class="meta-tag rarity-tag" [style.color]="selectedItem.rarityColor">{{ selectedItem.rarity || 'Standard' }}</span>
+                    <span class="meta-tag rarity-tag" [style.color]="selectedItem.rarityColor">{{ selectedItem.rarity ||
+                        'Standard' }}</span>
                     <span class="meta-tag type-tag">{{ selectedItem.type }}</span>
                     <span class="meta-tag hero-tag" *ngIf="selectedItem.hero">Héroe: {{ selectedItem.hero }}</span>
                 </div>
@@ -147,7 +166,8 @@
                 <div class="static-properties">
                     <div class="prop-group">
                         <span class="prop-label">Rareza:</span>
-                        <span class="prop-value" [style.color]="selectedItem.rarityColor">{{ selectedItem.rarity || 'Desconocido' }}</span>
+                        <span class="prop-value" [style.color]="selectedItem.rarityColor">{{ selectedItem.rarity ||
+                            'Desconocido' }}</span>
                     </div>
                     <div class="prop-group">
                         <span class="prop-label">Tipo:</span>
@@ -171,7 +191,8 @@
                     <label for="price">Establecer Precio de Venta</label>
                     <div class="price-wrapper">
                         <span class="currency">S/</span>
-                        <input id="price" type="number" min="0" step="0.01" [(ngModel)]="price" placeholder="0.00" class="price-input-dark" />
+                        <input id="price" type="number" min="0" step="0.01" [(ngModel)]="price" placeholder="0.00"
+                            class="price-input-dark" />
                     </div>
                 </div>
 
@@ -216,7 +237,8 @@
             <div class="escrow-icon blocked-icon">🔒</div>
             <h3>RETENCIÓN DE INTERCAMBIO DETECTADA</h3>
             <p class="escrow-days">{{ authService.daysHeld() }} días de bloqueo</p>
-            <p>Tu cuenta tiene una retención de intercambio. Esto sucede por no tener Steam Guard Móvil activado por 7 días.</p>
+            <p>Tu cuenta tiene una retención de intercambio. Esto sucede por no tener Steam Guard Móvil activado por 7
+                días.</p>
             <p class="escrow-help">
                 <a href="https://help.steampowered.com/es/faqs/view/1069-2A41-D405-00A0" target="_blank" rel="noopener">
                     Más información en Steam Support →

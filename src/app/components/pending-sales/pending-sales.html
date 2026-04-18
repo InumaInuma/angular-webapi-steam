@@ -42,7 +42,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Confirmar Envío</h3>
-                <button class="close-btn" (click)="closeModal()" [disabled]="isSending">×</button>
+                <button class="close-btn" (click)="closeModal()" [disabled]="isSending || isOrderLocked(selectedSale.orderId)">×</button>
             </div>
 
             <div class="modal-body">
@@ -68,9 +68,9 @@
             </div>
 
             <div class="modal-actions">
-                <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
-                <button class="btn-confirm" (click)="confirmSend()" [disabled]="isSending">
-                    {{ isSending ? 'Enviando...' : '↗ Enviar Automático' }}
+                <button class="btn-cancel" (click)="closeModal()" [disabled]="isSending || isOrderLocked(selectedSale.orderId)">Cancelar</button>
+                <button class="btn-confirm" (click)="confirmSend()" [disabled]="isSending || isOrderLocked(selectedSale.orderId)">
+                    {{ (isSending || isOrderLocked(selectedSale.orderId)) ? 'Procesando en Extensión...' : '↗ Enviar Automático' }}
                 </button>
             </div>
         </div>

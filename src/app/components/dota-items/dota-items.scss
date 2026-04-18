@@ -14,6 +14,71 @@
   margin-bottom: 0.5rem;
 }
 
+.game-selector-container {
+  padding: 1.5rem 1.5rem 0;
+  display: flex;
+  justify-content: center;
+
+  .game-selector {
+    display: flex;
+    background: rgba(15, 23, 42, 0.6);
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    gap: 8px;
+
+    .selector-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 24px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+
+      .game-icon {
+        font-size: 1.2rem;
+      }
+
+      &:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      &.active {
+        color: #fff;
+        background: var(--pastel-purple);
+        box-shadow: 0 4px 15px rgba(196, 181, 253, 0.3);
+        
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: #fff;
+            border-radius: 3px 3px 0 0;
+        }
+      }
+
+      /* Game Specific Glows when active */
+      &.active:nth-child(1) { background: linear-gradient(135deg, #f43f5e, #e11d48); box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4); } /* Dota Red */
+      &.active:nth-child(2) { background: linear-gradient(135deg, #eab308, #ca8a04); box-shadow: 0 4px 15px rgba(202, 138, 4, 0.4); } /* CS2 Gold/Yellow */
+      &.active:nth-child(3) { background: linear-gradient(135deg, #f97316, #ea580c); box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4); } /* TF2 Orange */
+    }
+  }
+}
+
 .search-box-inventory {
   position: relative;
   width: 100%;

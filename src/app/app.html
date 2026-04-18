@@ -194,3 +194,31 @@
         </div>
     </div>
 </div>
+
+<!-- 🚀 EXTENSION PROMO MODAL -->
+<div class="global-extension-overlay" *ngIf="showExtensionPromoModal">
+    <div class="extension-card">
+        <button class="btn-close-modal" (click)="dismissExtensionPromo()">✕</button>
+        <div class="extension-header">
+            <div class="logo-animation">
+                <img src="dotados.png" alt="P2P Market" />
+            </div>
+            <h2>¡Maximiza tu Experiencia!</h2>
+        </div>
+        <div class="extension-body">
+            <p>Para poder comprar y vender ítems de manera automática y 100% segura, necesitas instalar nuestra <strong>Extensión Oficial de Chrome</strong>.</p>
+            <div class="extension-features">
+                <span><i class="fas fa-robot"></i> Entregas Automáticas</span>
+                <span><i class="fas fa-shield-check"></i> Verificación de Anti-Scam</span>
+                <span><i class="fas fa-bolt"></i> Sin Retrasos</span>
+            </div>
+            <p class="extension-note">¡Descárgala gratis desde la Chrome Web Store y comienza a ganar!</p>
+        </div>
+        <div class="extension-footer">
+            <button class="btn-download" (click)="installExtension()">
+                <i class="fab fa-chrome"></i> Añadir a Chrome
+            </button>
+            <button class="btn-later" (click)="dismissExtensionPromo()">Quizás más tarde</button>
+        </div>
+    </div>
+</div>

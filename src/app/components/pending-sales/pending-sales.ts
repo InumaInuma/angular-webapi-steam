@@ -20,31 +20,44 @@ export class PendingSales implements OnInit {
   ngOnInit() {
     this.loadSales();
 
+    // Limpiar localStorage expirados por si acaso
+    this.cleanupLocks();
+
     // Escuchar respuesta de la Extensión
     window.addEventListener("message", (event) => {
       if (event.data && event.data.type === "P2P_MARKET_OFFER_RESULT") {
-        this.isSending = false;
         if (event.data.success) {
-          alert("✅ " + event.data.message);
 
           // Notificar al backend que se envió la oferta
           if (event.data.tradeOfferId && this.selectedSale) {
             this.dotaService.markOrderAsSent(this.selectedSale.orderId, event.data.tradeOfferId).subscribe({
               next: () => {
                 console.log("Orden marcada como enviada en backend.");
+                this.isSending = false; // 👈 Quitamos el bloqueo sólo tras reportar al backend local
+                this.removeLock(this.selectedSale?.orderId); // 👈 Quitamos el candado persistente
+                alert("✅ Oferta enviada con éxito.");
                 this.loadSales(); // Recargar ventas
                 this.closeModal();
               },
-              error: (err) => console.error(err)
+              error: (err) => {
+                console.error(err);
+                this.isSending = false;
+                this.removeLock(this.selectedSale?.orderId); // 👈 Si el backend falla, permitimos reintento
+                alert("❌ Error al guardar en base de datos. Por favor contacta al administrador.");
+              }
             });
           } else {
+            this.isSending = false;
+            this.removeLock(this.selectedSale?.orderId);
             this.loadSales();
             this.closeModal();
           }
 
         } else {
+          this.isSending = false; // 👈 Si la extensión falló, desbloqueamos la UI
+          this.removeLock(this.selectedSale?.orderId);
           alert("❌ Error desde Extensión: " + event.data.message);
-          this.cdr.detectChanges(); // Restaura el estado de isSending porque falló
+          this.cdr.detectChanges(); 
         }
       }
     });
@@ -77,8 +90,10 @@ export class PendingSales implements OnInit {
 
   confirmSend() {
     if (!this.selectedSale || !this.selectedSale.buyerTradeUrl) return;
+    if (this.isSending || this.isOrderLocked(this.selectedSale.orderId)) return; // 🛑 Escudo Anti-Spam persistente
 
     this.isSending = true;
+    this.setLock(this.selectedSale.orderId); // Candado para resistir refrescos (F5)
 
     // Enviar mensaje a la Extensión de Chrome
     window.postMessage({
@@ -98,6 +113,7 @@ export class PendingSales implements OnInit {
       if (this.isSending) {
         this.isSending = false;
         alert("⚠️ Tiempo de espera agotado. Asegúrate de tener la Extensión 'P2P Market Auto-Sender' instalada y activa.");
+        this.removeLock(this.selectedSale?.orderId); // Eliminar bloqueo si hubo timeout
 
         // Fallback: abrir manual
         this.openManualTradeUrl();
@@ -154,6 +170,42 @@ export class PendingSales implements OnInit {
         alert('❌ Error al cancelar la venta: ' + (err.error?.message || 'Error desconocido'));
       }
     });
+  }
+
+  // ---- Manejo Persistente de Refrescos (Candados en LocalStorage) ----
+  isOrderLocked(orderId: number | undefined): boolean {
+    if (!orderId) return false;
+    const lockTime = localStorage.getItem(`sending_order_${orderId}`);
+    if (!lockTime) return false;
+    
+    // Si han pasado más de 60 segundos, limpiarlo (Para evitar que se quede bloqueado por error)
+    if (Date.now() - parseInt(lockTime) > 60000) {
+      this.removeLock(orderId);
+      return false;
+    }
+    return true;
+  }
+
+  setLock(orderId: number) {
+    localStorage.setItem(`sending_order_${orderId}`, Date.now().toString());
+  }
+
+  removeLock(orderId: number | undefined) {
+    if (orderId) {
+      localStorage.removeItem(`sending_order_${orderId}`);
+    }
+  }
+
+  cleanupLocks() {
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('sending_order_')) {
+            const time = localStorage.getItem(key);
+            if (time && (Date.now() - parseInt(time) > 60000)) {
+                localStorage.removeItem(key);
+            }
+        }
+    }
   }
 }
 

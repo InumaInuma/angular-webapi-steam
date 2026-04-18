@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* Variables para colores premium */
 $bg-dark: #0f1115;
 $bg-card: #181b21;
@@ -209,7 +211,7 @@ $border-color: rgba(255, 255, 255, 0.05);
   transition: all 0.2s ease;
 
   &:hover {
-    color: lighten($accent-color, 15%);
+    color: color.adjust($accent-color, $lightness: 15%);
     text-decoration: underline;
   }
 }

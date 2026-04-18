@@ -26,6 +26,8 @@ export interface DotaItemDto {
   gems?: ItemGem[]; // 👈 Add gems
   styles?: ItemStyle[]; // 👈 Fixed missingStyles
   description?: string; // 👈 Add description (Lore)
+  appId?: number; // 👈 New
+  contextId?: number; // 👈 New
 }
 
 export interface MarketplaceItem {
@@ -96,10 +98,30 @@ export class Dota {
       );
   } */
   getUserDotaItems(): Observable<DotaItemDto[]> {
-    return this.http.get<DotaItemDto[]>(`${this.apiUrl}/items-schema`).pipe(
+    return this.http.get<DotaItemDto[]>(`${environment.apiUrl}/Dota/items-schema`).pipe(
       tap((data) => console.log('✅ Ítems de Dota recibidos:', data)),
       catchError((error) => {
         console.error('❌ Error al obtener ítems de Dota:', error);
+        return of([]);
+      })
+    );
+  }
+
+  getUserTf2Items(): Observable<DotaItemDto[]> {
+    return this.http.get<DotaItemDto[]>(`${environment.apiUrl}/Tf2/items`).pipe(
+      tap((data) => console.log('✅ Ítems de TF2 recibidos:', data)),
+      catchError((error) => {
+        console.error('❌ Error al obtener ítems de TF2:', error);
+        return of([]);
+      })
+    );
+  }
+
+  getUserCs2Items(): Observable<DotaItemDto[]> {
+    return this.http.get<DotaItemDto[]>(`${environment.apiUrl}/Cs2/items`).pipe(
+      tap((data) => console.log('✅ Ítems de CS2 recibidos:', data)),
+      catchError((error) => {
+        console.error('❌ Error al obtener ítems de CS2:', error);
         return of([]);
       })
     );
@@ -116,8 +138,14 @@ export class Dota {
     hero?: string;
     gems?: any[];
     styles?: any[];
+    game?: string; // 👈 Opcional: para saber de qué juego viene
+    appId?: number; // 👈 New
+    contextId?: number; // 👈 New
   }) {
-    return this.http.post<any>(`${this.apiUrl}/sell`, payload);
+    // Si el juego es TF2 o CS2, podríamos usar sus propios controladores si fuera necesario,
+    // pero por ahora el DotaController.sell es genérico para guardar en la DB.
+    // Sin embargo, para mayor limpieza, podríamos redirigir o simplemente enviar el "game" en el body.
+    return this.http.post<any>(`${environment.apiUrl}/Dota/sell`, payload);
   }
 
   // 👇 Nuevo método para calificar
