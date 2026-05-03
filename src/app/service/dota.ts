@@ -48,6 +48,7 @@ export interface MarketplaceItem {
   rarityColor?: string;
   gems?: ItemGem[]; // 👈 Fixed type for ngFor
   styles?: ItemStyle[]; // 👈 Add styles
+  appId?: number;
 }
 
 export interface PendingSaleDto {

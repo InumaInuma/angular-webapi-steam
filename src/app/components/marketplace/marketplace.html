@@ -72,6 +72,7 @@
     <div class="marketplace-grid">
         <div class="market-card" *ngFor="let item of filteredItems">
             <div class="market-image">
+                <span class="rarity-badge" *ngIf="item.rarity" [ngClass]="'rarity-' + item.rarity.toLowerCase().replace(' ', '-')">{{ item.rarity }}</span>
                 <img [src]="item.iconUrl" [alt]="item.itemName" />
             </div>
 
@@ -79,8 +80,7 @@
                 <h3 class="item-name">{{ item.itemName }}</h3>
 
                 <div class="item-details">
-                    <span [style.color]="item.rarityColor || '#fff'">{{ item.rarity }}</span>
-                    <span *ngIf="item.type"> • {{ item.type }}</span>
+                    <span *ngIf="item.type">{{ item.type }}</span>
                     <div *ngIf="item.hero" class="item-hero-text">Héroe: <strong>{{ item.hero }}</strong></div>
 
                     <!-- GEMAS Marketplace -->

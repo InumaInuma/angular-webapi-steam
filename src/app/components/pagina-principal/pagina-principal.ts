@@ -20,16 +20,24 @@ import { Auth } from '../../service/auth';
   templateUrl: './pagina-principal.html',
   styleUrl: './pagina-principal.scss',
 })
-export class PaginaPrincipal implements AfterViewInit {
+export class PaginaPrincipal implements AfterViewInit, OnInit {
   isLoggedIn$: Observable<boolean>;
+  recentItems: MarketplaceItem[] = [];
+
   constructor(
     private cdr: ChangeDetectorRef,
-    private authService: Auth
+    private authService: Auth,
+    private dotaService: Dota
   ) {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
   }
 
   ngOnInit() {
+    this.dotaService.getMarketplaceItems().subscribe((res) => {
+      // Tomamos solo los 12 primeros items para el home
+      this.recentItems = (res ?? []).slice(0, 12);
+      this.cdr.detectChanges();
+    });
   }
 
   @ViewChild('videoRef') video!: ElementRef<HTMLVideoElement>;

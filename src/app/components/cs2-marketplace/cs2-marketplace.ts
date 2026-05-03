@@ -36,9 +36,8 @@ export class Cs2Marketplace implements OnInit {
     ngOnInit() {
         // AppId 730 for CS2
         this.dotaService.getMarketplaceItems().subscribe((res) => {
-            // Filter only CS2 items (assuming backend returns all or we add appId filter later)
-            // For now, we'll use the generic method as requested for the front-end only refactor
-            this.items = (res ?? []).filter(item => item.title.includes('CS2') || true); // Placeholder logic
+            // Filter only CS2 items by appId (730)
+            this.items = (res ?? []).filter(item => item.appId === 730 || item.iconUrl.includes('730')); 
             this.applyFilter();
             this.cdr.detectChanges();
         });

@@ -1,83 +1,67 @@
-<header class="app-header">
-    <div class="logo">
-        <a routerLink="/pagina-principal">⚡ Dota2 Marketplace</a>
-    </div>
+<header class="gg-header">
+    <div class="header-container">
+        <!-- Izquierda: Logo -->
+        <a routerLink="/pagina-principal" class="brand-logo">
+            <img src="/logogg.jpeg" alt="GGCausa Logo" />
+            <span class="brand-text">
+                <span class="brand-gg">GG</span><span class="brand-causa">Causa</span>
+            </span>
+        </a>
 
-    <nav class="nav-links">
-        <!-- Si NO está logeado -->
-        <ng-container *ngIf="!authService.isLoggedIn(); else loggedMenu">
-            <button class="btn login-btn" routerLink="/login">Iniciar sesión</button>
-            <button class="btn register-btn" [routerLink]="['/login']" [queryParams]="{ register: true }">
-                Registrarse
-            </button>
-        </ng-container>
+        <!-- Centro: Navegación -->
+        <nav class="main-nav">
+            <a routerLink="/pagina-principal" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">Home</a>
+            <a routerLink="/marketplace" routerLinkActive="active">Trade</a>
+            <a routerLink="/pending-sales" routerLinkActive="active">Sell</a>
+            <a routerLink="/dota-items" routerLinkActive="active">Inventory</a>
+            <a routerLink="/support" routerLinkActive="active">Help</a>
+        </nav>
 
-        <!-- Si está logeado -->
-        <ng-template #loggedMenu>
-            <ul class="menu">
-                <!-- Visible solo para Customers -->
+        <!-- Derecha: Búsqueda y Botones/Usuario -->
+        <div class="header-right">
 
-                <li *ngIf="roles.includes('Customer')">
-                    <a routerLink="/wallet-history">📜 Historial recargas</a>
-                </li>
 
-                <li *ngIf="roles.includes('Customer')">
-                    <a routerLink="/profile" class="profile-link">
-                        👤 Perfil
-                        <span class="status-indicator-mini" [ngClass]="{
+            <!-- Autenticación -->
+            <ng-container *ngIf="!authService.isLoggedIn(); else loggedMenu">
+                <div class="auth-buttons">
+                    <button class="btn-login" routerLink="/login">Log in</button>
+                    <button class="btn-signup" [routerLink]="['/login']" [queryParams]="{ register: true }">Sign
+                        Up</button>
+                </div>
+            </ng-container>
+
+            <!-- Usuario Logeado -->
+            <ng-template #loggedMenu>
+                <div class="user-menu">
+                    <!-- Balance -->
+                    <div *ngIf="roles.includes('Customer')" class="wallet-badge" routerLink="/topup"
+                        title="Recargar saldo">
+                        <span class="balance">S/ {{ authService.balance() | number:'1.2-2' }}</span>
+                        <div class="plus-btn">+</div>
+                    </div>
+
+                    <!-- Perfil -->
+                    <a routerLink="/profile" class="profile-btn" title="Mi Perfil">
+                        <i class="fas fa-user"></i>
+                        <span class="status-dot" [ngClass]="{
                             'verified': authService.isTradeVerified(),
                             'escrow': !authService.isTradeVerified() && !authService.isTradeBanned(),
                             'banned': authService.isTradeBanned()
-                        }" [title]="authService.isTradeBanned() ? '🚫 Steam Trade Ban detectado' : (authService.isTradeVerified() ? '✅ Estado de Intercambios: Verificado' : '⏳ Estado de Intercambios: Retención detectada')">
-                            <i class="fas" [ngClass]="{
-                                'fa-check-circle': authService.isTradeVerified(),
-                                'fa-clock': !authService.isTradeVerified() && !authService.isTradeBanned(),
-                                'fa-ban': authService.isTradeBanned()
-                            }"></i>
-                        </span>
+                        }"></span>
                     </a>
-                </li>
 
-                <li *ngIf="roles.includes('Customer')">
-                    <a routerLink="/pending-sales">📦 Ventas Pendientes</a>
-                </li>
+                    <!-- Admin Dashboard -->
+                    <a *ngIf="roles.includes('Admin')" routerLink="/dashboard" class="admin-btn" title="Dashboard">
+                        <i class="fas fa-chart-line"></i>
+                    </a>
 
-                <li *ngIf="roles.includes('Customer')">
-                    <a routerLink="/order-history">📜 Historial Compras/Ventas</a>
-                </li>
-
-
-
-
-                <li *ngIf="roles.includes('Customer')">
-                    <a routerLink="/dota-items">🎮 Avatars</a>
-                </li>
-
-
-
-                <!-- Visible solo para Admins -->
-                <li *ngIf="roles.includes('Admin')">
-                    <a routerLink="/dashboard">📊 Dashboard</a>
-                </li>
-
-                <!-- Siempre visible si está logeado -->
-                <li>
-                    <a (click)="logout()">🚪 Logout</a>
-                </li>
-                <!-- <li *ngIf="roles.includes('Customer')" class="wallet-balance">
-                    💰 <strong>S/ {{ balance | number:'1.2-2' }}</strong>
-                </li> -->
-                <li *ngIf="roles.includes('Customer')" class="wallet-info">
-                    <span class="balance">
-                        💰 {{ authService.balance() | number:'1.2-2' }}
-                    </span>
-
-                    <button class="btn-topup" routerLink="/topup">
-                        ➕ Recargar
+                    <!-- Logout -->
+                    <button class="btn-logout" (click)="logout()" title="Cerrar sesión">
+                        <i class="fas fa-sign-out-alt"></i>
                     </button>
-                </li>
-
-            </ul>
-        </ng-template>
-    </nav>
+                </div>
+            </ng-template>
+        </div>
+    </div>
 </header>

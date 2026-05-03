@@ -27,8 +27,8 @@
 /* Lado izquierdo con imagen */
 .login-left {
   flex: 1;
-  background: url("/victim.jpeg") no-repeat center center;
-  background-size: cover;
+  background: #000 url("/logogg.jpeg") no-repeat center center;
+  background-size: contain;
   position: relative;
   min-height: 250px; /* 👈 asegura altura mínima en móviles */
 }

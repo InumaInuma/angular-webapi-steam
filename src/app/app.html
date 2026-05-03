@@ -11,9 +11,12 @@
                 <span class="arrow">←</span> <span class="text-back">Atrás</span>
             </button>
             <div class="brand-dropdown">
-                <a routerLink="/pagina-principal" class="brand">
-                    <img src="dotados.png" alt="Logo" class="nav-logo" />
-                    <span class="brand-text">P2P MARKET <span class="arrow-down">▼</span></span>
+                <a routerLink="/pagina-principal" class="brand gg-brand">
+                    <img src="/logogg.jpeg" alt="GGCausa" class="nav-logo gg-logo" />
+                    <span class="brand-text gg-text">
+                        <span class="gg">GG</span><span class="causa">Causa</span>
+                    </span>
+                    <span class="arrow-down" style="margin-left: 5px;">▼</span>
                 </a>
                 <div class="brand-menu">
                     <a routerLink="/marketplace" class="game-option">
@@ -33,15 +36,16 @@
         </div>
 
         <!-- Sección Central: Links (Desktop) -->
-        <div class="nav-links desktop-only">
+        <div class="nav-links desktop-only gg-nav-links">
+            <a routerLink="/pagina-principal" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">Inicio</a>
             <a routerLink="/marketplace" routerLinkActive="active">Mercado</a>
-            <a routerLink="/privacidad" routerLinkActive="active">Privacidad</a>
-            <ng-container *ngIf="isLoggedIn$ | async">
-                <a routerLink="/dota-items" routerLinkActive="active">Mi Inventario</a>
 
+            <ng-container *ngIf="isLoggedIn$ | async">
+                <a routerLink="/dota-items" routerLinkActive="active">Inventario</a>
                 <div class="nav-dropdown">
                     <a class="dropdown-trigger" [class.active-parent]="isSalesActive()">
-                        Transacciones <span class="arrow-down">▼</span>
+                        Vender / Historial <span class="arrow-down">▼</span>
                     </a>
                     <div class="dropdown-menu">
                         <a routerLink="/pending-sales" routerLinkActive="active">📦 En Venta</a>
@@ -49,14 +53,19 @@
                         <a routerLink="/order-history" routerLinkActive="active">📜 Historial</a>
                     </div>
                 </div>
-
-                <a routerLink="/support" routerLinkActive="active">Soporte</a>
+                <a routerLink="/support" routerLinkActive="active">Ayuda</a>
             </ng-container>
+
+            <a routerLink="/privacidad" routerLinkActive="active"
+                style="font-size: 0.8rem; color: #64748b;">Privacidad</a>
         </div>
 
         <!-- Sección Derecha: Usuario (Desktop) -->
-        <div class="nav-right desktop-only">
+        <div class="nav-right desktop-only gg-nav-right">
+
+
             <ng-container *ngIf="isLoggedIn$ | async; else loginBtn">
+                <!-- Monedero intacto -->
                 <div class="wallet-display" routerLink="/topup" style="cursor: pointer;">
                     <span class="wallet-icon">💰</span>
                     <span class="balance">S/ {{ (balance$ | async) | number:'1.2-2' }}</span>
@@ -66,12 +75,16 @@
                 <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
             </ng-container>
             <ng-template #loginBtn>
+                <!-- Monedero invitado intacto -->
                 <div class="wallet-display guest">
                     <span class="wallet-icon">💰</span>
                     <span class="balance">S/ 0.00</span>
                 </div>
-                <a routerLink="/login" class="login-nav-btn">Iniciar Sesión</a>
-                <a routerLink="/register" class="register-nav-btn">Registrarse</a>
+                <!-- Botones Auth estilo imagen 1 -->
+                <div class="gg-auth-buttons">
+                    <a routerLink="/login" class="gg-btn-login">Iniciar Sesión</a>
+                    <a routerLink="/register" class="gg-btn-signup">Registrarse</a>
+                </div>
             </ng-template>
         </div>
 
@@ -108,7 +121,7 @@
                 </a>
             </div>
         </div>
-        
+
         <div class="divider"></div>
         <a routerLink="/privacidad" routerLinkActive="active" (click)="closeMenu()">📄 Privacidad</a>
 
@@ -144,9 +157,12 @@
             <h2>¡Restricción de Steam Detectada!</h2>
         </div>
         <div class="ban-body">
-            <p>Hemos detectado que tu cuenta de Steam tiene los <strong>intercambios bloqueados</strong> (Trade Ban o VAC).</p>
-            <p class="ban-warning">⚠️ No podrás realizar compras ni ventas en P2P Market mientras esta restricción esté activa.</p>
-            <p><strong>¿Por qué veo esto?</strong> La extensión P2P Market ha verificado tu perfil y detectó que <code>g_bCanTrade = false</code>.</p>
+            <p>Hemos detectado que tu cuenta de Steam tiene los <strong>intercambios bloqueados</strong> (Trade Ban o
+                VAC).</p>
+            <p class="ban-warning">⚠️ No podrás realizar compras ni ventas en P2P Market mientras esta restricción esté
+                activa.</p>
+            <p><strong>¿Por qué veo esto?</strong> La extensión P2P Market ha verificado tu perfil y detectó que
+                <code>g_bCanTrade = false</code>.</p>
         </div>
         <div class="ban-footer">
             <button class="btn-understand" (click)="dismissBanModal()">Entendido</button>
@@ -206,7 +222,8 @@
             <h2>¡Maximiza tu Experiencia!</h2>
         </div>
         <div class="extension-body">
-            <p>Para poder comprar y vender ítems de manera automática y 100% segura, necesitas instalar nuestra <strong>Extensión Oficial de Chrome</strong>.</p>
+            <p>Para poder comprar y vender ítems de manera automática y 100% segura, necesitas instalar nuestra
+                <strong>Extensión Oficial de Chrome</strong>.</p>
             <div class="extension-features">
                 <span><i class="fas fa-robot"></i> Entregas Automáticas</span>
                 <span><i class="fas fa-shield-check"></i> Verificación de Anti-Scam</span>

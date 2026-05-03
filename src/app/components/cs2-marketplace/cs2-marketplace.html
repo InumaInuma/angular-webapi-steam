@@ -1,45 +1,64 @@
 <section class="marketplace cs2-theme">
-    <div class="market-header">
-        <img src="cs2.png" alt="CS2" class="game-banner" />
-        <h2 class="marketplace-title">🔫 Mercado de Counter-Strike 2</h2>
-    </div>
-
-    <div class="search-price-container">
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Buscar skins, cuchillos..." [(ngModel)]="searchName"
-                (ngModelChange)="applyFilter()">
+    <!-- Buff-Style Filter Board (Solo Footer para CS2) -->
+    <div class="buff-filter-board">
+        <div class="market-header" style="text-align: center; margin-bottom: 20px;">
+            <img src="cs2.png" alt="CS2" class="game-banner" style="max-height: 80px; margin-bottom: 10px;" />
+            <h2 class="marketplace-title" style="color: #f8fafc; font-size: 1.5rem; font-weight: 800;">🔫 Mercado de Counter-Strike 2</h2>
         </div>
 
-        <div class="price-range">
-            <input type="number" placeholder="Min S/." [(ngModel)]="minPrice" (ngModelChange)="applyFilter()">
-            <span>-</span>
-            <input type="number" placeholder="Max S/." [(ngModel)]="maxPrice" (ngModelChange)="applyFilter()">
-        </div>
+        <div class="filter-footer">
+            <div class="footer-controls" style="justify-content: center; width: 100%;">
+                <div class="search-box-buff">
+                    <input type="text" placeholder="Buscar skins, cuchillos..." [(ngModel)]="searchName"
+                        (ngModelChange)="applyFilter()">
+                    <i class="fas fa-search"></i>
+                </div>
 
-        <button class="btn-search" (click)="applyFilter()">Buscar</button>
+                <div class="price-range-buff">
+                    <span class="currency">S/.</span>
+                    <input type="number" placeholder="Min" [(ngModel)]="minPrice" (ngModelChange)="applyFilter()">
+                    <span class="divider">-</span>
+                    <input type="number" placeholder="Max" [(ngModel)]="maxPrice" (ngModelChange)="applyFilter()">
+                    <span class="currency">S/.</span>
+                </div>
+
+                <button class="btn-buff-search" (click)="applyFilter()">Buscar</button>
+            </div>
+        </div>
     </div>
 
     <div class="marketplace-grid">
         <div class="market-card" *ngFor="let item of filteredItems">
-            <div class="market-image cs2-card-img">
+            <div class="market-image">
+                <span class="rarity-badge" *ngIf="item.rarity" [ngClass]="'rarity-' + item.rarity.toLowerCase().replace(' ', '-')">{{ item.rarity }}</span>
                 <img [src]="item.iconUrl" [alt]="item.itemName" />
             </div>
 
             <div class="market-body">
                 <h3 class="item-name">{{ item.itemName }}</h3>
+
                 <div class="item-details">
-                    <span [style.color]="item.rarityColor || '#fff'">{{ item.rarity }}</span>
-                    <span *ngIf="item.type"> • {{ item.type }}</span>
+                    <span *ngIf="item.type">{{ item.type }}</span>
                 </div>
 
                 <p class="price">
                     {{ item.currencyCode }} {{ item.price | number:'1.2-2' }}
                 </p>
 
-                <p class="seller">
-                    👤 {{ item.seller }}
-                </p>
+                <div class="seller">
+                    <div class="seller-info">
+                        👤 {{ item.seller }}
+                    </div>
+                    <div class="seller-rating" *ngIf="(item.sellerRating ?? 0) > 0"
+                        [title]="(item.totalRatings || 0) + ' calificaciones'">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-val">{{ item.sellerRating | number:'1.1-1' }}</span>
+                        <span class="rating-count">({{ item.totalRatings }})</span>
+                    </div>
+                    <span class="no-rating" *ngIf="!item.sellerRating || item.sellerRating === 0">
+                        (Vendedor Nuevo)
+                    </span>
+                </div>
 
                 <button class="btn-buy" (click)="buy(item)">
                     Comprar Skin

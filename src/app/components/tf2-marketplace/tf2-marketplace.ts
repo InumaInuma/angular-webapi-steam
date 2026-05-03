@@ -36,7 +36,8 @@ export class Tf2Marketplace implements OnInit {
     ngOnInit() {
         // AppId 440 for TF2
         this.dotaService.getMarketplaceItems().subscribe((res) => {
-            this.items = (res ?? []).filter(item => item.title.includes('TF2') || true);
+            // Filter only TF2 items by appId (440)
+            this.items = (res ?? []).filter(item => item.appId === 440 || item.iconUrl.includes('440')); 
             this.applyFilter();
             this.cdr.detectChanges();
         });
