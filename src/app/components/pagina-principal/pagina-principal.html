@@ -10,8 +10,9 @@
                 </div>
 
                 <h1 class="glow-text">
-                    TRADE. UPGRADE.<br>
-                    <span class="accent-line">DOMINATE.</span>
+                    COMERCIA. MEJORA.<br>
+                    <span class="accent-line">
+                        DOMINAR.</span>
                 </h1>
 
                 <p>La plataforma más rápida y segura para tradear ítems de Dota 2. Consigue los mejores precios. En
@@ -29,14 +30,15 @@
                     </ng-container>
                     <ng-template #loginBtn>
                         <a routerLink="/login" class="btn primary">
-                            <span>START TRADING</span>
+                            <span>
+                                COMENZAR A OPERAR</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2.5">
                                 <path d="M5 12h14M12 5l7 7-7 7" />
                             </svg>
                         </a>
                     </ng-template>
-                    <a routerLink="/marketplace" class="btn outline">LEARN MORE</a>
+                    <a routerLink="/marketplace" class="btn outline">APRENDE MÁS</a>
                 </div>
 
                 <div class="trust-bar">
@@ -156,7 +158,8 @@
         <div class="marketplace-grid">
             <div class="market-card" *ngFor="let item of recentItems" routerLink="/marketplace">
                 <div class="market-image">
-                    <span class="rarity-badge" *ngIf="item.rarity" [ngClass]="'rarity-' + item.rarity.toLowerCase().replace(' ', '-')">{{ item.rarity }}</span>
+                    <span class="rarity-badge" *ngIf="item.rarity"
+                        [ngClass]="'rarity-' + item.rarity.toLowerCase().replace(' ', '-')">{{ item.rarity }}</span>
                     <img [src]="item.iconUrl" [alt]="item.itemName" />
                 </div>
                 <div class="market-body">

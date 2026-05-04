@@ -181,9 +181,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #64748b;
-  font-size: 0.82rem;
-  font-weight: 500;
+  color: #e2e8f0;
+  /* Brighter text color */
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  /* Text shadow for contrast */
 
   span {
     display: flex;
@@ -191,12 +194,15 @@
     gap: 5px;
 
     svg {
-      opacity: 0.7;
+      opacity: 1;
+      color: #38bdf8;
+      /* Bright blue icons */
     }
   }
 
   .dot-sep {
-    color: #334155;
+    color: #64748b;
+    /* Lighter separator */
     font-size: 1rem;
   }
 }
@@ -380,7 +386,8 @@
 
 .home-marketplace {
   background: #0a0e1a;
-  padding: 4rem 1.5rem 2rem; /* Reducido el padding inferior */
+  padding: 4rem 1.5rem 2rem;
+  /* Reducido el padding inferior */
   color: #f8fafc;
 }
 
@@ -512,16 +519,36 @@
   border-radius: 3px;
   z-index: 2;
   text-transform: capitalize;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   letter-spacing: 0.3px;
   background-color: #3b82f6; // fallback
-    
+
   /* Mapeo directo de rarezas (basado en el filtro de la imagen) */
-  &.rarity-rare { background-color: #d32ce6; } // Rosado como el filtro "Rare"
-  &.rarity-mythical { background-color: #8847ff; } // Morado como el filtro "Mythical"
-  &.rarity-legendary { background-color: #4b69ff; } // Azul como el filtro "Legendary"
-  &.rarity-immortal { background-color: #5e98d9; } // Celeste como el filtro "Immortal"
-  &.rarity-arcana { background-color: #ade55c; } // Verde como el filtro "Arcana"
+  &.rarity-rare {
+    background-color: #d32ce6;
+  }
+
+  // Rosado como el filtro "Rare"
+  &.rarity-mythical {
+    background-color: #8847ff;
+  }
+
+  // Morado como el filtro "Mythical"
+  &.rarity-legendary {
+    background-color: #4b69ff;
+  }
+
+  // Azul como el filtro "Legendary"
+  &.rarity-immortal {
+    background-color: #5e98d9;
+  }
+
+  // Celeste como el filtro "Immortal"
+  &.rarity-arcana {
+    background-color: #ade55c;
+  }
+
+  // Verde como el filtro "Arcana"
 }
 
 .market-body {
@@ -599,7 +626,7 @@
   .home-marketplace {
     padding: 2rem 1rem 1rem;
   }
-  
+
   .marketplace-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 2px;
@@ -623,8 +650,11 @@
    ============================================ */
 
 .how-it-works {
+  position: relative;
+  z-index: 10;
   background: #060913;
-  padding: 2rem 1.5rem 0rem; /* Reducido el padding superior */
+  padding: 6rem 1.5rem 12rem;
+  /* Aumentado significativamente el padding para dar aire y evitar recortes */
   color: #f8fafc;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -664,29 +694,58 @@
 .step-card {
   background: rgba(13, 20, 36, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
-  padding: 24px;
+  border-radius: 12px;
+  padding: 30px;
   display: flex;
   align-items: center;
-  gap: 20px;
-  transition: 0.2s ease;
+  gap: 24px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+  animation: cardAppear 0.6s ease-out both;
+
+  @for $i from 1 through 3 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.15}s;
+    }
+  }
 
   &:hover {
-    background: rgba(17, 26, 46, 0.9);
-    border-color: rgba(59, 130, 246, 0.3);
-    transform: translateY(-2px);
+    background: rgba(17, 26, 46, 0.95);
+    border-color: rgba(59, 130, 246, 0.5);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.1);
+
+    .step-icon {
+      transform: scale(1.1) rotate(5deg);
+      color: #60a5fa;
+    }
+  }
+}
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .step-icon {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   color: #3b82f6;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  
+  transition: all 0.3s ease;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 12px;
+
   svg {
     width: 32px;
     height: 32px;
@@ -701,7 +760,7 @@
     margin-bottom: 6px;
     letter-spacing: 0.5px;
   }
-  
+
   p {
     font-size: 0.8rem;
     color: #64748b;
@@ -717,8 +776,10 @@
   position: relative;
   background: #02040a;
   color: #f8fafc;
-  padding-top: 320px; /* Reducido para juntarlo más con arriba */
-  margin-top: -2rem; /* Sube el footer para solaparse un poco y quitar espacio muerto */
+  padding-top: 500px;
+  /* Aumentado para que la imagen de Juggernaut se vea más completa */
+  margin-top: 0;
+  /* Eliminado el margen negativo para evitar solapamientos */
   overflow: hidden;
 }
 
@@ -736,7 +797,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 20%; /* Sube un poco la imagen internamente */
+  object-position: center top;
+  /* Alineado arriba para no cortar la cabeza */
   opacity: 0.9;
 }
 
@@ -746,7 +808,7 @@
   left: 0;
   width: 100%;
   height: 70%;
-  background: linear-gradient(to bottom, transparent 0%, rgba(2,4,10, 0.9) 45%, #02040a 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(2, 4, 10, 0.9) 45%, #02040a 100%);
 }
 
 .footer-content {
@@ -754,59 +816,63 @@
   z-index: 2;
   max-width: 1300px;
   margin: 0 auto;
-  padding: 0 2rem 1.5rem; /* Reducido el padding inferior */
+  padding: 0 2rem 1.5rem;
+  /* Reducido el padding inferior */
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1.5rem; /* Reducido el gap general */
+  gap: 1.5rem;
+  /* Reducido el gap general */
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer-brand {
   max-width: 300px;
-  
+
   .brand-logo {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 0.5rem; /* Reducido */
-    
+    margin-bottom: 0.5rem;
+    /* Reducido */
+
     img {
       width: 48px;
       height: 48px;
       border-radius: 8px;
       object-fit: cover;
     }
-    
+
     .brand-name {
       font-size: 1.8rem;
       font-weight: 900;
       font-style: italic;
       letter-spacing: -1px;
-      
+
       .brand-gg {
         background: linear-gradient(to right, #fff, #a5b4fc);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
-      
+
       .brand-causa {
         color: #ef4444;
       }
     }
   }
-  
+
   .brand-desc {
     font-size: 0.85rem;
     color: #94a3b8;
     line-height: 1.5;
-    margin-bottom: 0.8rem; /* Reducido */
+    margin-bottom: 0.8rem;
+    /* Reducido */
   }
-  
+
   .social-icons {
     display: flex;
     gap: 12px;
-    
+
     a {
       display: flex;
       align-items: center;
@@ -817,7 +883,7 @@
       background: rgba(255, 255, 255, 0.05);
       color: #94a3b8;
       transition: 0.2s;
-      
+
       &:hover {
         background: #3b82f6;
         color: #fff;
@@ -829,28 +895,31 @@
 
 .footer-links {
   display: flex;
-  gap: 3rem; /* Reducido de 4rem a 3rem */
+  gap: 3rem;
+  /* Reducido de 4rem a 3rem */
   flex-wrap: wrap;
-  
+
   .link-column {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Reducido un poco */
-    
+    gap: 10px;
+    /* Reducido un poco */
+
     h4 {
       font-size: 0.85rem;
       font-weight: 700;
       color: #f1f5f9;
-      margin-bottom: 6px; /* Reducido */
+      margin-bottom: 6px;
+      /* Reducido */
       letter-spacing: 0.5px;
     }
-    
+
     a {
       font-size: 0.85rem;
       color: #64748b;
       text-decoration: none;
       transition: 0.2s;
-      
+
       &:hover {
         color: #3b82f6;
         padding-left: 4px;
@@ -864,15 +933,16 @@
     font-size: 0.85rem;
     font-weight: 700;
     color: #f1f5f9;
-    margin-bottom: 12px; /* Reducido */
+    margin-bottom: 12px;
+    /* Reducido */
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
-  
+
   .payment-methods {
     display: flex;
     gap: 10px;
-    
+
     .pay-card {
       background: #0f172a;
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -886,15 +956,15 @@
       font-size: 0.7rem;
       font-style: italic;
       color: #fff;
-      
+
       &.visa {
         color: #fff;
       }
-      
+
       &.master {
         position: relative;
         overflow: hidden;
-        
+
         .master-circles {
           width: 16px;
           height: 16px;
@@ -902,7 +972,7 @@
           border-radius: 50%;
           position: relative;
           transform: translateX(-6px);
-          
+
           &::after {
             content: '';
             position: absolute;
@@ -923,7 +993,8 @@
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 1rem; /* Reducido de 1.5rem a 1rem */
+  padding: 1rem;
+  /* Reducido de 1.5rem a 1rem */
   font-size: 0.8rem;
   color: #475569;
 }
@@ -932,12 +1003,12 @@
   .steps-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .footer-content {
     flex-direction: column;
     gap: 2.5rem;
   }
-  
+
   .footer-links {
     gap: 2rem;
     justify-content: space-between;

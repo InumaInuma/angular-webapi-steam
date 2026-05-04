@@ -6,7 +6,8 @@
   align-items: center;
   background: #0b0f19;
   font-family: 'Inter', sans-serif;
-  padding: 20px; /* 👈 evita que se corte en móviles */
+  padding: 20px;
+  /* 👈 evita que se corte en móviles */
   box-sizing: border-box;
 }
 
@@ -14,7 +15,8 @@
 .login-card {
   display: flex;
   width: 1000px;
-  max-width: 100%; /* 👈 para que no desborde */
+  max-width: 100%;
+  /* 👈 para que no desborde */
   height: 500px;
   background: #1e293b;
   border-radius: 20px;
@@ -30,7 +32,8 @@
   background: #000 url("/logogg.jpeg") no-repeat center center;
   background-size: contain;
   position: relative;
-  min-height: 250px; /* 👈 asegura altura mínima en móviles */
+  min-height: 250px;
+  /* 👈 asegura altura mínima en móviles */
 }
 
 .overlay {
@@ -166,12 +169,14 @@
 /* 📱 Responsividad */
 @media (max-width: 900px) {
   .login-card {
-    flex-direction: column; /* 👈 apila izquierda y derecha */
+    flex-direction: column;
+    /* 👈 apila izquierda y derecha */
     height: auto;
   }
 
   .login-left {
-    height: 200px; /* 👈 altura reducida para imagen */
+    height: 200px;
+    /* 👈 altura reducida para imagen */
   }
 
   .login-right {

@@ -34,8 +34,10 @@ export class PaginaPrincipal implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.dotaService.getMarketplaceItems().subscribe((res) => {
-      // Tomamos solo los 12 primeros items para el home
-      this.recentItems = (res ?? []).slice(0, 12);
+      // Filtramos solo ítems de Dota 2 (570) y tomamos los 12 primeros
+      this.recentItems = (res ?? [])
+        .filter(item => item.appId === 570)
+        .slice(0, 12);
       this.cdr.detectChanges();
     });
   }

@@ -57,24 +57,39 @@
         color: #fff;
         background: var(--pastel-purple);
         box-shadow: 0 4px 15px rgba(196, 181, 253, 0.3);
-        
+
         &::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 3px;
-            background: #fff;
-            border-radius: 3px 3px 0 0;
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 20px;
+          height: 3px;
+          background: #fff;
+          border-radius: 3px 3px 0 0;
         }
       }
 
       /* Game Specific Glows when active */
-      &.active:nth-child(1) { background: linear-gradient(135deg, #f43f5e, #e11d48); box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4); } /* Dota Red */
-      &.active:nth-child(2) { background: linear-gradient(135deg, #eab308, #ca8a04); box-shadow: 0 4px 15px rgba(202, 138, 4, 0.4); } /* CS2 Gold/Yellow */
-      &.active:nth-child(3) { background: linear-gradient(135deg, #f97316, #ea580c); box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4); } /* TF2 Orange */
+      &.active:nth-child(1) {
+        background: linear-gradient(135deg, #f43f5e, #e11d48);
+        box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4);
+      }
+
+      /* Dota Red */
+      &.active:nth-child(2) {
+        background: linear-gradient(135deg, #eab308, #ca8a04);
+        box-shadow: 0 4px 15px rgba(202, 138, 4, 0.4);
+      }
+
+      /* CS2 Gold/Yellow */
+      &.active:nth-child(3) {
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
+      }
+
+      /* TF2 Orange */
     }
   }
 }
@@ -908,8 +923,15 @@
 }
 
 @keyframes escrowSlideIn {
-  from { opacity: 0; transform: scale(0.9) translateY(-20px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 // --- Checking State ---
@@ -940,7 +962,9 @@
 }
 
 @keyframes escrowSpin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 // --- Success State ---

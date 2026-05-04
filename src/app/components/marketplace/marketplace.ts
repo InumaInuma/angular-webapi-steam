@@ -222,18 +222,20 @@ export class MarketplaceComponent implements OnInit {
 
     ngOnInit() {
         this.dotaService.getMarketplaceItems().subscribe((res) => {
-            this.items = (res ?? []).map(item => {
-                // Parse gems if string (force cast to handle raw data)
-                const rawGems = item.gems as any;
-                if (typeof rawGems === 'string') {
-                    try {
-                        item.gems = JSON.parse(rawGems);
-                    } catch (e) {
-                        item.gems = [];
+            this.items = (res ?? [])
+                .filter(item => item.appId === 570)
+                .map(item => {
+                    // Parse gems if string (force cast to handle raw data)
+                    const rawGems = item.gems as any;
+                    if (typeof rawGems === 'string') {
+                        try {
+                            item.gems = JSON.parse(rawGems);
+                        } catch (e) {
+                            item.gems = [];
+                        }
                     }
-                }
-                return item;
-            });
+                    return item;
+                });
             this.extractHeroes();
             this.applyFilter();
             this.cdr.detectChanges();

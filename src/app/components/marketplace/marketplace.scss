@@ -217,12 +217,36 @@
         }
 
         /* Mapeo de colores de rareza según la imagen/orden */
-        &:nth-child(1) { color: #e2e8f0; } // Todos
-        &:nth-child(2) { color: #ade55c; } // Arcana
-        &:nth-child(3) { color: #5e98d9; } // Immortal (celeste en la imagen)
-        &:nth-child(4) { color: #4b69ff; } // Legendary (azul en la imagen)
-        &:nth-child(5) { color: #8847ff; } // Mythical (morado en la imagen)
-        &:nth-child(6) { color: #d32ce6; } // Rare (rosado en la imagen)
+        &:nth-child(1) {
+            color: #e2e8f0;
+        }
+
+        // Todos
+        &:nth-child(2) {
+            color: #ade55c;
+        }
+
+        // Arcana
+        &:nth-child(3) {
+            color: #5e98d9;
+        }
+
+        // Immortal (celeste en la imagen)
+        &:nth-child(4) {
+            color: #4b69ff;
+        }
+
+        // Legendary (azul en la imagen)
+        &:nth-child(5) {
+            color: #8847ff;
+        }
+
+        // Mythical (morado en la imagen)
+        &:nth-child(6) {
+            color: #d32ce6;
+        }
+
+        // Rare (rosado en la imagen)
     }
 }
 
@@ -479,16 +503,36 @@
     border-radius: 3px;
     z-index: 2;
     text-transform: capitalize;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     letter-spacing: 0.3px;
     background-color: #3b82f6; // fallback
-    
+
     /* Mapeo directo de rarezas (basado en el filtro de la imagen) */
-    &.rarity-rare { background-color: #d32ce6; } // Rosado como el filtro "Rare"
-    &.rarity-mythical { background-color: #8847ff; } // Morado como el filtro "Mythical"
-    &.rarity-legendary { background-color: #4b69ff; } // Azul como el filtro "Legendary"
-    &.rarity-immortal { background-color: #5e98d9; } // Celeste como el filtro "Immortal"
-    &.rarity-arcana { background-color: #ade55c; } // Verde como el filtro "Arcana"
+    &.rarity-rare {
+        background-color: #d32ce6;
+    }
+
+    // Rosado como el filtro "Rare"
+    &.rarity-mythical {
+        background-color: #8847ff;
+    }
+
+    // Morado como el filtro "Mythical"
+    &.rarity-legendary {
+        background-color: #4b69ff;
+    }
+
+    // Azul como el filtro "Legendary"
+    &.rarity-immortal {
+        background-color: #5e98d9;
+    }
+
+    // Celeste como el filtro "Immortal"
+    &.rarity-arcana {
+        background-color: #ade55c;
+    }
+
+    // Verde como el filtro "Arcana"
 }
 
 /* ---- BODY ---- */
