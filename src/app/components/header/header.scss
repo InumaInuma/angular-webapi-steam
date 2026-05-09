@@ -19,32 +19,32 @@
 .brand-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0 !important;
+    border-radius: 8px;
+    width: 220px !important;
     text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(4px);
 
     img {
-        width: 36px;
-        height: 36px;
-        border-radius: 6px;
-        object-fit: cover;
-        box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+        width: 100% !important;
+        height: 65px !important;
+        border-radius: 4px;
+        object-fit: cover !important;
+        transition: all 0.4s ease;
     }
 
-    .brand-text {
-        font-size: 1.4rem;
-        font-weight: 900;
-        font-style: italic;
-        letter-spacing: -0.5px;
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(59, 130, 246, 0.4);
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.2);
 
-        .brand-gg {
-            background: linear-gradient(to right, #fff, #a5b4fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .brand-causa {
-            color: #ef4444;
-            text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        img {
+            transform: scale(1.05);
         }
     }
 }

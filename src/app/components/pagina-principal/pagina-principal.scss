@@ -4,12 +4,32 @@
   height: calc(100vh - 70px);
   min-height: 600px;
   overflow: hidden;
-  background: #020617;
+  background: #020817; /* Darker, more premium base */
   display: flex;
   flex-direction: column;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 350px; /* Much larger fade area */
+    /* Multi-stop gradient for a more natural "scrim" effect */
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(2, 8, 23, 0.2) 20%,
+      rgba(2, 8, 23, 0.5) 45%,
+      rgba(2, 8, 23, 0.8) 75%,
+      #020817 100%
+    );
+    z-index: 5;
+    pointer-events: none;
+  }
 }
 
-/* Imagen de fondo en lugar del video */
+/* Imagen de fondo con máscara de desvanecimiento profesional */
 .hero-bg-img {
   position: absolute;
   inset: 0;
@@ -17,8 +37,10 @@
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  /* filter: brightness(0.35) saturate(1.1); Eliminado para mostrar los colores reales */
   pointer-events: none;
+  /* Mascarilla de desvanecimiento para que la imagen se pierda suavemente */
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
 }
 
 .hero-overlay {
@@ -100,7 +122,7 @@
   .accent-line {
     color: #3b82f6;
     display: block;
-    text-shadow: 0 0 40px rgba(59, 130, 246, 0.6), 0 0 80px rgba(59, 130, 246, 0.3);
+    text-shadow: 0 0 30px rgba(59, 130, 246, 0.8), 0 0 60px rgba(59, 130, 246, 0.4);
     animation: flicker 4s infinite alternate;
   }
 }
@@ -123,11 +145,14 @@
 }
 
 .hero-left>p {
-  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-  color: #94a3b8;
-  line-height: 1.65;
-  max-width: 500px;
-  margin-bottom: 2rem;
+  font-size: clamp(1.1rem, 2vw, 1.25rem);
+  color: #e2e8f0;
+  line-height: 1.6;
+  max-width: 580px;
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.2px;
+  font-weight: 500;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .hero-actions {
@@ -180,30 +205,31 @@
 .trust-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #e2e8f0;
-  /* Brighter text color */
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-  /* Text shadow for contrast */
+  gap: 1.5rem;
+  color: #f1f5f9;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  margin-top: 1rem;
 
   span {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
 
     svg {
+      width: 20px;
+      height: 20px;
       opacity: 1;
       color: #38bdf8;
-      /* Bright blue icons */
+      filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.4));
     }
   }
 
   .dot-sep {
-    color: #64748b;
-    /* Lighter separator */
-    font-size: 1rem;
+    color: #475569;
+    font-size: 1.2rem;
+    opacity: 0.6;
   }
 }
 
@@ -257,75 +283,7 @@
   height: fit-content;
 }
 
-/* ===== STATS BAR ===== */
-.hero-stats {
-  display: flex;
-  align-items: center;
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  padding: 1.1rem 2rem;
-}
 
-.stat-item {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.stat-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-
-  &.blue {
-    background: rgba(59, 130, 246, 0.15);
-    color: #60a5fa;
-  }
-
-  &.red {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-  }
-
-  &.yellow {
-    background: rgba(234, 179, 8, 0.15);
-    color: #facc15;
-  }
-
-  &.green {
-    background: rgba(34, 197, 94, 0.15);
-    color: #4ade80;
-  }
-}
-
-.stat-value {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #f1f5f9;
-  line-height: 1;
-  letter-spacing: -0.5px;
-}
-
-.stat-label {
-  font-size: 0.7rem;
-  color: #64748b;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  margin-top: 3px;
-}
-
-.stat-divider {
-  width: 1px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 0 1.5rem;
-}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
@@ -365,19 +323,7 @@
     }
   }
 
-  .hero-stats {
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding: 1rem;
 
-    .stat-divider {
-      display: none;
-    }
-
-    .stat-item {
-      flex: 1 1 45%;
-    }
-  }
 }
 
 /* ============================================
@@ -385,10 +331,24 @@
    ============================================ */
 
 .home-marketplace {
-  background: #0a0e1a;
-  padding: 4rem 1.5rem 2rem;
-  /* Reducido el padding inferior */
+  background: #020817; 
+  padding: 0 1.5rem 0rem; /* Reduced bottom padding */
   color: #f8fafc;
+  position: relative;
+  z-index: 10;
+  margin-top: -80px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background: linear-gradient(to bottom, transparent, #020817);
+    z-index: 5;
+    pointer-events: none;
+  }
 }
 
 .home-marketplace-container {
@@ -651,12 +611,11 @@
 
 .how-it-works {
   position: relative;
-  z-index: 10;
-  background: #060913;
-  padding: 6rem 1.5rem 12rem;
-  /* Aumentado significativamente el padding para dar aire y evitar recortes */
+  z-index: 15;
+  background: #020817; /* Identical background for seamlessness */
+  padding: 4rem 1.5rem 8rem;
   color: #f8fafc;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: -40px; /* Overlap with previous section */
 }
 
 .how-container {
@@ -774,13 +733,24 @@
 
 .hero-footer {
   position: relative;
-  background: #02040a;
+  background: #020817; /* Matches how-it-works exactly */
   color: #f8fafc;
-  padding-top: 500px;
-  /* Aumentado para que la imagen de Juggernaut se vea más completa */
-  margin-top: 0;
-  /* Eliminado el margen negativo para evitar solapamientos */
+  padding-top: 550px;
+  margin-top: -100px; /* Professional overlap */
   overflow: hidden;
+  z-index: 20;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 250px;
+    background: linear-gradient(to top, transparent, #020817);
+    z-index: 5;
+    pointer-events: none;
+  }
 }
 
 .footer-bg-wrap {
@@ -798,8 +768,10 @@
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  /* Alineado arriba para no cortar la cabeza */
   opacity: 0.9;
+  /* Mascarilla profesional para fundir la parte superior del footer */
+  mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 100%);
 }
 
 .footer-fade {

@@ -1,4 +1,4 @@
-@import '../marketplace/marketplace.scss';
+@use '../marketplace/marketplace.scss' as *;
 
 .cs2-theme {
     .buff-filter-board {

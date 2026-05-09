@@ -1,0 +1,55 @@
+<div class="listings-container">
+    <div class="header-section">
+        <h2>Mis Ítems en Venta</h2>
+        <p class="subtitle">Gestiona y revisa el estado de todos tus anuncios publicados</p>
+    </div>
+
+    <div *ngIf="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando tus anuncios...</p>
+    </div>
+
+    <div *ngIf="!loading && listings.length === 0" class="empty-state">
+        <div class="empty-icon">📦</div>
+        <h3>No tienes anuncios</h3>
+        <p>Aún no has puesto ningún ítem en venta. ¡Empieza ahora!</p>
+        <button routerLink="/dota-items" class="btn-primary">Vender Ítems</button>
+    </div>
+
+    <div *ngIf="!loading && listings.length > 0" class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ítem</th>
+                    <th>ID de Venta</th>
+                    <th>Fecha</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of listings">
+                    <td>
+                        <div class="item-cell">
+                            <img [src]="item.iconUrl" [alt]="item.title" class="item-icon">
+                            <div class="item-info">
+                                <span class="item-name" [style.color]="item.rarityColor">{{ item.itemName }}</span>
+                                <span class="item-rarity">{{ item.rarity }}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="listing-id">#{{ item.listingId }}</td>
+                    <td class="date">{{ item.createdAtUtc | date:'short' }}</td>
+                    <td class="price">
+                        {{ item.currencyCode }} {{ item.price | number:'1.2-2' }}
+                    </td>
+                    <td>
+                        <span class="status-badge" [ngClass]="getStatusClass(item.status)">
+                            {{ getStatusLabel(item.status) }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

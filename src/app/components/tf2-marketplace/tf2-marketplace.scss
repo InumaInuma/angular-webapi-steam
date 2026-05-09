@@ -1,4 +1,4 @@
-@import '../marketplace/marketplace.scss';
+@use '../marketplace/marketplace.scss' as *;
 
 .tf2-theme {
     .buff-filter-board {

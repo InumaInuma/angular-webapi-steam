@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Auth } from '../../service/auth';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +14,17 @@ import { Router } from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export class Login {
+export class Login implements OnInit {
   isRegisterMode = false; // 👈 controla si estamos en login o registro
 
-  constructor(private authService: Auth) {}
+  constructor(private authService: Auth, private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    // Detectar si venimos con el parámetro ?register=true
+    this.route.queryParams.subscribe((params) => {
+      this.isRegisterMode = !!params['register'];
+    });
+  }
 
   // Cambiar entre login y registro
   toggleMode() {

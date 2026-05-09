@@ -10,13 +10,13 @@
                 </div>
 
                 <h1 class="glow-text">
-                    COMERCIA. MEJORA.<br>
+                    INTERCAMBIA. MEJORA.<br>
                     <span class="accent-line">
-                        DOMINAR.</span>
+                        DOMINA.</span>
                 </h1>
 
-                <p>La plataforma más rápida y segura para tradear ítems de Dota 2. Consigue los mejores precios. En
-                    tiempo real.</p>
+                <p>La plataforma de intercambio de items de Dota 2 más rápida y segura. Obtén las mejores ofertas. En
+                    cualquier momento.</p>
 
                 <div class="hero-actions">
                     <ng-container *ngIf="isLoggedIn$ | async; else loginBtn">
@@ -31,31 +31,32 @@
                     <ng-template #loginBtn>
                         <a routerLink="/login" class="btn primary">
                             <span>
-                                COMENZAR A OPERAR</span>
+                                EMPEZAR A INTERCAMBIAR</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2.5">
                                 <path d="M5 12h14M12 5l7 7-7 7" />
                             </svg>
                         </a>
                     </ng-template>
-                    <a routerLink="/marketplace" class="btn outline">APRENDE MÁS</a>
+                    <a routerLink="/marketplace" class="btn outline">SABER MÁS</a>
                 </div>
 
                 <div class="trust-bar">
                     <span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                         </svg>
-                        100% Seguro
+                        100% Seguros
                     </span>
                     <span class="dot-sep">•</span>
                     <span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                            <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
-                        Trades Instantáneos
+                        Intercambios instantáneos
                     </span>
                     <span class="dot-sep">•</span>
                     <span>
@@ -64,7 +65,7 @@
                             <line x1="12" y1="1" x2="12" y2="23" />
                             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                         </svg>
-                        Comisiones Bajas
+                        2.7% Comisiones
                     </span>
                 </div>
             </div>
@@ -73,65 +74,6 @@
                 <div class="hero-image-wrap">
                     <div class="hero-glow-bg"></div>
 
-                </div>
-            </div>
-        </div>
-
-        <!-- Stats Bar -->
-        <div class="hero-stats">
-            <div class="stat-item">
-                <div class="stat-icon blue">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                </div>
-                <div>
-                    <div class="stat-value">332.354</div>
-                    <div class="stat-label">TOTAL USERS</div>
-                </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-icon red">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                        <polyline points="17 6 23 6 23 12" />
-                    </svg>
-                </div>
-                <div>
-                    <div class="stat-value">156.782</div>
-                    <div class="stat-label">TRADES</div>
-                </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-icon yellow">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="2" y="3" width="20" height="14" rx="2" />
-                        <line x1="8" y1="21" x2="16" y2="21" />
-                        <line x1="12" y1="17" x2="12" y2="21" />
-                    </svg>
-                </div>
-                <div>
-                    <div class="stat-value">$2.4M+</div>
-                    <div class="stat-label">ITEMS TRADED</div>
-                </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-icon green">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="19" y1="5" x2="5" y2="19" />
-                        <circle cx="6.5" cy="6.5" r="2.5" />
-                        <circle cx="17.5" cy="17.5" r="2.5" />
-                    </svg>
-                </div>
-                <div>
-                    <div class="stat-value">2.7%</div>
-                    <div class="stat-label">LOWEST FEES</div>
                 </div>
             </div>
         </div>
@@ -233,7 +175,7 @@
 <!-- FOOTER GIGANTE CON HÉROES -->
 <footer class="hero-footer">
     <div class="footer-bg-wrap">
-        <img src="/heroelogo.jpeg" alt="Heroes Background" class="footer-bg-img" />
+        <img src="/pie.jpeg" alt="Heroes Background" class="footer-bg-img" />
         <div class="footer-fade"></div>
     </div>
 

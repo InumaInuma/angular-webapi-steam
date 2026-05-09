@@ -1,0 +1,203 @@
+.listings-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #e2e8f0;
+
+    .header-section {
+        margin-bottom: 3rem;
+        text-align: center;
+
+        h2 {
+            font-size: 2.5rem;
+            color: var(--pastel-blue);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+    }
+}
+
+.table-responsive {
+    overflow-x: auto;
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 900px;
+
+        th {
+            padding: 1.2rem 1rem;
+            text-align: left;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        td {
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+    }
+}
+
+.item-cell {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .item-icon {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .item-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .item-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .item-rarity {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+    }
+}
+
+.listing-id {
+    font-family: 'Roboto Mono', monospace;
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.date {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.price {
+    font-family: 'Roboto Mono', monospace;
+    color: var(--pastel-orange);
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.status-active {
+        background: rgba(134, 239, 172, 0.1);
+        color: #4ade80;
+        border: 1px solid rgba(74, 222, 128, 0.2);
+    }
+
+    &.status-reserved {
+        background: rgba(253, 224, 71, 0.1);
+        color: #fde047;
+        border: 1px solid rgba(253, 224, 71, 0.2);
+    }
+
+    &.status-sold {
+        background: rgba(147, 197, 253, 0.1);
+        color: #60a5fa;
+        border: 1px solid rgba(96, 165, 250, 0.2);
+    }
+
+    &.status-canceled {
+        background: rgba(248, 113, 113, 0.1);
+        color: #f87171;
+        border: 1px solid rgba(248, 113, 113, 0.2);
+    }
+}
+
+.loading-state, .empty-state {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: rgba(30, 41, 59, 0.5);
+    border-radius: 16px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+
+    h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        color: #94a3b8;
+        margin-bottom: 2rem;
+    }
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--pastel-blue) 0%, #bfdbfe 100%);
+    color: #0f172a;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(147, 197, 253, 0.3);
+    }
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--pastel-blue);
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

@@ -1,0 +1,152 @@
+<div class="sales-hub-container">
+    <div class="hub-header">
+        <div class="title-section">
+            <h1 class="glow-text">GESTIÓN DE <span class="accent-line">COMERCIO</span></h1>
+            <p class="subtitle">Administra tus ventas pendientes y monitorea tus anuncios activos</p>
+        </div>
+        
+        <div class="tabs-wrapper">
+            <div class="tabs-container">
+                <button class="tab-btn" [class.active]="activeTab === 'pending'" (click)="setTab('pending')">
+                    <i class="fas fa-clock"></i>
+                    Ventas Pendientes
+                    <span class="tab-badge" *ngIf="sales.length > 0">{{ sales.length }}</span>
+                </button>
+                <button class="tab-btn" [class.active]="activeTab === 'listings'" (click)="setTab('listings')">
+                    <i class="fas fa-list-ul"></i>
+                    Mis Anuncios
+                </button>
+                <div class="tab-indicator" [class.right]="activeTab === 'listings'"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hub-content">
+        <!-- Pestaña 1: Ventas Pendientes -->
+        <div *ngIf="activeTab === 'pending'" class="animate-fade-in">
+            <div *ngIf="loadingSales" class="loading-state">
+                <div class="spinner"></div>
+                <p>Buscando ventas pendientes...</p>
+            </div>
+
+            <div *ngIf="!loadingSales && sales.length === 0" class="empty-state">
+                <div class="empty-illustration">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <h3>¡Todo al día!</h3>
+                <p>No tienes ventas pendientes de entrega. Tus compradores están felices.</p>
+            </div>
+
+            <div *ngIf="!loadingSales && sales.length > 0" class="sales-grid">
+                <div class="sale-card" *ngFor="let sale of sales">
+                    <div class="card-status">PENDIENTE</div>
+                    <div class="sale-item">
+                        <div class="icon-wrapper">
+                            <img [src]="sale.iconUrl" class="item-icon">
+                        </div>
+                        <div class="item-details">
+                            <span class="item-name">{{ sale.itemName }}</span>
+                            <div class="price-tag">
+                                <span class="currency">S/</span>
+                                <span class="amount">{{ sale.price | number:'1.2-2' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-action deliver" (click)="openModal(sale)">
+                            <i class="fas fa-paper-plane"></i> ENTREGAR
+                        </button>
+                        <button class="btn-action cancel" (click)="cancelSale(sale)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pestaña 2: Mis Anuncios -->
+        <div *ngIf="activeTab === 'listings'" class="animate-fade-in">
+            <div *ngIf="loadingListings" class="loading-state">
+                <div class="spinner"></div>
+                <p>Obteniendo tus anuncios...</p>
+            </div>
+
+            <div *ngIf="!loadingListings && listings.length === 0" class="empty-state">
+                <div class="empty-illustration">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <h3>Sin anuncios activos</h3>
+                <p>Tu tienda está vacía por ahora. ¡Pon algo en venta!</p>
+                <button routerLink="/dota-items" class="btn-primary">Ver mi Inventario</button>
+            </div>
+
+            <div *ngIf="!loadingListings && listings.length > 0" class="table-wrapper">
+                <table class="premium-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Fecha</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of listings">
+                            <td>
+                                <div class="table-item">
+                                    <img [src]="item.iconUrl" class="mini-icon">
+                                    <div class="table-item-info">
+                                        <span class="name">{{ item.itemName }}</span>
+                                        <span class="id">#{{ item.listingId }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ item.createdAtUtc | date:'mediumDate' }}</td>
+                            <td class="price-cell">S/ {{ item.price | number:'1.2-2' }}</td>
+                            <td>
+                                <span class="status-chip" [ngClass]="getStatusClass(item.status)">
+                                    {{ getStatusLabel(item.status) }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Entrega -->
+    <div class="modal-overlay" *ngIf="selectedSale" (click)="closeModal()">
+        <div class="modal-card" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Confirmar Entrega</h2>
+                <button class="close-x" (click)="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="delivery-preview">
+                    <div class="preview-icon">
+                        <img [src]="selectedSale.iconUrl">
+                    </div>
+                    <div class="preview-text">
+                        <h3>{{ selectedSale.itemName }}</h3>
+                        <p>ID de Orden: #{{ selectedSale.orderId }}</p>
+                    </div>
+                </div>
+                
+                <div class="modal-notice">
+                    <i class="fas fa-robot"></i>
+                    <p>Nuestra extensión intentará automatizar el envío de la oferta de intercambio a Steam.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-confirm" (click)="confirmSend()" [disabled]="isSending">
+                    <span *ngIf="!isSending"><i class="fas fa-check"></i> ENVIAR AHORA</span>
+                    <span *ngIf="isSending" class="sending-spinner">
+                        <i class="fas fa-circle-notch fa-spin"></i> ENVIANDO...
+                    </span>
+                </button>
+                <button class="btn-manual" (click)="openManualTradeUrl()">ABRIR MANUALMENTE</button>
+            </div>
+        </div>
+    </div>
+</div>

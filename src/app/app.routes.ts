@@ -73,7 +73,13 @@ export const routes: Routes = [
   },
   {
     path: 'pending-sales',
-    component: PendingSales,
+    loadComponent: () => import('./components/sales-hub/sales-hub').then(m => m.SalesHub),
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'Customer' },
+  },
+  {
+    path: 'sales-hub',
+    loadComponent: () => import('./components/sales-hub/sales-hub').then(m => m.SalesHub),
     canActivate: [authGuard, roleGuard],
     data: { role: 'Customer' },
   },
@@ -83,11 +89,15 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { role: 'Customer' },
   },
-
-
   {
     path: 'order-history',
     component: OrderHistory,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'Customer' },
+  },
+  {
+    path: 'my-listings',
+    loadComponent: () => import('./components/sales-hub/sales-hub').then(m => m.SalesHub),
     canActivate: [authGuard, roleGuard],
     data: { role: 'Customer' },
   },

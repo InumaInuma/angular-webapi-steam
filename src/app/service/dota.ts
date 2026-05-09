@@ -188,6 +188,12 @@ export class Dota {
     });
   }
 
+  getSellerListings(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiBaseUrl}/listings`, {
+      withCredentials: true
+    });
+  }
+
   getPendingPurchases() {
     return this.http.get<any[]>(`${this.apiBaseUrl}/purchases/pending`, {
       withCredentials: true

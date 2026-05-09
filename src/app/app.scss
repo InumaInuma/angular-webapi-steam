@@ -127,37 +127,47 @@
     .brand {
         display: flex;
         align-items: center;
-        gap: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0 !important; /* Totalmente pegado a los bordes */
+        border-radius: 8px;
+        width: 220px !important; /* Ancho del combo */
         text-decoration: none;
-        transition: 0.3s;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(4px);
 
         .nav-logo {
-            height: 32px;
-            width: auto;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+            height: 65px !important;
+            width: 100% !important;
+            border-radius: 4px;
+            object-fit: cover !important; 
+            transition: all 0.4s ease;
+            display: block;
         }
 
-        .brand-text {
-            font-size: 1.25rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-            color: #f8fafc !important;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-transform: uppercase;
-            text-shadow: none !important;
-            -webkit-text-fill-color: #f8fafc !important;
-
-            .arrow-down {
-                font-size: 0.7rem;
-                opacity: 0.6;
-                transition: 0.3s;
-            }
+        .arrow-down {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            opacity: 0.8;
+            transition: 0.3s;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            pointer-events: none; /* Let clicks pass to the anchor */
         }
 
         &:hover {
-            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+            
+            .nav-logo {
+                transform: scale(1.05);
+            }
         }
     }
 
@@ -232,7 +242,7 @@
         }
 
         .arrow-down {
-            transform: rotate(180deg);
+            transform: translateY(-50%) rotate(180deg) !important;
             color: var(--pastel-blue);
         }
     }
@@ -1335,33 +1345,19 @@
     gap: 10px !important;
 
     .gg-logo {
-        width: 36px !important;
-        height: 36px !important;
-        border-radius: 6px !important;
+        width: 100% !important;
+        height: 65px !important;
+        border-radius: 4px !important;
         object-fit: cover !important;
-        box-shadow: 0 0 15px rgba(59, 130, 246, 0.4) !important;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.2) !important;
         border: none !important;
         margin-right: 0 !important;
+        display: block !important;
     }
 
-    .gg-text {
-        font-size: 1.4rem !important;
-        font-weight: 900 !important;
-        font-style: italic !important;
-        letter-spacing: -0.5px !important;
 
-        .gg {
-            background: linear-gradient(to right, #fff, #a5b4fc) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-        }
-
-        .causa {
-            color: #ef4444 !important;
-            text-shadow: 0 0 10px rgba(239, 68, 68, 0.3) !important;
-        }
-    }
 }
+
 
 .gg-nav-links {
     gap: 2rem !important;

@@ -13,10 +13,7 @@
             <div class="brand-dropdown">
                 <a routerLink="/pagina-principal" class="brand gg-brand">
                     <img src="/logogg.jpeg" alt="GGCausa" class="nav-logo gg-logo" />
-                    <span class="brand-text gg-text">
-                        <span class="gg">GG</span><span class="causa">Causa</span>
-                    </span>
-                    <span class="arrow-down" style="margin-left: 5px;">▼</span>
+                    <span class="arrow-down" style="margin-left: 10px;">▼</span>
                 </a>
                 <div class="brand-menu">
                     <a routerLink="/marketplace" class="game-option">
@@ -48,7 +45,7 @@
                         Vender / Historial <span class="arrow-down">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a routerLink="/pending-sales" routerLinkActive="active">📦 En Venta</a>
+                        <a routerLink="/sales-hub" routerLinkActive="active">💰 Ventas y Anuncios</a>
                         <a routerLink="/pending-purchases" routerLinkActive="active">🛒 Mis Compras</a>
                         <a routerLink="/order-history" routerLinkActive="active">📜 Historial</a>
                     </div>
@@ -75,15 +72,11 @@
                 <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
             </ng-container>
             <ng-template #loginBtn>
-                <!-- Monedero invitado intacto -->
-                <div class="wallet-display guest">
-                    <span class="wallet-icon">💰</span>
-                    <span class="balance">S/ 0.00</span>
-                </div>
+
                 <!-- Botones Auth estilo imagen 1 -->
                 <div class="gg-auth-buttons">
                     <a routerLink="/login" class="gg-btn-login">Iniciar Sesión</a>
-                    <a routerLink="/register" class="gg-btn-signup">Registrarse</a>
+                    <a routerLink="/login" [queryParams]="{ register: true }" class="gg-btn-signup">Registrarse</a>
                 </div>
             </ng-template>
         </div>

@@ -3,9 +3,6 @@
         <!-- Izquierda: Logo -->
         <a routerLink="/pagina-principal" class="brand-logo">
             <img src="/logogg.jpeg" alt="GGCausa Logo" />
-            <span class="brand-text">
-                <span class="brand-gg">GG</span><span class="brand-causa">Causa</span>
-            </span>
         </a>
 
         <!-- Centro: Navegación -->
@@ -13,7 +10,7 @@
             <a routerLink="/pagina-principal" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">Home</a>
             <a routerLink="/marketplace" routerLinkActive="active">Trade</a>
-            <a routerLink="/pending-sales" routerLinkActive="active">Sell</a>
+            <a routerLink="/sales-hub" routerLinkActive="active">Ventas</a>
             <a routerLink="/dota-items" routerLinkActive="active">Inventory</a>
             <a routerLink="/support" routerLinkActive="active">Help</a>
         </nav>
@@ -26,8 +23,7 @@
             <ng-container *ngIf="!authService.isLoggedIn(); else loggedMenu">
                 <div class="auth-buttons">
                     <button class="btn-login" routerLink="/login">Log in</button>
-                    <button class="btn-signup" [routerLink]="['/login']" [queryParams]="{ register: true }">Sign
-                        Up</button>
+                    <button class="btn-signup" routerLink="/login" [queryParams]="{ register: true }">Sign Up</button>
                 </div>
             </ng-container>
 
