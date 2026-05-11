@@ -60,11 +60,14 @@ export class PendingPurchasesComponent implements OnInit {
                         this.closeModal();
                     }
                 } else {
-                    let errorMessage = event.data.message;
-                    if (errorMessage.includes("401") || errorMessage.includes("403") || errorMessage.includes("Null")) {
-                        errorMessage += "\n\nSi el vendedor acaba de enviar la oferta, Steam Guard podría estar reteniéndola o pendiente de confirmación móvil. ¡Espera 1 o 2 minutos y vuelve a intentarlo!";
+                    let errorMessage = event.data.message || "";
+                    
+                    // Manejo especial para Error 42 (Pendiente de confirmación Steam Guard del Vendedor)
+                    if (errorMessage.includes("42") || errorMessage.includes("401") || errorMessage.includes("403") || errorMessage.includes("Null")) {
+                        alert("⚠️ Aún esperando al Vendedor\n\nEl vendedor ya envió la oferta, pero Steam la tiene en estado 'Pendiente de confirmación' hasta que la apruebe desde su celular (Steam Guard).\n\nEspera 1 o 2 minutos y vuelve a intentarlo.");
+                    } else {
+                        alert("❌ Error al aceptar: " + errorMessage);
                     }
-                    alert("❌ Error al aceptar: " + errorMessage);
                     this.cdr.detectChanges(); // Reset UI state explicitly
                 }
             }

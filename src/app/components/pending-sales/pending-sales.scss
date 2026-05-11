@@ -1,313 +1,313 @@
 .pending-sales-container {
-  padding: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-  color: #e0e0e0;
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    color: #e0e0e0;
 
-  h2 {
-    text-align: center;
-    margin-bottom: 0.5rem;
-    color: var(--pastel-blue);
-  }
-
-  .subtitle {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #8f98a0;
-  }
-
-  .sales-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .sale-card {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    background: #1b2838;
-    border: 1px solid #2a475e;
-    padding: 1.5rem;
-    border-radius: 8px;
-
-    .item-info {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex: 1;
-      min-width: 250px;
-
-      .item-icon {
-        width: 80px;
-        height: 80px;
-        border-radius: 4px;
-      }
-
-      .details {
-        h3 {
-          margin: 0;
-          color: #fff;
-        }
-
-        .price {
-          color: var(--pastel-green);
-          font-weight: 700;
-          margin: 0.2rem 0;
-        }
-
-        .date {
-          font-size: 0.8rem;
-          color: #8f98a0;
-        }
-      }
-    }
-
-    .buyer-info {
-      flex: 1;
-      min-width: 150px;
-      text-align: left;
-      padding: 0 1rem;
-
-      h4 {
-        margin: 0 0 0.5rem 0;
+    h2 {
+        text-align: center;
+        margin-bottom: 0.5rem;
         color: var(--pastel-blue);
-        font-size: 0.9rem;
-        text-transform: uppercase;
-      }
-
-      p {
-        margin: 0;
-      }
     }
 
-    .actions {
-      flex: 0 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-
-      .btn-trade {
-        color: #000;
-        background: var(--pastel-blue);
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 700;
-        transition: all 0.2s;
-        width: 100%;
+    .subtitle {
         text-align: center;
-
-        &:hover {
-          background: #bfdbfe;
-          transform: translateY(-1px);
-        }
-
-        &:disabled {
-          opacity: 0.7;
-          cursor: wait;
-        }
-      }
-
-      .btn-cancel-sale {
-        color: #000;
-        background: var(--pastel-pink);
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 700;
-        transition: all 0.2s;
-        // width: 100%; // Opcional si quieres que ocupe todo el ancho o no
-        text-align: center;
-        margin-top: 10px; // Separación del botón de enviar
-
-        &:hover {
-          background: #fbcfe8;
-          transform: translateY(-1px);
-        }
-      }
+        margin-bottom: 2rem;
+        color: #8f98a0;
     }
-  }
+
+    .sales-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .sale-card {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        background: #1b2838;
+        border: 1px solid #2a475e;
+        padding: 1.5rem;
+        border-radius: 8px;
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            min-width: 250px;
+
+            .item-icon {
+                width: 80px;
+                height: 80px;
+                border-radius: 4px;
+            }
+
+            .details {
+                h3 {
+                    margin: 0;
+                    color: #fff;
+                }
+
+                .price {
+                    color: var(--pastel-green);
+                    font-weight: 700;
+                    margin: 0.2rem 0;
+                }
+
+                .date {
+                    font-size: 0.8rem;
+                    color: #8f98a0;
+                }
+            }
+        }
+
+        .buyer-info {
+            flex: 1;
+            min-width: 150px;
+            text-align: left;
+            padding: 0 1rem;
+
+            h4 {
+                margin: 0 0 0.5rem 0;
+                color: var(--pastel-blue);
+                font-size: 0.9rem;
+                text-transform: uppercase;
+            }
+
+            p {
+                margin: 0;
+            }
+        }
+
+        .actions {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+
+            .btn-trade {
+                color: #000;
+                background: var(--pastel-blue);
+                border: none;
+                padding: 0.8rem 1.5rem;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: 700;
+                transition: all 0.2s;
+                width: 100%;
+                text-align: center;
+
+                &:hover {
+                    background: #bfdbfe;
+                    transform: translateY(-1px);
+                }
+
+                &:disabled {
+                    opacity: 0.7;
+                    cursor: wait;
+                }
+            }
+
+            .btn-cancel-sale {
+                color: #000;
+                background: var(--pastel-pink);
+                border: none;
+                padding: 0.8rem 1.5rem;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: 700;
+                transition: all 0.2s;
+                // width: 100%; // Opcional si quieres que ocupe todo el ancho o no
+                text-align: center;
+                margin-top: 10px; // Separación del botón de enviar
+
+                &:hover {
+                    background: #fbcfe8;
+                    transform: translateY(-1px);
+                }
+            }
+        }
+    }
 }
 
 // Modal Styles
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
-  background: #1b2838;
-  border: 1px solid #2a475e;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-  padding: 1.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  animation: slideUp 0.3s ease-out;
+    background: #1b2838;
+    border: 1px solid #2a475e;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease-out;
 
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid #2a475e;
-    padding-bottom: 1rem;
-
-    h3 {
-      margin: 0;
-      color: var(--pastel-blue);
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      color: #8f98a0;
-      font-size: 1.5rem;
-      cursor: pointer;
-
-      &:hover {
-        color: #fff;
-      }
-    }
-  }
-
-  .modal-body {
-    .item-preview {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: #101822;
-      padding: 1rem;
-      border-radius: 4px;
-      margin-bottom: 1.5rem;
-
-      img {
-        width: 60px;
-        height: 60px;
-        border-radius: 4px;
-      }
-
-      .info {
+    .modal-header {
         display: flex;
-        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #2a475e;
+        padding-bottom: 1rem;
 
-        .name {
-          color: #fff;
-          font-weight: bold;
+        h3 {
+            margin: 0;
+            color: var(--pastel-blue);
         }
 
-        .price {
-          color: var(--pastel-green);
-          font-size: 0.9rem;
-          font-weight: 700;
+        .close-btn {
+            background: none;
+            border: none;
+            color: #8f98a0;
+            font-size: 1.5rem;
+            cursor: pointer;
+
+            &:hover {
+                color: #fff;
+            }
         }
-      }
     }
 
-    .buyer-details {
-      color: #c4cbd3;
-      margin-bottom: 1.5rem;
+    .modal-body {
+        .item-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #101822;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
 
-      .small {
-        font-size: 0.85rem;
-        color: #8f98a0;
-        margin-top: 0.5rem;
-      }
+            img {
+                width: 60px;
+                height: 60px;
+                border-radius: 4px;
+            }
+
+            .info {
+                display: flex;
+                flex-direction: column;
+
+                .name {
+                    color: #fff;
+                    font-weight: bold;
+                }
+
+                .price {
+                    color: var(--pastel-green);
+                    font-size: 0.9rem;
+                    font-weight: 700;
+                }
+            }
+        }
+
+        .buyer-details {
+            color: #c4cbd3;
+            margin-bottom: 1.5rem;
+
+            .small {
+                font-size: 0.85rem;
+                color: #8f98a0;
+                margin-top: 0.5rem;
+            }
+        }
     }
-  }
 
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+    .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
 
-    button {
-      padding: 0.7rem 1.2rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-      border: none;
+        button {
+            padding: 0.7rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
 
-      &.btn-cancel {
-        background: #3d4450;
-        color: #fff;
+            &.btn-cancel {
+                background: #3d4450;
+                color: #fff;
 
-        &:hover {
-          background: #4b5260;
+                &:hover {
+                    background: #4b5260;
+                }
+            }
+
+            &.btn-confirm {
+                background: var(--pastel-blue);
+                color: #000;
+                font-weight: 700;
+
+                &:hover {
+                    background: #bfdbfe;
+                }
+
+                &:disabled {
+                    opacity: 0.7;
+                    cursor: wait;
+                }
+            }
         }
-      }
-
-      &.btn-confirm {
-        background: var(--pastel-blue);
-        color: #000;
-        font-weight: 700;
-
-        &:hover {
-          background: #bfdbfe;
-        }
-
-        &:disabled {
-          opacity: 0.7;
-          cursor: wait;
-        }
-      }
     }
-  }
 }
 
 @keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
 
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 @media (max-width: 768px) {
-  .pending-sales-container {
-    padding: 1rem;
-  }
-
-  .sale-card {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1.5rem;
-
-    .item-info,
-    .buyer-info {
-      width: 100%;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding-bottom: 1rem;
+    .pending-sales-container {
+        padding: 1rem;
     }
 
-    .actions {
-      width: 100%;
-      align-items: stretch;
+    .sale-card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
 
-      button {
-        width: 100%;
-      }
+        .item-info,
+        .buyer-info {
+            width: 100%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 1rem;
+        }
 
-      .btn-cancel-sale {
-        width: 100%;
-      }
+        .actions {
+            width: 100%;
+            align-items: stretch;
+
+            button {
+                width: 100%;
+            }
+
+            .btn-cancel-sale {
+                width: 100%;
+            }
+        }
     }
-  }
 }

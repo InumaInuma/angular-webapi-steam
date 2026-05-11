@@ -72,10 +72,16 @@ export class SalesHub implements OnInit {
             this.closeModal();
           },
           error: (err) => {
-            console.error(err);
             this.isSending = false;
             this.removeLock(this.selectedSale?.orderId);
-            alert("❌ Error al guardar en base de datos.");
+            if (err.status === 409) {
+              console.warn('[SalesHub] Oferta ya fue marcada como enviada. Recargando...');
+              this.loadSales();
+              this.closeModal();
+            } else {
+              console.error(err);
+              alert("❌ Error al guardar en base de datos.");
+            }
           }
         });
       }

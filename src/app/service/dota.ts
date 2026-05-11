@@ -64,6 +64,8 @@ export interface PendingSaleDto {
   itemAssetId?: string;
   appId?: number;
   contextId?: number;
+  // Flag desde el servidor
+  isOfferSent: boolean;
 }
 
 import { environment } from '../../environments/environment';

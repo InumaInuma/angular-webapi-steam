@@ -37,30 +37,74 @@
                 <p>No tienes ventas pendientes de entrega. Tus compradores están felices.</p>
             </div>
 
-            <div *ngIf="!loadingSales && sales.length > 0" class="sales-grid">
-                <div class="sale-card" *ngFor="let sale of sales">
-                    <div class="card-status">PENDIENTE</div>
-                    <div class="sale-item">
-                        <div class="icon-wrapper">
-                            <img [src]="sale.iconUrl" class="item-icon">
-                        </div>
-                        <div class="item-details">
-                            <span class="item-name">{{ sale.itemName }}</span>
-                            <div class="price-tag">
-                                <span class="currency">S/</span>
-                                <span class="amount">{{ sale.price | number:'1.2-2' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn-action deliver" (click)="openModal(sale)">
-                            <i class="fas fa-paper-plane"></i> ENTREGAR
-                        </button>
-                        <button class="btn-action cancel" (click)="cancelSale(sale)">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
+            <div *ngIf="!loadingSales && sales.length > 0" class="table-wrapper">
+                <table class="premium-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Comprador</th>
+                            <th>Fecha</th>
+                            <th>Precio</th>
+                            <th style="text-align: right;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let sale of sales">
+                            <td>
+                                <div class="table-item">
+                                    <img [src]="sale.iconUrl" class="mini-icon">
+                                    <div class="table-item-info">
+                                        <span class="name">{{ sale.itemName }}</span>
+                                        <span class="id">#{{ sale.orderId }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 30px; height: 30px; border-radius: 50%; background: rgba(59, 130, 246, 0.2); display: flex; align-items: center; justify-content: center; color: #3b82f6; font-weight: 800; font-size: 0.75rem;">
+                                        {{ sale.buyerName.charAt(0).toUpperCase() }}
+                                    </div>
+                                    <span style="font-weight: 700; color: #cbd5e1; font-size: 0.85rem;">{{ sale.buyerName }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span style="color: #64748b; font-size: 0.8rem; font-weight: 600;">
+                                    <i class="far fa-clock" style="margin-right: 5px;"></i>{{ sale.createdAtUtc | date:'dd MMM yyyy, HH:mm' }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="price-cell">S/ {{ sale.price | number:'1.2-2' }}</div>
+                            </td>
+                            <td>
+                                <div class="action-buttons" style="justify-content: flex-end;">
+                                    <!-- ESTADO: Ya se guardó la oferta en BD -->
+                                    <ng-container *ngIf="sale.isOfferSent">
+                                        <button class="btn-table-sent" disabled>
+                                            <i class="fas fa-check-circle"></i> ENVIADO
+                                        </button>
+                                    </ng-container>
+
+                                    <!-- ESTADO: Enviando ahora mismo (lock temporal en memoria) -->
+                                    <ng-container *ngIf="!sale.isOfferSent && isOrderLocked(sale.orderId)">
+                                        <button class="btn-table-deliver" disabled style="opacity: 0.7; cursor: wait;">
+                                            <i class="fas fa-spinner fa-spin"></i> ENVIANDO...
+                                        </button>
+                                    </ng-container>
+
+                                    <!-- ESTADO: Normal, listo para enviar -->
+                                    <ng-container *ngIf="!sale.isOfferSent && !isOrderLocked(sale.orderId)">
+                                        <button class="btn-table-deliver" (click)="openModal(sale)">
+                                            <i class="fas fa-paper-plane"></i> ENTREGAR
+                                        </button>
+                                        <button class="btn-table-cancel" (click)="cancelSale(sale)" title="Cancelar Venta">
+                                            <i class="fas fa-times"></i> CANCELAR
+                                        </button>
+                                    </ng-container>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
