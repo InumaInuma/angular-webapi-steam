@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Dota, PendingSaleDto } from '../../service/dota';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,9 @@ import { RouterModule } from '@angular/router';
   templateUrl: './sales-hub.html',
   styleUrl: './sales-hub.scss'
 })
-export class SalesHub implements OnInit {
+export class SalesHub implements OnInit, OnDestroy {
+  private messageListener: any;
+
   activeTab: 'pending' | 'listings' = 'pending';
   
   // Pending Sales Data
@@ -32,12 +34,20 @@ export class SalesHub implements OnInit {
     this.cleanupLocks();
 
     // Listen for extension messages
-    window.addEventListener("message", (event) => {
+    this.messageListener = (event: any) => {
       if (event.data && event.data.type === "P2P_MARKET_OFFER_RESULT") {
         this.handleExtensionResult(event.data);
       }
-    });
+    };
+    window.addEventListener("message", this.messageListener);
   }
+
+  ngOnDestroy() {
+    if (this.messageListener) {
+      window.removeEventListener("message", this.messageListener);
+    }
+  }
+
 
   setTab(tab: 'pending' | 'listings') {
     this.activeTab = tab;
